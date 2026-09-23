@@ -1,0 +1,47 @@
+{
+  // GoalEdge AI - editor tasks.
+  //
+  // `Check Python sources` fails on any damaged source (a collapsed docstring
+  // delimiter or any other syntax error). It is the guard against the failure
+  // mode described in qa/check-sources.py.
+  //
+  // Bind it to the folder's build task (Ctrl+Shift+B) or run it on save with
+  // the `runOn: folderOpen`-style polling in `.vscode/settings.json` if wanted.
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Check Python sources",
+      "type": "shell",
+      "command": "${workspaceFolder}/backend/.venv/Scripts/python.exe",
+      "args": ["${workspaceFolder}/qa/check-sources.py"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": {
+        "owner": "python",
+        "fileLocation": ["relative", "${workspaceFolder}"],
+        "pattern": {
+          "regexp": "^(\\S+\\.py)$",
+          "file": 1
+        }
+      },
+      "presentation": { "reveal": "silent", "clear": true },
+      "group": { "kind": "build", "isDefault": true }
+    },
+    {
+      "label": "Repair collapsed docstrings",
+      "type": "shell",
+      "command": "${workspaceFolder}/backend/.venv/Scripts/python.exe",
+      "args": ["${workspaceFolder}/qa/fix_docstrings.py", "--root", "${workspaceFolder}/backend/app"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "presentation": { "reveal": "always", "clear": true }
+    },
+    {
+      "label": "Run the app",
+      "type": "shell",
+      "command": "${workspaceFolder}/backend/.venv/Scripts/python.exe",
+      "args": ["-m", "uvicorn", "app.main:app", "--reload", "--port", "8080"],
+      "options": { "cwd": "${workspaceFolder}/backend" },
+      "isBackground": true,
+      "problemMatcher": []
+    }
+  ]
+}

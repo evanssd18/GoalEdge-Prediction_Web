@@ -1,0 +1,37 @@
+INFO goaledge: frontend served from E:\HTML\Predictions\frontend
+INFO:     Started server process [12212]
+INFO:     Waiting for application startup.
+INFO goaledge: seed: {'status': 'skipped', 'reason': 'database already seeded', 'fixtures': 15051}
+INFO goaledge.refresh: flashscore refresher: started (every 1800s, lookback 2d)
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8097 (Press CTRL+C to quit)
+INFO goaledge: flashscore sync: {'date': '0', 'fetched': 233, 'created': 0, 'updated': 233, 'finished': 0, 'competitions_created': 0, 'teams_created': 0, 'error': None}
+INFO goaledge: flashscore sync: {'date': '-1', 'fetched': 400, 'created': 0, 'updated': 400, 'finished': 0, 'competitions_created': 0, 'teams_created': 0, 'error': None}
+INFO goaledge: flashscore sync: {'date': '-2', 'fetched': 400, 'created': 0, 'updated': 400, 'finished': 0, 'competitions_created': 0, 'teams_created': 0, 'error': None}
+INFO goaledge.refresh: flashscore refresher: 2829 fixture(s) refreshed
+INFO goaledge.refresh: flashscore refresher: 2829 fixture(s) refreshed
+WARNING goaledge.refresh: flashscore refresher: Flashscore request failed: <urlopen error [Errno 11001] getaddrinfo failed>
+INFO goaledge.refresh: flashscore refresher: 2830 fixture(s) refreshed
+WARNING goaledge.refresh: flashscore refresher: Flashscore request failed: <urlopen error [Errno 11001] getaddrinfo failed>
+WARNING goaledge.refresh: flashscore refresher: Flashscore request failed: <urlopen error [Errno 11001] getaddrinfo failed>
+WARNING goaledge.refresh: flashscore refresher: Flashscore request failed: <urlopen error [Errno 11001] getaddrinfo failed>
+WARNING goaledge.refresh: flashscore refresher: Flashscore request failed: <urlopen error [Errno 11001] getaddrinfo failed>
+WARNING goaledge.refresh: flashscore refresher: Flashscore request failed: <urlopen error [Errno 11001] getaddrinfo failed>
+WARNING goaledge.refresh: flashscore refresher: Flashscore request failed: <urlopen error [Errno 11001] getaddrinfo failed>
+WARNING goaledge.refresh: flashscore refresher: Flashscore request failed: <urlopen error [Errno 11001] getaddrinfo failed>
+WARNING goaledge.refresh: flashscore refresher: Flashscore request failed: <urlopen error [Errno 11001] getaddrinfo failed>
+WARNING goaledge.refresh: flashscore refresher: Flashscore request failed: <urlopen error [Errno 11001] getaddrinfo failed>
+WARNING goaledge.refresh: flashscore refresher: Flashscore request failed: <urlopen error [Errno 11001] getaddrinfo failed>
+WARNING goaledge.refresh: flashscore refresher: Flashscore request failed: <urlopen error [Errno 11001] getaddrinfo failed>
+WARNING goaledge.refresh: flashscore refresher: Flashscore request failed: <urlopen error [Errno 11001] getaddrinfo failed>
+WARNING goaledge.refresh: flashscore refresher: Flashscore request failed: <urlopen error [Errno 11001] getaddrinfo failed>
+WARNING goaledge.refresh: flashscore refresher: Flashscore request failed: <urlopen error [Errno 11001] getaddrinfo failed>
+WARNING goaledge.refresh: flashscore refresher: Flashscore request failed: <urlopen error [Errno 11001] getaddrinfo failed>
+WARNING goaledge.refresh: flashscore refresher: Flashscore request failed: <urlopen error [Errno 11001] getaddrinfo failed>
+WARNING goaledge.refresh: flashscore refresher: Flashscore request failed: <urlopen error [Errno 11001] getaddrinfo failed>
+WARNING goaledge.refresh: flashscore refresher: Flashscore request failed: <urlopen error [Errno 11001] getaddrinfo failed>
+WARNING goaledge.refresh: flashscore refresher: Flashscore request failed: <urlopen error [Errno 11001] getaddrinfo failed>
+WARNING goaledge.refresh: flashscore refresher: Flashscore request failed: <urlopen error [Errno 11001] getaddrinfo failed>
+WARNING goaledge.refresh: flashscore refresher: Flashscore request failed: <urlopen error [Errno 11001] getaddrinfo failed>
+WARNING goaledge.refresh: flashscore refresher: Flashscore request failed: <urlopen error [Errno 11001] getaddrinfo failed>
+WARNING goaledge.refresh: flashscore refresher: Flashscore request failed: <urlopen error [Errno 11001] getaddrinfo failed>

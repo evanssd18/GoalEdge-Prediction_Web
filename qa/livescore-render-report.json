@@ -1,0 +1,156 @@
+{
+  "url": "http://127.0.0.1:8080",
+  "day": "2026-09-22",
+  "source": "database",
+  "window": {
+    "earliest": "2026-09-22",
+    "latest": "2027-06-14",
+    "back_days": 0,
+    "forward_days": 265,
+    "season": "2026/27"
+  },
+  "rowsRendered": 203,
+  "liveRowsInPayload": 8,
+  "passed": 39,
+  "failed": 0,
+  "failures": [],
+  "passedNames": [
+    {
+      "name": "payload has window bounds",
+      "detail": {
+        "earliest": "2026-09-22",
+        "latest": "2027-06-14",
+        "back_days": 0,
+        "forward_days": 265,
+        "season": "2026/27"
+      }
+    },
+    {
+      "name": "payload rows present",
+      "detail": {
+        "total": 203,
+        "day": "2026-09-22"
+      }
+    },
+    "day navigation rendered",
+    "date input rendered",
+    "date input bounded by window",
+    "quick day chips rendered",
+    "prev/next day controls",
+    "today jump control",
+    "filter tabs preserved",
+    {
+      "name": "rows rendered",
+      "detail": 203
+    },
+    {
+      "name": "every row shows exactly one kick-off time",
+      "detail": {
+        "timeCells": 203,
+        "rowCount": 203
+      }
+    },
+    {
+      "name": "every row has an expand control",
+      "detail": {
+        "expandButtons": 203,
+        "rowCount": 203
+      }
+    },
+    {
+      "name": "live row renders an estimated-minute marker",
+      "detail": {
+        "synthetic": false
+      }
+    },
+    "board minute points at the match page for the real clock",
+    "live row still shows the exact kick-off time",
+    "live row shows the pulse indicator",
+    {
+      "name": "row carries the feed match id for the match page",
+      "detail": "\n    <div class=\"ls-row is-live   is-openable\" data-fixture=\"123\" data-match=\"TESTM\" role=\"link\" tabindex=\"0\" title=\"Open the match page\">\n\n      <div class=\"ls-fav\" title=\"Follow this match\"><svg class=\"mi mi-sm\" viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM"
+    },
+    "row links to the match page hash",
+    "row is marked as openable",
+    "row without a match id offers no match-page link",
+    "row without a match id still offers the in-place panel",
+    "finished row shows Finished",
+    "finished row shows no minute",
+    "finished row keeps its kick-off time",
+    "finished row marks the winner",
+    "detail panel shows date",
+    "detail panel shows kick-off",
+    "detail panel shows status",
+    "detail panel links to the model page",
+    "detail panel links to the source",
+    "detail panel qualifies the board minute as derived",
+    "detail panel points at the match page for the real clock",
+    {
+      "name": "quick dates walk the forward fortnight",
+      "detail": [
+        "2026-09-23",
+        "2026-09-24",
+        "2026-09-25",
+        "2026-09-26",
+        "2026-09-27",
+        "2026-09-28",
+        "2026-09-29",
+        "2026-09-30",
+        "2026-10-01",
+        "2026-10-02",
+        "2026-10-03",
+        "2026-10-04",
+        "2026-10-05",
+        "2026-10-06"
+      ]
+    },
+    {
+      "name": "quick dates stay inside the server window",
+      "detail": [
+        "2026-09-23",
+        "2026-09-24",
+        "2026-09-25",
+        "2026-09-26",
+        "2026-09-27",
+        "2026-09-28",
+        "2026-09-29",
+        "2026-09-30",
+        "2026-10-01",
+        "2026-10-02",
+        "2026-10-03",
+        "2026-10-04",
+        "2026-10-05",
+        "2026-10-06"
+      ]
+    },
+    {
+      "name": "quick dates are ISO",
+      "detail": [
+        "2026-09-23",
+        "2026-09-24",
+        "2026-09-25",
+        "2026-09-26",
+        "2026-09-27",
+        "2026-09-28",
+        "2026-09-29",
+        "2026-09-30",
+        "2026-10-01",
+        "2026-10-02",
+        "2026-10-03",
+        "2026-10-04",
+        "2026-10-05",
+        "2026-10-06"
+      ]
+    },
+    "today label resolves",
+    {
+      "name": "prev day is clamped to the window",
+      "detail": {
+        "got": "2026-09-22",
+        "earliest": "2026-09-22"
+      }
+    },
+    "next day is clamped to the window",
+    "row carries its fixture id for in-place expansion"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "name": "goaledge-qa",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Browser QA harness for the GoalEdge frontend. The qa/*.mjs probes are modules that export run(page, ui); this package provides the runner that launches Chromium, serves the app, and invokes one probe by name.",
+  "type": "module",
+  "scripts": {
+    "qa": "node qa/run.mjs",
+    "qa:layers": "node qa/run.mjs _layers"
+  },
+  "devDependencies": {
+    "playwright": "^1.49.0"
+  }
+}

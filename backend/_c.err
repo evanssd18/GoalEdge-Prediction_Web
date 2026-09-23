@@ -1,0 +1,7 @@
+INFO goaledge: frontend served from E:\HTML\Predictions\frontend
+INFO:     Started server process [18072]
+INFO:     Waiting for application startup.
+INFO goaledge: seed: {'status': 'skipped', 'reason': 'database already seeded', 'fixtures': 15258}
+INFO goaledge.refresh: flashscore refresher: started (every 1800s, lookback 2d)
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8099 (Press CTRL+C to quit)

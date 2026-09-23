@@ -1,0 +1,14 @@
+{
+  // Run the Python source guard whenever a Python file is saved, so a damaged
+  // docstring delimiter is caught the moment it appears rather than at the next
+  // compile. The task exits non-zero on damage and prints the exact line.
+  "task.allowAutomaticTasks": "on",
+  "editor.codeActionsOnSave": {},
+  "files.watcherExclude": {
+    "**/__pycache__/**": true,
+    "**/.venv/**": true
+  },
+  // `runOptions.runOn: folderOpen` is deliberately not used: the guard belongs
+  // on save/compile, not on opening the project.
+  "python.terminal.activateEnvironment": true
+}

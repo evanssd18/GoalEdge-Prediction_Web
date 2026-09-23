@@ -1,0 +1,28 @@
+#!/bin/sh
+# GoalEdge AI - pre-commit guard.
+#
+# Blocks a commit that contains a damaged Python source: a collapsed docstring
+# delimiter, or any other syntax error. The check exits non-zero on damage and
+# prints the exact file and line, so the fix is obvious.
+#
+# Install once per clone:
+#     sh qa/install-hooks.sh
+#
+# Bypass (only when you genuinely mean to):
+#     git commit --no-verify
+
+PY="backend/.venv/Scripts/python.exe"
+[ -x "$PY" ] || PY="backend/.venv/bin/python"
+[ -x "$PY" ] || PY="python"
+
+"$PY" qa/check-sources.py
+status=$?
+
+if [ $status -ne 0 ]; then
+    echo ""
+    echo "pre-commit: blocked - fix the sources above before committing."
+    echo "pre-commit: repair collapsed docstrings with: python qa/fix_docstrings.py"
+    exit $status
+fi
+
+exit 0

@@ -1,0 +1,6755 @@
+/* ==========================================================================
+   GoalEdge AI — stylesheet
+   ========================================================================== */
+
+:root {
+  /* Dark theme modelled on sofascore.com.
+
+     The values below are not eyeballed. They were read out of the live site's
+     own custom-property block (the `.dark` selector on sofascore.com, which is
+     where their Panda-CSS theme tokens live -- `--colors-surface-s0/s1/s2`,
+     `--colors-primary-default`, `--colors-neutrals-n-lv1..lv5`), so the palette
+     is literal rather than guessed. The SofaScore token each one came from is
+     named beside it. */
+
+  /* --- surfaces: SofaScore's three-step surface scale --------------------- */
+  --ep-base-300: #000000; /* s0 : the page background, black in dark mode */
+  --ep-base-200: #0d1114; /* a half-step between s0 and s1, for insets */
+  --ep-base-100: #171c1f; /* s1 : cards sit ON the page, so they are lighter */
+
+  --bg: #000000; /* s0 */
+  --bg-soft: #171c1f; /* s1 */
+  --surface: #171c1f; /* s1 : the card colour */
+  --surface-2: #0d1114; /* a half-step down: nested/inset blocks */
+  --border: #272c32; /* s2 / surface-sp : the raised outline */
+  --border-soft: rgba(255, 255, 255, 0.08); /* n-lv5 : the hairline between rows */
+  --text: #ecedef; /* n-lv1 : base content */
+  --text-dim: rgba(255, 255, 255, 0.75); /* n-lv2 : secondary */
+  --text-faint: rgba(255, 255, 255, 0.5); /* n-lv3 : tertiary */
+
+  /* brand: primary is their BLUE, secondary their green -------------------
+     The blue is the single biggest change in this pass. On sofascore.com the
+     accent is #7A84FF (dark) / #374DF5 (light) and the green is a STATUS
+     colour (live, up, success) rather than the brand. The two are kept apart
+     here for exactly that reason: --accent is interaction, --green is meaning. */
+  --accent: #7a84ff; /* primary-default (dark) : buttons, active tab */
+  --accent-dim: #626ce0; /* a shade down, for the hover fill */
+  --accent-soft: rgba(122, 132, 255, 0.25); /* primary-highlight */
+  --amber: #dbaa3f; /* status-alert-default */
+  --amber-soft: rgba(219, 170, 63, 0.15);
+  --navy: #272c32; /* surface-sp : kept as the name the stylesheet already uses */
+  --navy-soft: #171c1f;
+  --link: #7a84ff; /* the accent doubles as link text on dark */
+  --link-hover: #9aa2ff;
+  --premium: #272c32;
+
+  --danger: #e35c47; /* status-error-default */
+  --danger-soft: rgba(227, 92, 71, 0.15);
+  --warn: #dbaa3f;
+  --warn-soft: rgba(219, 170, 63, 0.15);
+  --info: #57b6f5;
+  --info-soft: rgba(87, 182, 245, 0.15);
+  --green: #46c252; /* secondary-default */
+  --green-soft: rgba(70, 194, 82, 0.15);
+  /* The live colour. On the reference board an in-play minute is red, not the
+     brand colour -- it is a status, so it gets the status colour. */
+  --live: #cb1818; /* status-live */
+
+  /* --- SportyBet values, quoted from the page shell they supplied ----------
+     Every colour below is a literal declared in SportyBet's own document
+     (theme-color, .m-seo-copy-html, the m-seo-entity-* rules and the
+     [theme='dark'] overrides). They are not sampled by eye or invented, so the
+     stats/H2H surface can match their palette without guessing at it.
+     What is NOT copied is their row/sub-tab structure: that markup is injected
+     at runtime into an empty <div id="app"> and was not in the document. */
+  --sb-page: #1b1e25; /* .m-page-loading-wrap background */
+  --sb-panel: #22252d; /* :root[theme='dark'] .m-seo-entity-panel */
+  --sb-raised: #2c3039; /* :root[theme='dark'] .m-seo-entity-toggle */
+  --sb-content: #353a45; /* .m-seo-entity-panel[data-seo-panel='content'] */
+  --sb-divider: #50545f; /* .m-seo-faq-item border-bottom */
+  --sb-line: #9ca0ab; /* .m-seo-copy-html th, td border */
+  --sb-text: #ffffff; /* .m-seo-copy-html h2-h6 */
+  --sb-text-dim: #9ca0ab; /* .m-seo-copy-html ul li::marker */
+  --sb-text-body: #b6b7b8; /* .m-seo-copy-html body copy */
+  --sb-red: #e41827; /* meta[name=theme-color] */
+  --sb-green: #0d9737; /* .cta-primary background/border */
+  --sb-green-bright: #14be47; /* .cta-secondary and arrow chevrons */
+  --sb-radius: 2px; /* .m-seo-copy-html a.cta border-radius */
+  --sb-font: Inter, Roboto, Arial, sans-serif; /* their declared family */
+
+  /* SofaScore's radii, read from their token block: 2 / 4 / 8 / 12 / 16 / 24px.
+     Nested blocks 4px (--radii-xs), the large panel 12px (--radii-md). */
+  --radius: 14px; /* cards: "a bit rounded" -- clearly soft, not a pill */
+  --radius-sm: 10px; /* radii-xs : nested blocks, chips */
+  --radius-lg: 20px; /* radii-md : large panels */
+  /* Fully round, for controls the user presses. Independent of the card radius
+     scale above, so "very rounded buttons" stays true even when the surface
+     radius is set to sharp. */
+  --radius-btn: 999px;
+  --shadow: none; /* their cards carry no shadow */
+  --shadow-hover: none;
+
+  /* Their transition curve and duration (--durations-normal: 200ms, and the
+     standard ease-out), which is what makes the hover feel soft. */
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --t-fast: 0.2s var(--ease);
+
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+  /* --- liquid glass (iOS 26) ----------------------------------------------
+     A real glass control is four layers, not one blur, and each layer needs a
+     token because the light theme cannot share any of them:
+
+       1. the body     -- a translucent tint that the backdrop-filter blurs;
+       2. the rim      -- a bright hairline over the TOP edge, where a lit pane
+                          catches the light (a glass edge is never uniform);
+       3. the refraction -- dark inner shading pushed onto the bottom/edges, so
+                          the pane reads as thick and lens-like rather than flat;
+       4. the cast     -- the soft shadow the pane drops on the page beneath it.
+
+     The values are white-on-dark / black-on-light, matching how --hover-wash is
+     already themed: in dark mode light is ADDED, in light mode light is REMOVED. */
+  --glass-tint: rgba(255, 255, 255, 0.07); /* layer 1: the body tint */
+  --glass-tint-strong: rgba(255, 255, 255, 0.13); /* hover: the pane thickens */
+  --glass-rim: rgba(255, 255, 255, 0.34); /* layer 2: the top specular */
+  --glass-rim-soft: rgba(255, 255, 255, 0.10); /* the same rim, for resting borders */
+  --glass-refract: rgba(0, 0, 0, 0.45); /* layer 3: the weighted lower edge */
+  --glass-cast: rgba(0, 0, 0, 0.5); /* layer 4: the drop shadow */
+  --glass-sheen: rgba(255, 255, 255, 0.5); /* the top gloss on a filled pill */
+  --glass-blur: 18px; /* frost depth: enough to smear the backdrop, not erase it */
+  --glass-sat: 180%;
+
+  /* The moving specular. `--mx`/`--my` are set by JS to the pointer's position
+     INSIDE the button (see pointerGlass() in app.js); these two are how far the
+     highlight travels in px, and how far the pane shifts to fake parallax. The
+     defaults park the light at the top-left so a button that has never been
+     hovered still has a definite lit side rather than a centred blob. */
+  --glass-travel: 70%;
+  --glass-lift: 2px;
+  --mx: 22%;
+  --my: 0%;
+  --gx: 0px;
+  --gy: 0px;
+
+  /* The label scrim.
+
+     A fully transparent pane has no control over what shows through it, so a
+     label can land on a bright patch of the aura and vanish -- measured at
+     1.05:1 on a filled pill over the backdrop, where WCAG wants 4.5:1. The pane
+     itself stays transparent (that is the material); this is a soft radial shadow
+     under the label only, so the text always has a field to read against while
+     the capsule's EDGES stay clear glass -- which is where the eye looks for the
+     material. Deliberately narrow (`--glass-scrim-size`): wide enough to darken
+     the glyphs and no wider, or the radial spreads across the whole capsule and
+     the button reads as a plain filled pill. */
+  --glass-scrim: rgba(0, 0, 0, 0.42);
+  --glass-scrim-size: 44%;
+
+  /* The ambient wash the glass sits on. A frosted pane is only legible as glass
+     when there is something BEHIND it with colour and shape to refract; over a
+     flat black page a blur is invisible and the button just looks grey. These
+     three are the tinted lights that drift behind the whole app. */
+  --aura-1: rgba(122, 132, 255, 0.5); /* the accent, as light */
+  --aura-2: rgba(70, 194, 82, 0.26); /* the status green */
+  --aura-3: rgba(87, 182, 245, 0.30); /* the info blue */
+  --aura-blur: 90px; /* how far each light bleeds before it fades */
+
+  /* --- theme plumbing -----------------------------------------------------
+     Two values the themes below cannot express as a shared token: the text
+     colour that sits ON an accent-filled surface, and the translucent washes
+     used for hovers and active tabs. In dark mode an accent fill carries white
+     text and a hover LIFTS the surface with white; in light mode the accent
+     still carries white text (it is a saturated green either way) but a hover
+     sinks the surface with black. Naming both here is what lets every rule
+     below work in either theme without a second stylesheet. */
+  --on-accent: #fcfcfe; /* on-color-primary */
+  /* The amber is a LIGHT fill in both themes (it is the "value" highlight), so
+     the ink on it is dark in both. */
+  --on-amber: #150f02;
+  --hover-wash: rgba(255, 255, 255, 0.08); /* n-lv5 */
+  --hover-wash-soft: rgba(255, 255, 255, 0.05);
+  /* The header bar. On sofascore.com this is --colors-header-primary, which is
+     #272C32 in dark mode and #374DF5 (their blue) in light -- the top bar is
+     BRAND-COLOURED, not a neutral. Both are set explicitly below rather than
+     derived, because the relationship inverts between themes. */
+  --panel-dark: #272c32;
+  --on-panel-dark: #ffffff;
+  --scheme: dark;
+}
+
+/* ==========================================================================
+   Light theme
+   ==========================================================================
+   Applied by setting data-theme="light" on <html> (see theme.js / the toggle in
+   the header). It is a real token swap, not a filter or an inverted palette:
+   the surfaces step DOWN in lightness instead of up, so the card/page/border
+   relationship the dark theme relies on is preserved rather than flipped.
+
+   The accent is a DIFFERENT blue here, not the same one darkened. SofaScore
+   ships #374DF5 for light and a lighter #7A84FF for dark -- the dark-mode value
+   is raised in lightness because a saturated indigo on black reads as muddy at
+   small sizes. Everything else is a neutral step, and the semantic colours
+   (danger/warn/info) are deepened for contrast on a white card. */
+html[data-theme="light"] {
+  /* surfaces step down: page is the s0 grey, cards sit white on it */
+  --bg: #edf1f6; /* s0 */
+  --bg-soft: #ffffff; /* s1 */
+  --surface: #ffffff; /* s1 */
+  --surface-2: rgba(229, 233, 239, 0.5); /* s2 */
+  --border: #d6dbe3;
+  --border-soft: rgba(34, 34, 38, 0.06); /* n-lv5 */
+  --text: #222226; /* n-lv1 */
+  --text-dim: rgba(34, 34, 38, 0.7); /* n-lv2 */
+  --text-faint: rgba(34, 34, 38, 0.45); /* n-lv3 */
+
+  --accent: #374df5; /* primary-default (light) : their blue */
+  --accent-dim: #2c3ec4; /* primary-variant */
+  /* A pale blue wash reads as "selected" on white, where a dark one would
+     read as a hole. This is literally primary-highlight. */
+  --accent-soft: rgba(55, 77, 245, 0.15);
+  --amber: #c7921f; /* status-alert-default */
+  --amber-soft: rgba(199, 146, 31, 0.15);
+  --navy: #e5e9ef;
+  --navy-soft: #edf1f6;
+  --link: #374df5;
+  --link-hover: #2c3ec4;
+  --premium: #222226;
+
+  --danger: #c7361f; /* status-error-default */
+  --danger-soft: rgba(199, 54, 31, 0.15);
+  --warn: #c7921f;
+  --warn-soft: rgba(199, 146, 31, 0.15);
+  --info: #1a5f9c;
+  --info-soft: rgba(26, 95, 156, 0.15);
+  --green: #15b168; /* status-success-default */
+  --green-soft: rgba(21, 177, 104, 0.15);
+  --live: #cb1818; /* status-live is the same red in both themes */
+
+  --on-accent: #ffffff;
+  --on-amber: #150f02;
+  --hover-wash: rgba(34, 34, 38, 0.06);
+  --hover-wash-soft: rgba(34, 34, 38, 0.04);
+  /* The header is the BRAND colour on sofascore.com's light theme, not a dark
+     bar -- --colors-header-primary resolves to their blue #374DF5. So in light
+     mode the top bar is blue with white ink, and in dark mode it is #272C32.
+     This is why --panel-dark cannot be a single shared value. */
+  --panel-dark: #374df5;
+  --on-panel-dark: #ffffff;
+  --scheme: light;
+
+  /* Light-mode glass. The tint is now a WHITE veil (a sunlit pane), and the
+     refraction darkens as before -- but every translucent value is raised in
+     opacity, because a 7% white tint over a white card is invisible, whereas
+     over a black page it is a visible lift. */
+  --glass-tint: rgba(255, 255, 255, 0.55);
+  --glass-tint-strong: rgba(255, 255, 255, 0.78);
+  --glass-rim: rgba(255, 255, 255, 0.95);
+  --glass-rim-soft: rgba(255, 255, 255, 0.7);
+  --glass-refract: rgba(31, 41, 61, 0.13);
+  --glass-cast: rgba(31, 41, 61, 0.16);
+  --glass-sheen: rgba(255, 255, 255, 0.55);
+  /* On white surfaces a white highlight is invisible, so the moving specular is
+     dialled back hard and the refraction carries the shape instead. */
+  --glass-travel: 55%;
+  --glass-lift: 1px;
+  /* Much lighter than in the dark theme, and paired with the dark ink below:
+     light mode's surfaces are already bright, so a heavy scrim would turn every
+     button into a grey blob.
+
+     It is a NEUTRAL DARK scrim, not a white one. A white veil over a dark
+     backdrop LIGHTENS the field under the ink, and light-mode ink is dark -- so
+     a white scrim produces dark-on-light-on-dark, which is the same 1.5:1
+     failure it was meant to fix. A low-opacity dark pool keeps the dark ink
+     readable on a bright page and still reads as a shadowed pocket on a dark
+     one, so the button survives both. */
+  --glass-scrim: rgba(20, 26, 40, 0.18);
+  --glass-scrim-size: 40%;
+  /* Stronger than they first look. In the light theme the aura sits behind
+     WHITE cards, so most of it is hidden, and what does show through the 55%
+     tabbar has to survive that veil at full strength or the glass looks like
+     flat grey. These were tuned up after a render showed the low values
+     disappearing entirely. */
+  --aura-1: rgba(55, 77, 245, 0.42);
+  --aura-2: rgba(21, 177, 104, 0.30);
+  --aura-3: rgba(26, 95, 156, 0.34);
+
+  /* The SportyBet-sourced palette is a dark surface by definition -- it is
+     copied from their dark theme. On a light page those panels stay dark, which
+     is correct: they are a quoted third-party surface, not a page region. */
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* ------------------------------------------------------------ ambient aura */
+/* The light behind the glass. iOS 26's material only works because the Home
+   Screen wallpaper is a colourful, softly-lit image: the pane samples it, blurs
+   it, and the tint rides on top, which is what separates "liquid glass" from
+   "a grey box". Over this app's flat black page there is nothing to refract, so
+   the buttons would read as ordinary translucent chrome and the whole pass would
+   be pointless.
+
+   Three tinted lights drift behind the content to stand in for that wallpaper.
+   The colour comes from the theme's OWN accents (--aura-1..3 alias the accent,
+   the green and the info blue), so it never fights the brand, and they are fixed
+   to the viewport so they stay behind the sticky header as the page scrolls.
+
+   It is a ::before on <body> at z-index 0, not a background on <body>, so it can
+   animate and be blurred without touching layout or repainting the text. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: -20%; /* over-sized so the slow drift never pulls an edge into view */
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(38% 42% at 18% 22%, var(--aura-1) 0%, transparent 70%),
+    radial-gradient(34% 38% at 82% 16%, var(--aura-3) 0%, transparent 72%),
+    radial-gradient(46% 44% at 68% 84%, var(--aura-2) 0%, transparent 74%);
+  filter: blur(var(--aura-blur));
+  /* Slow, long-period, and eased at both ends: the wash should breathe rather
+     than visibly loop. 26s is long enough that the eye does not track it. */
+  animation: aura-drift 26s var(--ease) infinite alternate;
+  will-change: transform;
+}
+
+@keyframes aura-drift {
+  from {
+    transform: translate3d(-2%, -1%, 0) scale(1);
+  }
+  to {
+    transform: translate3d(2%, 2%, 0) scale(1.08);
+  }
+}
+
+/* The header, shell and footer paint their own surfaces, which must sit ON the
+   aura rather than under it. The shell is lifted above the ::before explicitly;
+   the header already carries z-index 50 for the sticky pin, which clears it. */
+.wrap.shell {
+  position: relative;
+  z-index: 1;
+}
+
+/* The blur is the expensive part, and a user who asked the OS to stop moving
+   things should not get a drifting wash. Reduced motion keeps the colour -- that
+   is the material, not the animation -- and drops only the drift. */
+@media (prefers-reduced-motion: reduce) {
+  body::before {
+    animation: none;
+  }
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  /* Lets the browser draw its OWN chrome to match: scrollbars, the date
+     picker's popup, focus rings and form controls. Without it a light page
+     keeps dark scrollbars and a native date input that reads as broken. */
+  color-scheme: var(--scheme);
+  /* Inter is their declared body family (fonts.googleapis.com/css2?family=Inter).
+     It is listed first and falls back to the system stack, so the page still
+     looks right with no network. */
+  font-family:
+    Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--link);
+}
+
+/* ---------------------------------------------------------------- icons */
+/* Material Symbols (Google Fonts Icons), rendered as inline SVG.
+
+   Why SVG and not the icon webfont: the font ships its glyphs as ligatures, so
+   until the font file arrives the literal words "sports_soccer" paint in the
+   page, and if the font is ever blocked (offline, CSP, a network that drops
+   fonts.gstatic.com) every icon degrades to visible text. Sizing, alignment,
+   `currentColor` inheritance and zero-layout-shift are all solved by inline
+   SVG for free, with no network request and no first-paint flash.
+
+   Path data is the official Material Symbols outline geometry (Apache 2.0),
+   inlined by frontend/icons.js. */
+.mi {
+  width: 1.15em;
+  height: 1.15em;
+  min-width: 14px;
+  min-height: 14px;
+  flex: none;
+  display: inline-block;
+  vertical-align: -0.2em;
+  fill: currentColor;
+  user-select: none;
+  /* the width/height attributes are the fallback; these win in CSS so icons
+     scale with their surrounding text */
+  overflow: visible;
+}
+
+.btn .mi,
+.main-nav .mi,
+.site-header .mi {
+  flex-shrink: 0;
+}
+
+.mi-sm {
+  font-size: 1em;
+}
+.mi-lg {
+  font-size: 1.6em;
+}
+.mi-fill {
+  font-variation-settings:
+    "FILL" 1,
+    "wght" 500,
+    "GRAD" 0,
+    "opsz" 24;
+}
+button {
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+}
+
+.wrap {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* ---------------------------------------------------------------- header */
+/* Eagle Predict's header is `sticky top-0 z-50` with a base-300 bar and no
+   shadow. It stays pinned as the listing scrolls. */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  /* --panel-dark, NOT --navy: the header is the brand bar and stays dark in both
+     themes, so its ink (--on-panel-dark) is always readable on it. --navy is a
+     page-surface token and goes light in the light theme, which would leave
+     white header text on a near-white bar. */
+  background: var(--panel-dark);
+  box-shadow: none;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  height: 64px;
+}
+
+.hamburger {
+  display: none;
+  background: none;
+  border: 0;
+  padding: 4px;
+  cursor: pointer;
+  color: var(--on-panel-dark);
+}
+.hamburger .mi {
+  font-size: 26px;
+}
+
+/* Theme toggle. It sits in the header, which is --panel-dark in BOTH themes, so
+   its own colours are fixed rather than tokenised -- a light-theme header is
+   still dark, deliberately: it is the brand bar, not a page surface. */
+.theme-toggle {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  flex: none;
+  border: 1px solid var(--glass-rim-soft);
+  border-radius: 999px; /* a circle: the pill is the fullest expression of the material */
+  background: var(--glass-tint);
+  color: var(--on-panel-dark);
+  cursor: pointer;
+  /* It sits on the header bar, which is --panel-dark in BOTH themes, so the rim
+     here is the literal on-dark value rather than the themed token: the pane is
+     refracting a dark bar in either theme. */
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.34),
+    inset 0 -5px 9px -6px rgba(0, 0, 0, 0.45),
+    0 5px 14px -6px rgba(0, 0, 0, 0.45);
+  transition:
+    background var(--t-fast),
+    border-color var(--t-fast),
+    box-shadow var(--t-fast),
+    transform var(--t-fast);
+}
+.theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.36);
+  transform: translateY(-1px);
+}
+.theme-toggle:active {
+  transform: translateY(0) scale(0.94);
+}
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.theme-toggle .mi {
+  font-size: 19px;
+  vertical-align: 0;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: -0.03em;
+  white-space: nowrap;
+  color: var(--on-panel-dark);
+  margin-right: auto;
+}
+.brand:hover {
+  color: var(--on-panel-dark);
+}
+
+.brand-mark {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  background: var(--accent);
+  border-radius: var(--radius-sm);
+  color: var(--on-accent);
+  transition: background var(--t-fast);
+}
+.brand-mark .mi {
+  font-size: 20px;
+  vertical-align: 0;
+}
+
+.brand-accent {
+  color: var(--accent);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+}
+
+.header-bonus {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--on-panel-dark);
+  font-size: 11px;
+  line-height: 1.15;
+  text-align: right;
+}
+.header-bonus .bonus-label {
+  color: var(--text-dim);
+}
+.header-bonus .bonus-value {
+  font-weight: 800;
+  font-size: 15px;
+  color: var(--amber);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Tab bar sits under the top bar. On sofascore.com the equivalent strip is a
+   surface-s1 row of pill tabs under the brand bar, separated by a hairline.
+
+   It is now a FROSTED bar rather than an opaque one: the tabs inside it are
+   glass, and glass over a flat opaque strip has nothing to refract, so the nav
+   would be blurring its own bar and the material would read as flat paint. Made
+   translucent, the aura behind the page shows through the strip and the pills
+   sitting on it finally have colour to bend. */
+.tabbar {
+  background: var(--glass-tint);
+  -webkit-backdrop-filter: blur(24px) saturate(var(--glass-sat));
+  backdrop-filter: blur(24px) saturate(var(--glass-sat));
+  border-bottom: 1px solid var(--border-soft);
+}
+.tabbar-inner {
+  display: flex;
+  justify-content: center;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.tabbar-inner::-webkit-scrollbar {
+  display: none;
+}
+
+.main-nav {
+  display: flex;
+  gap: 4px;
+  flex-wrap: nowrap;
+  justify-content: center;
+  white-space: nowrap;
+  padding: 6px 0;
+}
+
+/* Pill tabs, not underlined tabs. The active nav item is a filled capsule in
+   the primary colour, and an inactive one is plain text over a transparent pill
+   that takes a lit glass edge on hover. The underline pattern this replaces is a
+   web-standard look; the capsule is what makes the row read as one material. */
+.main-nav a {
+  position: relative;
+  padding: 8px 16px;
+  border-radius: var(--radius-btn); /* fully round: the capsule, as on iOS 26 */
+  color: var(--text-dim);
+  font-size: 14px;
+  font-weight: 600;
+  /* The nav pills are the one glass control whose RESTING state is transparent
+     (an inactive route is plain text). The blur is therefore switched on for the
+     hover state below rather than left running here, which keeps a row of five
+     idle pills from each holding a live compositor layer. */
+  transition:
+    color var(--t-fast),
+    background-color var(--t-fast),
+    box-shadow var(--t-fast),
+    transform var(--t-fast);
+  white-space: nowrap;
+  border-bottom: 0;
+  margin-bottom: 0;
+}
+/* The same rim arc as .btn -- this is a :before rather than a box-shadow on the
+   element so the ACTIVE state's own inset shadows cannot cancel it. */
+.main-nav a::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: inset 0 1px 0 0 var(--glass-sheen);
+  opacity: 0;
+  transition: opacity var(--t-fast);
+}
+.main-nav a:hover {
+  color: var(--text);
+  background: transparent;
+  /* On a translucent hover the pill must frost, or it is just a grey wash and
+     reads as a different material from every other control on the page. The
+     fill itself stays transparent, as on .btn. */
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  box-shadow:
+    inset 0 1px 0 0 var(--glass-rim),
+    inset 0 -5px 9px -6px var(--glass-refract),
+    0 5px 14px -6px var(--glass-cast);
+}
+.main-nav a:hover::before,
+.main-nav a.active::before {
+  opacity: 0.55;
+}
+.main-nav a:active {
+  transform: scale(0.96);
+}
+/* The current route is the filled accent capsule, same material as
+   .chip.active. The gradient is what gives the filled pane its own lit top half;
+   the ::before rim arc then traces the edge on top of it. */
+.main-nav a.active {
+  color: var(--on-accent);
+  background: var(--accent);
+  background-image: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.22) 0%,
+    rgba(255, 255, 255, 0) 55%
+  );
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.5),
+    inset 0 -4px 8px -6px rgba(0, 0, 0, 0.4),
+    0 5px 16px -6px var(--glass-cast);
+}
+.main-nav a.active:hover {
+  color: var(--on-accent);
+  background-color: var(--accent-dim);
+}
+
+/* ---------------------------------------------------------------- shell */
+.shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 22px;
+  align-items: start;
+  padding-top: 20px;
+}
+
+.sidebar {
+  position: sticky;
+  top: 118px;
+}
+
+.side-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.side-head {
+  padding: 12px 14px;
+  font-weight: 800;
+  font-size: 15px;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.side-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--border-soft);
+}
+.side-tabs button {
+  flex: 1;
+  text-align: center;
+  padding: 6px 4px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  /* These are real <button> controls, so the browser's own chrome and the
+     inherited body font are neutralised rather than restyled from scratch. */
+  border: 0;
+  background: none;
+  font-family: inherit;
+  line-height: inherit;
+  /* Glass, in its lightest form. Inactive segmented tabs get the blur so the
+     group reads as one material, but no rim or cast -- they must stay quieter
+     than the selected one, which is the accent pane below. */
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  transition:
+    color var(--t-fast),
+    background-color var(--t-fast),
+    box-shadow var(--t-fast),
+    transform var(--t-fast);
+}
+.side-tabs button:hover {
+  background: transparent;
+  color: var(--text);
+  box-shadow: inset 0 1px 0 0 var(--glass-rim-soft);
+}
+.side-tabs button:active {
+  transform: scale(0.97);
+}
+/* The selected day is a filled accent pane with the specular rim, matching
+   .chip.active -- the two appear on the same screen, so they must be the same
+   material or the sidebar reads as a different design language. */
+.side-tabs button.active {
+  background: var(--accent);
+  background-image: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.22) 0%,
+    rgba(255, 255, 255, 0) 55%
+  );
+  color: var(--on-accent);
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.5),
+    inset 0 -4px 8px -6px rgba(0, 0, 0, 0.4),
+    0 5px 14px -6px var(--glass-cast);
+}
+.side-tabs button.active:hover {
+  background-color: var(--accent-dim);
+}
+.side-tabs button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.side-list {
+  max-height: 560px;
+  overflow-y: auto;
+  padding: 6px 0;
+}
+
+.side-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  font-size: 13.5px;
+  color: var(--text);
+  cursor: pointer;
+  transition: background 0.12s;
+  border: 0;
+  background: none;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+}
+.side-item:hover {
+  background: var(--bg-soft);
+  color: var(--link);
+}
+.side-item.active {
+  background: var(--accent-soft);
+  color: var(--accent-dim);
+  font-weight: 700;
+}
+
+.side-ico {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--bg-soft);
+  border: 1px solid var(--border-soft);
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--text-dim);
+  flex-shrink: 0;
+}
+.side-item.active .side-ico {
+  background: var(--accent);
+  color: var(--on-accent);
+  border-color: var(--accent);
+}
+
+.side-empty {
+  padding: 16px 14px;
+  font-size: 13px;
+  color: var(--text-faint);
+}
+
+.side-count {
+  margin-left: auto;
+  font-size: 11.5px;
+  color: var(--text-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The name and its country occupy one column, stacked. Side by side, the row
+   was too narrow for both: the league name and the country clipped each other,
+   and the country -- the shorter string and the one that distinguishes two
+   same-named leagues -- came out as "Af…" / "Euro…", which is no qualification
+   at all. Stacked, each gets the full column width and both stay legible. The
+   row grows by one line; the sidebar is a scroll list of landmarks, so height
+   is the cheaper currency than a truncated label. */
+.side-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  line-height: 1.25;
+}
+
+/* The competition name truncates rather than wrapping, so a long label
+   ("Segunda RFEF - Group 3") cannot make one row twice the height of its
+   neighbours. */
+.side-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* The country, under the league. Quiet by design: it is the qualifier that
+   tells two same-named leagues apart, not the thing being chosen, so it must
+   not compete with the name or the count for the eye. */
+.side-country {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11px;
+  color: var(--text-faint);
+  letter-spacing: 0.01em;
+}
+
+/* A pinned top league: a touch heavier than the rest so the eye lands on the
+   block the sidebar exists to surface, without turning the list into a wall of
+   bold text. */
+.side-item-top {
+  font-weight: 600;
+}
+.side-item-top .side-ico {
+  color: var(--text);
+}
+
+/* Separates the pinned competitions from everything else. A rule plus a quiet
+   caption, so the boundary reads as deliberate rather than as a stray line. */
+.side-divider {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 6px 0 2px;
+  padding: 0 14px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+.side-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border-soft);
+}
+
+/* ---------------------------------------------------------------- buttons */
+/* LIQUID GLASS (iOS 26).
+
+The button keeps its measured metrics -- 48px tall (h-12), weight 600, 14px,
+and a 1px border so the ghost variant does not shift the layout -- but its
+SURFACE is now a glass pane rather than an opaque fill.
+
+The look is built from four layers, because one backdrop-filter alone is not
+glass, it is a smudge. Reading outward from the pane:
+
+  1. `background: transparent`              NO body tint. The pane is glass, not
+                                            a painted chip: only the backdrop
+                                            blur and the rim edges are drawn, so
+                                            the colour behind the button comes
+                                            through undiluted.
+  2. `box-shadow: inset 0 1px 0 var(--glass-rim)`
+                                            the specular line on the top edge,
+                                            where a lit pane catches light
+  3. `box-shadow: inset 0 -6px 10px -6px var(--glass-refract)`
+                                            the refraction: a dark wash pushed
+                                            onto the LOWER edge, so the pane
+                                            reads as thick and lens-like. A
+                                            flat fill cannot do this.
+  4. `box-shadow: 0 6px 16px -6px var(--glass-cast)`
+                                            the soft shadow the pane casts
+
+All four shadows share ONE box-shadow declaration (they are comma-separated),
+so `box-shadow` transitions as a unit -- which is why the hover/active rules
+below can restate the whole stack without anything snapping.
+
+`backdrop-filter` is what makes it glass rather than translucent paint: the
+pane samples and blurs what is actually behind it. `saturate()` sits beside the
+blur deliberately -- iOS boosts saturation through the material so the refracted
+colour stays vivid instead of going grey, and that boost is most of the reason
+the real thing looks alive. The `-webkit-` prefix is required for Safari, which
+still needs it on un-prefixed-capable versions for this property. */
+.btn {
+  position: relative; /* anchors the sheen above; harmless elsewhere */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 12px 16px; /* 48px tall with the border, matching h-12 */
+  border-radius: var(--radius-btn);
+  border: 1px solid var(--glass-rim-soft);
+  /* Two layers, and the order matters. The RADIAL scrim sits under the label
+     only -- a soft pool of dark (or, in light mode, light) centred on the text,
+     which is what makes the label readable over an arbitrary backdrop. Outside
+     that pool, at the capsule's edges, there is NO fill at all, so the glass
+     still reads as clear at the rim, which is where the eye looks for it. */
+  background: radial-gradient(
+      58% var(--glass-scrim-size) at 50% 50%,
+      var(--glass-scrim) 0%,
+      transparent 72%
+    );
+  background-color: transparent;
+  color: var(--text);
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1;
+  font-family: inherit;
+  /* The blur and its saturation boost. Kept on the element itself (not a
+     pseudo-element) so the backdrop, the border and the shadow apply to the same
+     box, with no seam where a child layer meets the edge. */
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  box-shadow:
+    inset 0 1px 0 0 var(--glass-rim),
+    inset 0 -6px 10px -6px var(--glass-refract),
+    inset 0 1px 1px -1px var(--glass-rim-soft),
+    0 6px 16px -6px var(--glass-cast);
+  transition:
+    color var(--t-fast),
+    background-color var(--t-fast),
+    border-color var(--t-fast),
+    opacity var(--t-fast),
+    box-shadow var(--t-fast),
+    transform var(--t-fast);
+  /* The backdrop blurs, which softens the glyphs sitting on it. A whisper of
+     shadow under the label is what keeps it legible as the glass gets clearer. */
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.18);
+  white-space: nowrap;
+  cursor: pointer;
+  /* A translucent pane over a dark backdrop blurs its own text slightly. This
+     nudges the glyphs forward so the label stays crisp on the frosted field. */
+  -webkit-font-smoothing: antialiased;
+}
+
+/* The gloss highlight. Three layers, and all three matter:
+
+   1. A broad LIGHT BAND across the upper half. Real glass catches a soft sheet of
+      light, not a single dot.
+   2. A tight HOT SPOT at (--mx, --my) -- the pointer's position inside the pane,
+      written by JS. This is what makes the material feel like it is responding
+      to you rather than just sitting there.
+   3. A bright RIM ARC along the top edge, drawn as a second inset shadow on a
+      layer inset 1px, which traces the capsule's own curve. That arc is the
+      single most recognisable part of the reference.
+
+   The whole layer is translated a couple of px against the pointer (--gx/--gy)
+   so the highlight drifts slightly out of phase with the button underneath. That
+   offset -- not the gloss itself -- is what reads as depth: the light appears to
+   be refracting through the pane rather than painted on it. */
+.btn::after {
+  content: "";
+  position: absolute;
+  inset: -1px; /* sit exactly on the border, so the arc traces it */
+  border-radius: inherit;
+  pointer-events: none; /* never eat a click on the label */
+  background:
+    radial-gradient(
+      var(--glass-travel) var(--glass-travel) at var(--mx) var(--my),
+      var(--glass-sheen) 0%,
+      transparent 62%
+    ),
+    linear-gradient(180deg, var(--glass-sheen) 0%, transparent 52%);
+  opacity: 0.42; /* the resting gloss: present, not shouting */
+  transform: translate(var(--gx), var(--gy));
+  transition: opacity var(--t-fast);
+  mix-blend-mode: screen; /* adds light rather than laying down a flat white */
+}
+/* The rim arc, on its own layer so it is not swept up in the highlight's
+   translate -- the edge of the glass is bolted to the glass. */
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: inset 0 1px 0 0 var(--glass-sheen);
+  opacity: 0.65;
+  transition: opacity var(--t-fast);
+}
+
+/* Hover: the pane THICKENS and lifts. iOS glass does not change colour on
+   hover -- it deepens and rises, so the rim brightens, the cast grows, and the
+   gloss strengthens. The fill stays transparent throughout, so the button never
+   gains a body it did not have at rest. The 1px vertical translate on the
+   pseudo-elements comes from --glass-lift: text and shine rise together, so the
+   label sits ON the pane rather than floating above it.
+
+   The label scrim is RESTATED rather than reset: hover must not clear it, or
+   the label loses its readable field exactly when the user is looking at it. */
+.btn:hover {
+  background: radial-gradient(
+    58% var(--glass-scrim-size) at 50% 50%,
+    var(--glass-scrim) 0%,
+    transparent 72%
+  );
+  background-color: transparent;
+  border-color: var(--glass-rim);
+  box-shadow:
+    inset 0 1px 0 0 var(--glass-rim),
+    inset 0 -6px 12px -6px var(--glass-refract),
+    inset 0 1px 1px -1px var(--glass-rim-soft),
+    0 10px 24px -8px var(--glass-cast);
+  transform: translateY(calc(-1 * var(--glass-lift)));
+}
+.btn:hover::after {
+  opacity: 0.68;
+}
+.btn:hover::before {
+  opacity: 0.75;
+}
+
+/* Press: the pane is pushed INTO the page -- it scales down, the lift is
+   removed, and the cast collapses to almost nothing, which reads as the pane
+   meeting the surface behind it. This is the iOS touch-response and it is what
+   makes the control feel physical rather than painted. `:not(:disabled)` keeps
+   a dead button from animating as though it accepted the press. */
+.btn:not(:disabled):active {
+  transform: translateY(0) scale(0.96);
+  box-shadow:
+    inset 0 1px 0 0 var(--glass-rim),
+    inset 0 -4px 8px -6px var(--glass-refract),
+    0 2px 6px -4px var(--glass-cast);
+}
+.btn:not(:disabled):active::before {
+  opacity: 0.35;
+}
+
+/* The primary action is a FILLED glass pill: the same material, but tinted
+   with the accent instead of neutral. It keeps the specular rim and the
+   refraction -- that is what stops it reading as a plain coloured button --
+   and the same pointer-tracked highlight rides on top of the fill, because a
+   saturated pane reflects MORE, not less. */
+.btn-primary {
+  background: var(--accent);
+  color: var(--on-accent);
+  border-color: rgba(255, 255, 255, 0.45);
+  font-weight: 700;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+.btn-primary::after {
+  /* Brighter and higher-contrast than on the neutral pane -- the accent gives
+     the gloss something to sit against, so it can run at full strength. */
+  opacity: 0.42;
+}
+.btn-primary:hover {
+  background-color: var(--accent-dim);
+  border-color: rgba(255, 255, 255, 0.6);
+}
+.btn-primary:hover::after {
+  opacity: 0.6;
+}
+
+/* btn-ghost: the barest pane -- no resting tint at all, so it behaves as plain
+   text until touched, then materialises as glass. `backdrop-filter: none` when
+   at rest is deliberate: a blur with nothing to show is a wasted compositor
+   layer across every ghost button on the page. */
+.btn-ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--text-dim);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+}
+.btn-ghost::after {
+  opacity: 0;
+}
+.btn-ghost:hover {
+  background: transparent;
+  color: var(--text);
+  border-color: var(--glass-rim-soft);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  box-shadow:
+    inset 0 1px 0 0 var(--glass-rim),
+    inset 0 -6px 10px -6px var(--glass-refract),
+    0 6px 16px -6px var(--glass-cast);
+}
+.btn-ghost:hover::after {
+  opacity: 0.25;
+}
+.btn-ghost::before {
+  opacity: 0;
+}
+.btn-ghost:hover::before {
+  opacity: 0.5;
+}
+
+/* The header is --panel-dark in BOTH themes, so its buttons cannot use the page
+   surface tokens: --surface is white in the light theme, which would leave the
+   white button text on a white fill. These are literal on-dark values instead,
+   because the bar they sit on is a literal dark colour in either theme.
+
+   They keep the full glass treatment -- rim, refraction, cast -- so the header
+   row is the same material as the page controls, just reading against the dark
+   bar rather than the aura. Like the page buttons, the fill is transparent: the
+   dark bar itself is what sits behind the glass. */
+.site-header .btn {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.22);
+  color: var(--on-panel-dark);
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.32),
+    inset 0 -6px 10px -6px rgba(0, 0, 0, 0.4),
+    0 6px 16px -6px rgba(0, 0, 0, 0.4);
+}
+.site-header .btn:hover {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.38);
+}
+.site-header .btn-primary {
+  background: var(--accent);
+  border-color: rgba(255, 255, 255, 0.45);
+  /* White, not the daisyUI dark "primary-content": the accent is a saturated
+     green in both themes, so dark ink on it reads as a smudge at this size. */
+  color: var(--on-accent);
+}
+.site-header .btn-primary:hover {
+  background: var(--accent-dim);
+}
+.btn-sm {
+  padding: 7px 12px;
+  font-size: 12.5px;
+  /* No radius here: the size variant must not undo .btn's fully round corners. */
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+/* A disabled button must not keep reacting: no lift, no press, no blurred layer
+   burning compositor time behind an inert control. */
+.btn:disabled:hover {
+  transform: none;
+  background: var(--glass-tint);
+  border-color: var(--glass-rim-soft);
+}
+
+/* A user who has asked the OS to reduce transparency gets an OPAQUE surface.
+   This is the one accessibility case where the glass has to be abandoned
+   outright: the blur is the effect, so softening it is not an option, and the
+   text contrast on a translucent pane is not something we can guarantee across
+   arbitrary backdrops. Opaque fills keep every button readable. */
+@media (prefers-reduced-transparency: reduce) {
+  .btn,
+  .chip,
+  .theme-toggle,
+  .side-tabs button {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  .btn {
+    background: var(--bg-soft);
+    border-color: var(--border);
+    box-shadow: none;
+  }
+  .btn-primary {
+    background: var(--accent);
+    background-image: none;
+  }
+  .chip {
+    background: var(--surface);
+  }
+  body::before {
+    display: none;
+  }
+}
+
+/* ---------------------------------------------------------------- layout */
+.page {
+  padding: 0 0 60px;
+  min-width: 0;
+}
+
+.page-head {
+  margin-bottom: 18px;
+}
+.page-head h1 {
+  margin: 0 0 8px;
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--text);
+}
+.page-head p {
+  margin: 0;
+  color: var(--text-dim);
+  font-size: 14px;
+  max-width: 760px;
+  line-height: 1.6;
+}
+
+.grid {
+  display: grid;
+  gap: 16px;
+}
+.grid-2 {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+.grid-3 {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+.grid-4 {
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: var(--shadow);
+}
+.card h3 {
+  margin: 0 0 14px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  text-transform: none;
+  letter-spacing: -0.01em;
+}
+
+/* ---------------------------------------------------------------- stats */
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: var(--shadow);
+  transition: background-color var(--t-fast);
+}
+.stat-card:hover {
+  background: var(--bg-soft);
+}
+.stat-label {
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-faint);
+  font-weight: 700;
+}
+.stat-value {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-top: 3px;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+.stat-value.accent {
+  color: var(--accent);
+}
+.stat-sub {
+  font-size: 12px;
+  color: var(--text-faint);
+  margin-top: 2px;
+}
+
+/* ---------------------------------------------------------------- filters */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  align-items: center;
+  padding: 12px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 16px;
+  box-shadow: var(--shadow);
+}
+
+.filters select,
+.filters input[type="search"],
+.filters input[type="text"] {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 8px 11px;
+  border-radius: var(--radius-sm);
+  font-size: 13.5px;
+  font-family: inherit;
+  outline: none;
+  min-width: 130px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.filters select:hover,
+.filters input:hover {
+  border-color: var(--border);
+}
+.filters select:focus,
+.filters input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.chip-row {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+/* Liquid glass, as on .btn: the same rim and refraction at chip scale. See the
+   button block above for what each shadow is doing. Transparent at rest for the
+   same reason the buttons are -- the pane is a window, not a painted chip. */
+.chip {
+  position: relative;
+  padding: 7px 14px;
+  border-radius: var(--radius-btn);
+  border: 1px solid var(--glass-rim-soft);
+  background: transparent;
+  color: var(--text-dim);
+  font-size: 13px;
+  font-weight: 600;
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  box-shadow:
+    inset 0 1px 0 0 var(--glass-rim),
+    inset 0 -5px 9px -6px var(--glass-refract),
+    0 5px 14px -6px var(--glass-cast);
+  transition:
+    color var(--t-fast),
+    background-color var(--t-fast),
+    border-color var(--t-fast),
+    box-shadow var(--t-fast),
+    transform var(--t-fast);
+}
+/* The same layered gloss as the button, at chip scale. */
+.chip::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      var(--glass-travel) var(--glass-travel) at var(--mx) var(--my),
+      var(--glass-sheen) 0%,
+      transparent 62%
+    ),
+    linear-gradient(180deg, var(--glass-sheen) 0%, transparent 52%);
+  opacity: 0.24;
+  transform: translate(var(--gx), var(--gy));
+  transition: opacity var(--t-fast);
+  mix-blend-mode: screen;
+}
+.chip::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: inset 0 1px 0 0 var(--glass-sheen);
+  opacity: 0.4;
+  transition: opacity var(--t-fast);
+}
+.chip:hover {
+  /* A hover WELLS the glass rather than recolouring it: the rim brightens, the
+     cast grows, and for a chip we let the accent show through the pane as a
+     tinted edge -- a filter chip is a live control and benefits from the accent
+     cue, where a button largely does not. The fill stays transparent. */
+  color: var(--text);
+  border-color: var(--accent);
+  background: transparent;
+  box-shadow:
+    inset 0 1px 0 0 var(--glass-rim),
+    inset 0 -5px 11px -6px var(--glass-refract),
+    0 8px 20px -8px var(--glass-cast);
+  transform: translateY(calc(-1 * var(--glass-lift)));
+}
+.chip:hover::after {
+  opacity: 0.45;
+}
+.chip:hover::before {
+  opacity: 0.7;
+}
+.chip:active {
+  transform: translateY(0) scale(0.96);
+}
+/* The selected chip is a FILLED accent pane, matching .btn-primary: solid enough
+   to read as "on" at a glance, but keeping the specular rim and lower refraction
+   so it stays the same material as everything beside it. */
+.chip.active {
+  background: var(--accent);
+  background-image: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.22) 0%,
+    rgba(255, 255, 255, 0) 55%
+  );
+  border-color: rgba(255, 255, 255, 0.45);
+  color: var(--on-accent);
+}
+.chip.active::after {
+  opacity: 0.3;
+}
+.chip.active:hover {
+  color: var(--on-accent);
+  background-color: var(--accent-dim);
+}
+
+/* ---------------------------------------------------------------- tips list */
+.tips-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.tip-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  /* Their match rows carry `bg-base-100 hover:bg-base-200` and nothing else --
+     no shadow, no lift. On a dark theme base-200 is DARKER than base-100, so
+     hovering settles the card into the page instead of raising it. That is the
+     inverse of the old light theme (which lifted), and it is what their site
+     actually does. */
+  transition: background-color var(--t-fast), border-color var(--t-fast);
+  cursor: pointer;
+  box-shadow: var(--shadow);
+}
+.tip-card:hover {
+  background: var(--surface-2);
+  border-color: var(--border);
+}
+.tip-card.value {
+  border-left: 3px solid var(--accent);
+}
+
+/* A positive-edge pick gets a badge. Their palette has no ribbon, so this uses
+   the amber secondary rather than the green primary (which already means
+   "odds/CTA" across the page). */
+.tip-card.value::before {
+  content: "VALUE";
+  position: absolute;
+  top: 12px;
+  left: -6px;
+  background: var(--amber);
+  color: var(--on-amber);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  box-shadow: none;
+}
+
+.tip-card { text-align: left; }
+.tip-card > div:first-child { min-width: 0; }
+
+.tip-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  color: var(--text-dim);
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+.tip-comp {
+  color: var(--text-dim);
+  font-weight: 600;
+}
+/* A middot drawn as an element rather than typed, so it cannot be read out by a
+   screen reader as stray punctuation between two labels. */
+.tip-dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--text-faint);
+  flex: none;
+}
+.tip-time {
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The two sides on one line, crest before name, LEFT-aligned. This is the
+   scoreboard reading order; centring it turned the card into a coupon. */
+.tip-teams {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.tip-side-team {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.tip-vs {
+  color: var(--text-faint);
+  font-weight: 400;
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
+/* Crests are drawn as-is: no circular crop, no background disc, no border.
+   Club badges are not a uniform shape, so framing them in a circle both crops
+   the artwork and adds a ring the original does not have. */
+.tip-logo {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  object-fit: contain;
+  background: none;
+  border: 0;
+  border-radius: 0;
+}
+
+/* The prediction strip: a soft inset panel with a hairline edge, matching the
+   reference's framed score/pick block. It carries a BORDER as well as the inset
+   fill, because the inset token alone is not enough on a light card:
+   `--surface-2` is rgba(229,233,239,.5), which composited over the white card is
+   about 3% darker than the card -- a large panel with no visible edge reads as
+   an accidental gap rather than a block. On sofascore.com that token is used for
+   small inset chips ON the grey page, where the step has something to sit
+   against; here the panel sits on a card, so the edge does the work. */
+.tip-pick {
+  background: var(--surface-2);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.tip-pick > .pick-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.pick-label {
+  font-size: 11px;
+  color: var(--text-faint);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.pick-value {
+  color: var(--text);
+  font-weight: 700;
+  font-size: 15.5px;
+  letter-spacing: -0.01em;
+}
+.tip-card:hover .pick-value {
+  color: var(--accent);
+}
+.pick-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 1px;
+}
+
+.pick-detail {
+  font-size: 12.5px;
+  color: var(--text-dim);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.tip-card:hover .pick-detail {
+  color: var(--link);
+}
+.pick-detail::after {
+  content: "›";
+  font-size: 15px;
+  line-height: 1;
+}
+
+/* The market breakdown, collapsed behind a <details>.
+   Closed, the card is just the pick + odds, like theirs. Open, the full board
+   appears inline. The summary reads as a quiet inline control, not a button, so
+   it does not compete with the odds CTA beside it. */
+.tip-more {
+  margin-top: 10px;
+  border-top: 1px solid var(--border-soft);
+  padding-top: 8px;
+}
+.tip-more > summary {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  cursor: pointer;
+  list-style: none;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-dim);
+  padding: 4px 0;
+  border-radius: var(--radius-sm);
+  transition: color var(--t-fast), background-color var(--t-fast);
+}
+.tip-more > summary::-webkit-details-marker {
+  display: none;
+}
+.tip-more > summary:hover {
+  color: var(--link);
+  background: var(--hover-wash);
+}
+.tip-more[open] > summary {
+  color: var(--link);
+  margin-bottom: 10px;
+}
+.tip-more-count {
+  color: var(--text-faint);
+  font-weight: 400;
+}
+/* A chevron that rotates on open, built from a border so no icon font is needed. */
+.tip-more > summary::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg) translate(-2px, -2px);
+  transition: transform var(--t-fast);
+}
+.tip-more[open] > summary::after {
+  transform: rotate(-135deg) translate(-2px, -2px);
+}
+
+/* Full market breakdown shown on each prediction card: every selection the
+   model prices for the fixture, with odds and edge. */
+.tip-selections {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 460px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+.sel-market {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.sel-market-name {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-faint);
+  font-weight: 700;
+  min-width: 104px;
+}
+.sel-items {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+.sel-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 11.5px;
+  background: var(--surface);
+}
+.sel-item.value {
+  border-color: var(--green);
+  background: var(--green-soft);
+}
+.sel-label {
+  color: var(--text-dim);
+}
+.sel-odds {
+  font-family: var(--mono);
+  font-weight: 700;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+.sel-edge {
+  font-size: 10.5px;
+  font-variant-numeric: tabular-nums;
+}
+.sel-edge.pos {
+  color: var(--accent);
+}
+.sel-edge.neg {
+  color: var(--text-faint);
+}
+
+.tip-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 9px;
+  min-width: 150px;
+  justify-content: center;
+}
+
+/* The odds CTA. The reference's nearest equivalent is the score pill: a solid
+   accent box with 8px corners holding a number at a heavy weight. Radius --radius
+   (8px), not the pill radius, so it reads as a score box rather than a badge. */
+.odds-box {
+  width: 100%;
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 9px 14px;
+  text-align: center;
+  transition: background-color var(--t-fast), border-color var(--t-fast);
+  box-shadow: none;
+}
+.tip-card:hover .odds-box {
+  background: var(--accent-dim);
+  border-color: var(--accent-dim);
+  box-shadow: none;
+}
+/* No book priced this fixture, so the figure is the model's own fair odds. It
+   is styled as a quieter, outlined block rather than the solid green CTA: the
+   solid green means "this is a price you can take", and there is no such price
+   here. Shape does the work so the label is not the only signal. */
+.odds-box.model {
+  background: transparent;
+  border: 1px dashed var(--border);
+}
+.tip-card:hover .odds-box.model {
+  background: transparent;
+  border-color: var(--text-faint);
+}
+.odds-box.model .odds-value {
+  color: var(--text);
+}
+.odds-box.model .odds-label {
+  color: var(--text-faint);
+}
+.odds-value {
+  font-family: var(--mono);
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--on-accent);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+}
+.odds-label {
+  font-size: 9.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  /* On the accent fill the label is a translucent white, matching
+     --colors-on-color-secondary (rgba(255,255,255,0.6)) rather than a hardcoded
+     dark ink. A dark label only worked while the accent was a light green; on
+     the blue/indigo accent it would be unreadable. */
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 700;
+}
+
+/* ---------------------------------------------------------------- badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.badge-high {
+  background: var(--green-soft);
+  color: var(--green);
+}
+.badge-med {
+  background: var(--info-soft);
+  color: var(--info);
+}
+.badge-low {
+  background: var(--warn-soft);
+  color: var(--warn);
+}
+.badge-vlow {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+.badge-value {
+  background: var(--green-soft);
+  color: var(--green);
+  /* Derived from the token rather than a hardcoded green. A literal stuck here
+     would keep the OLD brand green after a recolour, so the border and the text
+     would disagree -- which is exactly what the palette swap did. */
+  border: 1px solid color-mix(in srgb, var(--green) 35%, transparent);
+}
+.badge-edge {
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  font-family: var(--mono);
+}
+.badge-edge.pos {
+  color: var(--green);
+  border-color: color-mix(in srgb, var(--green) 35%, transparent);
+}
+.badge-edge.neg {
+  color: var(--danger);
+  border-color: color-mix(in srgb, var(--danger) 35%, transparent);
+}
+
+.stars {
+  color: var(--amber);
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+/* ---------------------------------------------------------------- progress */
+.conf-bar {
+  height: 5px;
+  background: var(--border-soft);
+  border-radius: 100px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+.conf-fill {
+  height: 100%;
+  border-radius: 100px;
+  background: var(--green);
+}
+.conf-fill.med {
+  background: var(--info);
+}
+.conf-fill.low {
+  background: var(--warn);
+}
+
+/* ---------------------------------------------------------------- fixture rows (compact) */
+.fixture-row {
+  display: grid;
+  grid-template-columns: 92px 1fr auto;
+  gap: 14px;
+  align-items: center;
+  padding: 12px 15px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  transition: all 0.15s;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+}
+.fixture-row:hover {
+  background: var(--surface-2);
+  border-color: var(--border);
+  box-shadow: var(--shadow-hover);
+}
+
+.fixture-time {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.35;
+}
+.fixture-time .date {
+  display: block;
+  font-size: 10.5px;
+  color: var(--text-faint);
+}
+
+.fixture-teams-row {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  font-weight: 600;
+  font-size: 14px;
+}
+.fixture-teams-row .side {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ---------------------------------------------------------------- 1X2 odds grid */
+.odds-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+.odds-cell {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 6px;
+  text-align: center;
+  transition: all 0.15s;
+}
+.odds-cell:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+.odds-cell .k {
+  display: block;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-faint);
+  font-weight: 700;
+}
+.odds-cell .v {
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+.odds-cell .p {
+  font-size: 10.5px;
+  color: var(--green);
+  font-weight: 700;
+}
+.odds-cell.dim .v {
+  color: var(--text-faint);
+}
+
+/* ---------------------------------------------------------------- probability bars */
+.prob-row {
+  display: grid;
+  grid-template-columns: 118px 1fr 56px;
+  gap: 11px;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+.prob-name {
+  color: var(--text-dim);
+  font-weight: 600;
+}
+/* The market a combined selection came from, so the merged list stays
+   traceable back to its source without repeating a heading per market. */
+.prob-mkt {
+  display: block;
+  color: var(--text-faint);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+.prob-track {
+  display: block;
+  height: 8px;
+  background: var(--border-soft);
+  border-radius: 100px;
+  overflow: hidden;
+}
+.prob-fill {
+  /* block, NOT the default inline for a <span>.
+
+     An inline box ignores width and height outright, so every bar in the app was
+     painting as an empty track: the markup carries width:98.39% and the stylesheet
+     a height, and both were being discarded because the element stayed inline. The
+     percentage values beside the bars were right and the bars themselves were
+     invisible. */
+  display: block;
+  /* An explicit 8px rather than height:100%: the fill sits at the bottom of a
+     grid/flex chain where a percentage height is indefinite, and 100% of an
+     indefinite height resolves to zero. The track is a fixed 8px, so the fill can
+     state the same number and be right in every context. */
+  height: 8px;
+  border-radius: 100px;
+  background: var(--border);
+}
+.prob-fill.model {
+  background: var(--accent);
+}
+.prob-fill.market {
+  background: var(--info);
+}
+.prob-val {
+  text-align: right;
+  font-family: var(--mono);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  font-size: 12.5px;
+}
+
+/* ---- top 5 predictions: one card per market ----
+
+   A responsive grid rather than a table, because the five cards are peers: they
+   are not ranked against each other, so giving them equal weight is the point.
+   Correct Score sits beside Over/Under and its much lower probability bar is
+   visible side by side, which a ranked list would hide. */
+/* Five cards, five columns. auto-fit with a min width wrapped Handicap onto a
+   second row and left a hole beside it, which read as a layout bug rather than
+   a deliberate shortlist. Stepping 5 -> 3 -> 2 -> 1 keeps every row full. */
+.top-picks {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+}
+@media (max-width: 1180px) {
+  .top-picks { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 760px) {
+  .top-picks { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 480px) {
+  .top-picks { grid-template-columns: minmax(0, 1fr); }
+}
+
+.tp-card {
+  background: var(--surface-2, var(--bg-soft));
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  padding: 12px 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 0;
+}
+/* The accent is reserved for the calls the model is genuinely confident about,
+   so the eye lands on them first and the long shots read as long shots. */
+.tp-card.is-strong {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--border-soft));
+}
+
+.tp-market {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+.tp-card.is-strong .tp-market {
+  color: var(--accent);
+}
+
+.tp-label {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.3;
+  /* Two lines of headroom keeps the cards the same height when a label wraps,
+     so the probability bars stay on one line across the row. */
+  min-height: 2.6em;
+  overflow-wrap: anywhere;
+}
+
+.tp-track {
+  height: 6px;
+  background: var(--border-soft);
+  border-radius: 100px;
+  /* No overflow:hidden: a wide radius on a very narrow fill clips it into a
+     sliver. The fill carries its own radius instead, so it stays a visible
+     pill at any width. */
+  overflow: visible;
+  display: flex;
+  align-items: center;
+}
+.tp-fill {
+  display: block;
+  height: 100%;
+  border-radius: 100px;
+  /* Deliberately NOT --text-faint. A low-confidence bar is unavoidably short,
+     and painting it the dimmest grey as well made it read as an empty track --
+     the 8.7% Correct Score looked like a rendering failure rather than a low
+     number. A mid-tone keeps a short bar legible while still leaving the
+     accented (high-confidence) bars clearly the brightest on the panel. */
+  background: var(--text-dim);
+  /* A minimum width keeps a low probability visible as a small bar rather than
+     vanishing into the track. Without it, Correct Score at 8.7% collapsed to
+     what looked like an empty control. */
+  min-width: 6px;
+  min-height: 6px;
+}
+.tp-card.is-strong .tp-fill {
+  background: var(--accent);
+}
+
+.tp-meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+.tp-prob {
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+.tp-card.is-strong .tp-prob {
+  color: var(--accent);
+}
+.tp-odds {
+  font-size: 11.5px;
+  color: var(--text-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.tp-note {
+  margin-top: 13px;
+  padding-top: 11px;
+  border-top: 1px solid var(--border-soft);
+  font-size: 12px;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+
+/* ---------------------------------------------------------------- tables */
+table.data {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+table.data th {
+  text-align: left;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-faint);
+  font-weight: 700;
+  padding: 10px;
+  background: var(--bg-soft);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+table.data td {
+  padding: 10px;
+  border-bottom: 1px solid var(--border-soft);
+  font-variant-numeric: tabular-nums;
+}
+table.data tbody tr {
+  transition: background 0.12s;
+}
+table.data tbody tr:hover {
+  background: var(--accent-soft);
+}
+table.data tbody tr:last-child td {
+  border-bottom: none;
+}
+.num {
+  text-align: right;
+  font-family: var(--mono);
+}
+.pos {
+  color: var(--green);
+}
+.neg {
+  color: var(--danger);
+}
+
+/* ---------------------------------------------------------------- form pills */
+.form-pills {
+  display: inline-flex;
+  gap: 3px;
+}
+.form-pill {
+  width: 19px;
+  height: 19px;
+  border-radius: 3px;
+  display: grid;
+  place-items: center;
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--on-accent);
+}
+.form-W {
+  background: var(--green);
+}
+.form-D {
+  background: var(--border);
+}
+.form-L {
+  background: var(--danger);
+}
+
+/* ---------------------------------------------------------------- detail page */
+.detail-hero {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 18px;
+  box-shadow: var(--shadow);
+}
+
+.hero-teams {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 18px;
+  align-items: center;
+  margin-bottom: 18px;
+}
+.hero-team {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.hero-team.away {
+  /* The away crest sits to the RIGHT of its name, so the two badges bracket the
+     fixture and read outward-in. Order is expressed in the markup rather than by
+     reversing the flex direction, which would also mirror the text. */
+  justify-content: flex-end;
+  text-align: right;
+}
+.hero-team .name {
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.hero-team img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  background: none;
+  border: 0;
+  border-radius: 0;
+}
+.hero-vs {
+  text-align: center;
+  color: var(--text-faint);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.hero-score {
+  font-family: var(--mono);
+  font-size: 30px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.pick-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  flex-wrap: wrap;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+}
+.pick-banner .label {
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--accent-dim);
+  font-weight: 800;
+}
+.pick-banner .value {
+  font-size: 21px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--link);
+}
+.pick-banner .sub {
+  font-size: 12.5px;
+  color: var(--text-dim);
+}
+.pick-stats {
+  display: flex;
+  gap: 22px;
+  flex-wrap: wrap;
+}
+.pick-stat {
+  text-align: center;
+}
+.pick-stat .k {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+  font-weight: 700;
+}
+.pick-stat .v {
+  font-family: var(--mono);
+  font-size: 17px;
+  font-weight: 800;
+}
+
+/* ---------------------------------------------------------------- AI panel */
+.ai-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--info);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow);
+}
+.ai-head {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 12px;
+}
+.ai-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--info);
+  box-shadow: 0 0 0 3px var(--info-soft);
+}
+.ai-title {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 800;
+  color: var(--info);
+}
+.ai-headline {
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+  color: var(--text);
+}
+.ai-body {
+  font-size: 14.5px;
+  color: var(--text);
+}
+.ai-body p {
+  margin: 0 0 11px;
+}
+.ai-angle {
+  margin-top: 14px;
+  padding: 12px 14px;
+  background: var(--accent-soft);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+}
+
+.factor-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.factor-list li {
+  padding: 7px 0 7px 20px;
+  position: relative;
+  font-size: 13.5px;
+  color: var(--text-dim);
+  border-bottom: 1px solid var(--border-soft);
+}
+.factor-list li:last-child {
+  border-bottom: none;
+}
+.factor-list li::before {
+  content: "▸";
+  position: absolute;
+  left: 4px;
+  color: var(--accent);
+  font-weight: 700;
+}
+.factor-list.risk li::before {
+  content: "!";
+  color: var(--warn);
+}
+
+.provider-tag {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--text-faint);
+  padding: 2px 7px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: var(--bg-soft);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* ---------------------------------------------------------------- misc */
+.spinner {
+  width: 22px;
+  height: 22px;
+  border: 2.5px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+/* the reference's navy promo strip */
+.promo {
+  background: var(--premium);
+  color: var(--on-panel-dark);
+  border-radius: var(--radius);
+  padding: 18px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+.promo h3 {
+  margin: 0 0 3px;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--on-panel-dark);
+  text-transform: none;
+  letter-spacing: -0.01em;
+}
+.promo p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+.promo .btn {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-panel-dark);
+  font-weight: 700;
+  padding: 11px 22px;
+}
+.promo .btn:hover {
+  background: var(--accent-dim);
+  border-color: var(--accent-dim);
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 50px;
+  color: var(--text-dim);
+  font-size: 14px;
+}
+
+.error-box {
+  background: var(--danger-soft);
+  border: 1px solid color-mix(in srgb, var(--danger) 30%, transparent);
+  border-left: 4px solid var(--danger);
+  color: var(--danger);
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+}
+
+.empty {
+  text-align: center;
+  padding: 46px 20px;
+  color: var(--text-dim);
+  font-size: 14px;
+}
+.empty .big {
+  font-size: 30px;
+  margin-bottom: 8px;
+  opacity: 0.5;
+}
+
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 22px;
+}
+.pager .status {
+  font-size: 13px;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 26px 0 13px;
+  flex-wrap: wrap;
+}
+.section-title h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.notice {
+  background: var(--info-soft);
+  border: 1px solid rgba(10, 108, 189, 0.2);
+  border-left: 4px solid var(--info);
+  color: var(--link);
+  padding: 12px 15px;
+  border-radius: var(--radius-sm);
+  font-size: 12.5px;
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+.legal {
+  border-top: 1px solid var(--border);
+  margin-top: 40px;
+  padding: 24px 0 0;
+  font-size: 12px;
+  color: var(--text-faint);
+  line-height: 1.7;
+}
+.legal strong {
+  color: var(--text-dim);
+}
+
+/* The admin entry point at the foot of every page.
+   Deliberately quiet: it is an operator's door, not a call to action, so it
+   sits below the legal text in the dim treatment rather than competing with
+   the nav. It carries no --accent colour, which the design editor can change
+   out from under it -- the button must stay legible whatever palette an
+   operator saves. */
+.footer-admin {
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px 0 28px;
+}
+.footer-admin .btn {
+  color: var(--text-dim);
+}
+.footer-admin .btn:hover {
+  color: var(--text);
+}
+.footer-admin .mi-sm svg {
+  vertical-align: -3px;
+}
+
+/* ---------------------------------------------------------------- modal */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  /* Deepened from 4px so the page behind genuinely dissolves: a heavy blur here
+     is what makes the modal read as a pane floating over the app rather than a
+     card dropped on top of it. */
+  -webkit-backdrop-filter: blur(10px) saturate(var(--glass-sat));
+  backdrop-filter: blur(10px) saturate(var(--glass-sat));
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+}
+/* The modal is the largest glass pane in the app, so it carries the full
+   treatment: a translucent body over the blurred page, the specular top rim,
+   the lower refraction and a deep cast. Its buttons are already glass, and
+   glass-on-glass is the point of the material -- light passes through both. */
+.modal {
+  background: var(--glass-tint-strong);
+  -webkit-backdrop-filter: blur(28px) saturate(var(--glass-sat));
+  backdrop-filter: blur(28px) saturate(var(--glass-sat));
+  border: 1px solid var(--glass-rim-soft);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow:
+    inset 0 1px 0 0 var(--glass-rim),
+    inset 0 -20px 30px -24px var(--glass-refract),
+    0 24px 60px -20px var(--glass-cast);
+}
+.modal h3 {
+  margin: 0 0 16px;
+  text-transform: none;
+  font-size: 18px;
+  color: var(--text);
+}
+.field {
+  margin-bottom: 12px;
+}
+.field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-dim);
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.field input {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 9px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.field input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.modal-actions {
+  display: flex;
+  gap: 9px;
+  margin-top: 18px;
+}
+.modal-actions .btn {
+  flex: 1;
+}
+
+.toast {
+  position: fixed;
+  bottom: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--panel-dark);
+  border: 1px solid var(--panel-dark);
+  color: var(--on-panel-dark);
+  padding: 12px 22px;
+  border-radius: 100px;
+  font-size: 13.5px;
+  font-weight: 600;
+  z-index: 200;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 1080px) {
+  .shell {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  /* the sidebar is supplementary, so it drops below the content on narrow
+     screens rather than hiding the competitions entirely */
+  .sidebar {
+    position: static;
+    order: 2;
+  }
+  .side-list {
+    max-height: none;
+  }
+}
+
+@media (max-width: 780px) {
+  .hamburger {
+    display: block;
+  }
+  .brand {
+    font-size: 19px;
+  }
+  .header-bonus {
+    display: none;
+  }
+  .main-nav a {
+    padding: 11px 13px;
+    font-size: 14px;
+  }
+  .page-head h1 {
+    font-size: 24px;
+  }
+  .tip-card {
+    grid-template-columns: 1fr;
+    padding: 16px;
+  }
+  .tip-side {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 0;
+  }
+  .odds-box {
+    width: auto;
+    min-width: 110px;
+  }
+  .hero-teams {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .hero-team,
+  .hero-team.away {
+    flex-direction: column;
+    text-align: center;
+  }
+  .fixture-row {
+    grid-template-columns: 1fr;
+  }
+  .prob-row {
+    grid-template-columns: 90px 1fr 50px;
+  }
+  .pick-stats {
+    gap: 14px;
+  }
+}
+/* ------------------------------------------------- SportyBet market panel */
+/* The book's category index. Deliberately plain: this is reference material,
+   not a call to action, so it must not compete visually with the model's own
+   picks above it. */
+.mkt-index {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-soft);
+  padding: 12px 14px;
+  margin-bottom: 16px;
+}
+
+.mkt-index-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-dim);
+  margin-bottom: 9px;
+}
+
+.mkt-key {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--text-faint);
+}
+
+.mkt-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex: none;
+  display: inline-block;
+}
+.mkt-dot.model {
+  background: var(--green);
+}
+.mkt-dot.book {
+  background: var(--border);
+}
+
+.mkt-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 1px 14px;
+}
+
+.mkt-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 0;
+  font-size: 12.5px;
+  color: var(--text-dim);
+  border-bottom: 1px solid var(--border-soft);
+}
+.mkt-row:last-child {
+  border-bottom: 0;
+}
+/* A category the live feed did not return for this fixture stays listed but
+   recedes, so the index describes the book rather than only this match. */
+.mkt-row.absent {
+  opacity: 0.45;
+}
+.mkt-row.present .mkt-name {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.mkt-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mkt-tag {
+  font-size: 9.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 1px 5px;
+  border-radius: 2px;
+  background: var(--green-soft);
+  color: var(--green);
+  border: 1px solid color-mix(in srgb, var(--green) 30%, transparent);
+  white-space: nowrap;
+}
+.mkt-tag.on {
+  background: var(--info-soft);
+  color: var(--info);
+  border-color: rgba(10, 108, 189, 0.2);
+}
+
+.mkt-group {
+  margin-bottom: 16px;
+}
+.mkt-group-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+
+.mkt-market {
+  margin-bottom: 10px;
+}
+.mkt-market-name {
+  font-size: 12.5px;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.mkt-notice {
+  padding: 14px;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-dim);
+  font-size: 13px;
+}
+
+.mkt-caveat {
+  color: var(--text-faint);
+  font-size: 12px;
+  margin: 10px 0 0;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-soft);
+}
+/* ==========================================================================
+   Results & verification page
+   The green tick is the point of this page: it must read unmistakably as
+   "this prediction came in", so it is a filled colour chip with a filled
+   circle-check glyph, never bare coloured text.
+   ========================================================================== */
+
+.res-list {
+  display: grid;
+  gap: 12px;
+}
+
+.res-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 16px;
+  cursor: pointer;
+  transition: box-shadow 0.15s ease;
+}
+.res-card:hover {
+  box-shadow: var(--shadow-hover);
+}
+/* The left edge carries the outcome before any text is read. */
+.res-card.is-hit {
+  border-left-color: var(--green);
+}
+.res-card.is-miss {
+  border-left-color: var(--danger);
+}
+.res-card.is-void {
+  border-left-color: var(--border);
+}
+
+.res-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.res-meta {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12.5px;
+  color: var(--text-dim);
+  flex-wrap: wrap;
+}
+
+/* --- outcome chip (the tick / cross) --- */
+.settle {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12.5px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.settle .mi {
+  width: 1.15em;
+  height: 1.15em;
+}
+.settle-win {
+  background: var(--green-soft);
+  color: var(--green);
+}
+.settle-loss {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+.settle-void {
+  background: var(--surface-2);
+  color: var(--text-faint);
+}
+
+/* --- final score line --- */
+.res-teams {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.res-team {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 15px;
+  min-width: 0;
+}
+.res-team span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.res-team.away {
+  justify-content: flex-end;
+}
+.res-score {
+  font-family: var(--mono);
+  font-size: 20px;
+  font-weight: 800;
+  padding: 4px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--panel-dark);
+  color: var(--on-panel-dark);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* --- the model's published prediction --- */
+.res-prediction {
+  background: var(--accent-soft);
+  border: 1px solid var(--warn);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  margin-bottom: 14px;
+}
+.res-pred-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent-dim);
+}
+.res-pred-value {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text);
+  margin: 2px 0 8px;
+}
+.res-pred-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.res-count {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The per-market grading styles (.res-markets, .res-market-name, .res-sels,
+   .res-sel, .res-sel-odds) were removed with the block itself. Leaving them
+   would be dead CSS describing a list the Results tab no longer renders --
+   the full breakdown is on the fixture page.
+
+   The win/loss colouring that block owned is not lost: the card's own state
+   (is-hit / is-miss) and the settle mark still carry it. */
+
+/* --- footer: live-score link --- */
+.res-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+.res-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--link);
+}
+.res-live:hover {
+  color: var(--link-hover);
+  text-decoration: underline;
+}
+.res-live .mi {
+  width: 1.05em;
+  height: 1.05em;
+}
+.res-hint {
+  font-size: 11.5px;
+  color: var(--text-faint);
+}
+
+@media (max-width: 720px) {
+  .res-teams {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+  }
+  .res-team.away {
+    justify-content: center;
+  }
+  .res-count {
+    margin-left: 0;
+  }
+}
+/* Source provenance tag. A real match must be visually distinguishable from a
+   simulated one at a glance: a result pulled from the live feed is not the
+   same claim as a generated scoreline, and the UI must not blur them. */
+.src-tag {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.src-real {
+  background: var(--info-soft);
+  color: var(--info);
+}
+.src-sim {
+  background: var(--surface-2);
+  color: var(--text-faint);
+  border: 1px solid var(--border-soft);
+}
+
+/* The second verification link sits quieter than the SportyBet one, so the two
+   do not compete for attention in the card footer. */
+.res-fs {
+  color: var(--text-dim);
+}
+.res-fs:hover {
+  color: var(--text);
+}
+/* ==========================================================================
+   Match detail — tabs and real-results panels
+   Layout follows the SportyBet mobile match page (tab bar under the header,
+   then a summary panel per tab). Colours are this app's own: --accent for
+   emphasis, --surface-2 for the bar, --green/--danger for results.
+   ========================================================================== */
+
+.mtabs {
+  display: flex;
+  gap: 2px;
+  /* A page surface, not a dark bar: the tab labels are --text/--text-dim, so
+     the strip has to follow the theme with them. A fixed dark bar left the
+     light theme's near-black labels sitting on a near-black strip. */
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-bottom: 0;
+  border-radius: var(--radius) var(--radius) 0 0;
+  overflow-x: auto;
+  margin-top: 16px;
+  scrollbar-width: none;
+}
+.mtabs::-webkit-scrollbar {
+  display: none;
+}
+/* These were underlined tabs. They are now glass PILLS, because the underline
+   pattern cannot coexist with the material: a frosted rounded panel with a
+   coloured rule pinned to its bottom edge reads as two different controls
+   stacked, and it was the only underlined tab left in the app. The pill is also
+   what the nav, the chips and the day filter all use, so this brings the match
+   page into the same language. */
+.mtab {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 84px;
+  padding: 10px 16px;
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  color: var(--text-dim);
+  font-size: 13.5px;
+  font-weight: 700;
+  white-space: nowrap;
+  transition:
+    color var(--t-fast),
+    background-color var(--t-fast),
+    box-shadow var(--t-fast),
+    transform var(--t-fast);
+}
+.mtab:hover {
+  color: var(--text);
+  background: var(--glass-tint-strong);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  box-shadow:
+    inset 0 1px 0 0 var(--glass-rim),
+    inset 0 -5px 9px -6px var(--glass-refract),
+    0 5px 14px -6px var(--glass-cast);
+}
+.mtab:active {
+  transform: scale(0.97);
+}
+.mtab.active {
+  color: var(--on-accent);
+  background: var(--accent);
+  background-image: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.22) 0%,
+    rgba(255, 255, 255, 0) 55%
+  );
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.5),
+    inset 0 -4px 8px -6px rgba(0, 0, 0, 0.4),
+    0 5px 16px -6px var(--glass-cast);
+}
+.mtab.active:hover {
+  background-color: var(--accent-dim);
+}
+
+.mpanel {
+  padding-top: 16px;
+}
+
+/* ---------------------------------------------------- match detail: columns
+   The two long panels ("Most accurate predictions", "All markets") and the
+   scoreline/form/head-to-head stack.
+
+   Why a fixed two-column grid rather than .grid-2's auto-fit: at the widths this
+   page actually gets, auto-fit collapses to ONE column, so the market list ran
+   11,000px and the head-to-head sat in a row beneath it. The reader had to
+   scroll past thousands of pixels of markets to reach four numbers.
+
+   The long panels now scroll inside their own box, and that box is exactly as
+   tall as the rail beside it -- so the three surfaces end level, which is what
+   the layout is for. The rail is the measure because it is short and has a
+   natural height; the market list does not.
+
+   Two columns, an even split: the left half stacks the two long panels so both
+   get the full width, and the rail takes the other half. Below 900px there is
+   not enough room for that pair inside the page's own content column and the
+   rail drops underneath instead of being squeezed. */
+.match-body {
+  display: grid;
+  /* minmax(0, 1fr) so a long, unbreakable market label cannot push a column
+     wider than its share. */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.match-main {
+  display: grid;
+  /* ONE column, not two. Two cards side by side inside the page's own content
+     column (about 900px beside the 300px sidebar) left each of them ~420px, and
+     the market rows need more than that before their probability, odds and edge
+     columns start clipping. Stacked, both cards get the full width and the whole
+     body needs only two columns -- panels and rail. */
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+  align-content: start;
+  min-width: 0;
+}
+
+/*    The two long cards are the bounded boxes, not their inner scroller.
+
+   Bounding the scroller alone left a card TALLER than the rail: the heading and
+   the explanatory paragraph sit above the scroller and add to the card's height,
+   so "All markets" ended 229px below the rail it was supposed to match. Making
+   the card a fixed-height flex column and letting only the scroller take the
+   leftover space means the card's own box is the height it was given.
+
+   The two cards STACK in the left column, so together they must add up to the
+   rail's height, not each take it. --match-card-h is half of --match-col-h minus
+   half the gutter between them; the scaling below keeps that relationship true
+   however tall the rail turns out to be. */
+.match-main > .card {
+  display: flex;
+  flex-direction: column;
+  max-height: var(--match-card-h, 460px);
+  /* The card cannot shrink below its heading and intro, so a very short rail (a
+     fixture with no head-to-head and one-line form) still shows them. */
+  min-height: 200px;
+  min-width: 0;
+}
+
+/* The scroller takes whatever the heading and intro leave. min-height:0 is what
+   actually lets a flex child scroll: its default min-height is auto, which
+   refuses to shrink below the content and would push the card taller again. */
+.match-main > .card > .match-rail {
+  min-width: 0;
+}
+
+/* The scroll region inside a long panel. `--match-col-h` is written by
+   fitMatchColumns() from the rail's measured height, so this is a real
+   relationship between the two columns rather than a guessed number. It is kept
+   as well as the per-card height because it is the total the pair must add up
+   to, and the fallback covers the first paint before the measurement lands. */
+.match-main > .card > .match-scroll {
+  /* min-height:0 is what actually lets a flex child scroll: its default is auto,
+     which refuses to shrink below its content and would push the card taller. */
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.match-scroll {
+  overflow-y: auto;
+  /* Room for the scrollbar so it does not sit on top of the values. */
+  padding-right: 6px;
+  /* Momentum scrolling on touch, and a contained scroll so reaching the bottom of
+     the inner list does not then scroll the whole page. */
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.match-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+.match-scroll::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 999px;
+}
+.match-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* A fade at the bottom edge, so a clipped list reads as "there is more" rather
+   than as a list that happens to end there. */
+.match-scroll-wrap {
+  position: relative;
+}
+
+/* Below 900px the page's content column cannot hold the panels and the rail side
+   by side without the market rows clipping, so the rail moves underneath. The
+   panels keep their own scroll regions there -- they are still "long panels"
+   beside a short rail, just on two rows. */
+@media (max-width: 900px) {
+  .match-body {
+    grid-template-columns: minmax(0, 1fr);
+    /* The rail is now the second row, so it needs a gap rather than a column
+       gutter to separate it from the panels above. */
+    row-gap: 16px;
+  }
+  /* The cards and the rail are on separate rows now, so there is no pair to keep
+     level: release the height and let each size to its content. */
+  .match-main > .card {
+    max-height: none;
+  }
+  .match-scroll {
+    max-height: 460px;
+  }
+}
+
+/* On a phone the nested scroll regions are dropped entirely -- a scroll region
+   inside a page scroll is a trap on touch. */
+@media (max-width: 600px) {
+  .match-scroll {
+    max-height: none;
+    overflow: visible;
+    padding-right: 0;
+  }
+}
+.mpanel[hidden] {
+  display: none;
+}
+
+/* --- loading / empty states --- */
+.hist-loading,
+.hist-empty {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 22px 4px;
+  color: var(--text-dim);
+  font-size: 13.5px;
+  justify-content: center;
+}
+.hist-empty {
+  flex-direction: column;
+  text-align: center;
+}
+.hist-muted {
+  color: var(--text-faint);
+  font-size: 12.5px;
+}
+
+/* --- panel header --- */
+.hist-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+.hist-sub {
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+/* --- W/D/L summary tiles --- */
+.hist-summary {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.hs-item {
+  text-align: center;
+  background: var(--surface-2);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-sm);
+  padding: 8px 4px;
+}
+.hs-v {
+  font-size: 17px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+.hs-k {
+  font-size: 10.5px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.hist-formline {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.hist-formlab {
+  font-size: 12px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* --- derived-rate rows --- */
+.hist-split {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  padding: 12px 0;
+  border-top: 1px solid var(--border-soft);
+  border-bottom: 1px solid var(--border-soft);
+  margin-bottom: 12px;
+}
+.hist-split > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 13px;
+}
+.hist-split strong {
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- match list --- */
+.hist-list {
+  display: grid;
+  gap: 2px;
+}
+.hist-row {
+  display: grid;
+  grid-template-columns: 62px 1fr 118px;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-left: 3px solid var(--border);
+  background: var(--surface-2);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+}
+/* The left edge shows that club's result in the meeting: green win, grey draw,
+   red loss. Colour is a summary; the score is always the source of truth. */
+.hist-row.o-w {
+  border-left-color: var(--green);
+}
+.hist-row.o-d {
+  border-left-color: var(--text-faint);
+}
+.hist-row.o-l,
+.hist-row.o-lo {
+  border-left-color: var(--danger);
+}
+.hist-date {
+  color: var(--text-dim);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.hist-teams {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.hist-side {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.hist-side.away {
+  text-align: right;
+}
+.hist-score {
+  font-family: var(--mono);
+  font-weight: 800;
+  padding: 1px 8px;
+  border-radius: var(--radius-sm);
+  background: var(--panel-dark);
+  color: var(--on-panel-dark);
+  font-variant-numeric: tabular-nums;
+}
+.hist-comp {
+  color: var(--text-faint);
+  font-size: 11.5px;
+  text-align: right;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* --- side-by-side stat comparison ----------------------------------------
+   Rendered on SportyBet's declared dark surface, with their text hierarchy and
+   font family. The row layout (home value / centred label / away value, dual
+   bar beneath) is this app's own; only the palette and type are theirs. */
+.stats-sb {
+  background: var(--sb-panel);
+  color: var(--sb-text);
+  font-family: var(--sb-font);
+  border-color: var(--sb-raised);
+  border-radius: var(--sb-radius);
+}
+.stats-sb .hist-head h3 {
+  color: var(--sb-text);
+}
+.stats-sb .hist-sub {
+  color: var(--sb-text-dim);
+}
+.stats-sb .stat-team-head {
+  color: var(--sb-text-dim);
+  border-bottom-color: var(--sb-raised);
+}
+/* Their sub-heading / body-copy greys, in the same order they use them. */
+.stats-sb .stat-l {
+  color: var(--sb-text-dim);
+}
+.stats-sb .stat-v {
+  color: var(--sb-text);
+}
+.stats-sb .h2h-k {
+  color: var(--sb-text-dim);
+}
+.stats-sb .hist-muted {
+  color: var(--sb-text-body);
+}
+.stats-sb .h2h-v {
+  color: var(--sb-text);
+}
+.stats-sb .hist-summary .hs-k {
+  color: var(--sb-text-dim);
+}
+.stats-sb .hist-summary .hs-v {
+  color: var(--sb-text);
+}
+/* The past-meetings rows keep .hist-row's light --surface-2 background unless
+   it is overridden here, which would put white team names on a white row. */
+.stats-sb .hist-list .hist-row {
+  background: var(--sb-raised);
+  border-left-color: var(--sb-divider);
+}
+.stats-sb .hist-list .hist-row.o-w {
+  border-left-color: var(--sb-green-bright);
+}
+.stats-sb .hist-list .hist-row.o-d {
+  border-left-color: var(--sb-text-dim);
+}
+.stats-sb .hist-list .hist-row.o-l,
+.stats-sb .hist-list .hist-row.o-lo {
+  border-left-color: var(--sb-red);
+}
+.stats-sb .hist-date,
+.stats-sb .hist-comp {
+  color: var(--sb-text-dim);
+}
+.stats-sb .hist-side {
+  color: var(--sb-text);
+}
+/* .hist-score paints a navy pill; on their dark surface it needs to lift instead
+   of sink, so use their raised tone with their white text. */
+.stats-sb .hist-score {
+  background: var(--sb-page);
+  color: var(--sb-text);
+}
+/* Their green marks the leading/winning side; their red is the brand accent. */
+.stats-sb .h2h-v.accent,
+.stats-sb .stat-v.lead {
+  color: var(--sb-green-bright);
+}
+.stats-sb .stat-bar.home {
+  background: var(--sb-red);
+}
+.stats-sb .stat-bar.away {
+  background: var(--sb-green);
+}
+
+/* --- side-by-side stat comparison --- */
+.stat-team-head {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text-dim);
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-soft);
+  margin-bottom: 12px;
+}
+.stat-row {
+  margin-bottom: 12px;
+}
+.stat-nums {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 5px;
+}
+.stat-v {
+  font-size: 14px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.stat-v:last-child {
+  text-align: right;
+}
+/* The leading side is emphasised in the accent colour, so the stronger number
+   reads first without inventing a verdict. */
+.stat-v.lead {
+  color: var(--accent);
+}
+.stat-l {
+  font-size: 11.5px;
+  color: var(--text-dim);
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.stat-bars {
+  display: flex;
+  gap: 3px;
+  height: 6px;
+}
+.stat-bar {
+  height: 100%;
+  border-radius: 999px;
+}
+.stat-bar.home {
+  background: var(--panel-dark);
+}
+.stat-bar.away {
+  background: var(--accent);
+}
+
+/* --- head-to-head summary --- */
+.h2h-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  text-align: center;
+}
+.h2h-v {
+  font-size: 24px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+.h2h-v.accent {
+  color: var(--accent);
+}
+.h2h-k {
+  font-size: 11.5px;
+  color: var(--text-dim);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  .hist-summary {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .hist-split {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .hist-row {
+    grid-template-columns: 54px 1fr;
+  }
+  .hist-comp {
+    display: none;
+  }
+}
+/* ==========================================================================
+   H2H / Stats panel — structure matched to the SportyBet match page
+   --------------------------------------------------------------------------
+   Built from the layout in the reference screenshot: a three-column form block,
+   a "Previous meetings" arc summary, the dated results list, and a Season Stats
+   grouped bar chart. Colours come from the --sb-* tokens above (their declared
+   values); the league-position rings are omitted because the results feed has no
+   standings to fill them.
+   ========================================================================== */
+
+.sb-h2h {
+  padding: 0;
+}
+
+/* Centred section headings, with a hairline rule under each. */
+.sb-sec-head {
+  padding: 10px 12px 8px;
+  border-bottom: 1px solid var(--sb-raised);
+  color: var(--sb-text-dim);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+/* --- three-column form block: last five / summary / last five --- */
+.sb-top {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 10px;
+  align-items: start;
+}
+.sb-top-col {
+  min-width: 0;
+}
+.sb-top-col.right {
+  text-align: right;
+}
+.sb-top-k {
+  margin-bottom: 8px;
+  color: var(--sb-text-dim);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.sb-mini {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  padding: 3px 0;
+  font-size: 12px;
+}
+.sb-top-col.right .sb-mini {
+  justify-content: flex-end;
+}
+/* The result letter, coloured the way the reference colours its pills. */
+.sb-mini-r {
+  display: inline-grid;
+  place-items: center;
+  width: 17px;
+  height: 17px;
+  border-radius: 3px;
+  color: var(--on-accent);
+  font-size: 10px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+.sb-mini-r.r-w {
+  background: var(--sb-green);
+}
+.sb-mini-r.r-d {
+  background: var(--sb-divider);
+}
+.sb-mini-r.r-l {
+  background: var(--sb-red);
+}
+.sb-mini-opp {
+  color: var(--sb-text);
+  font-weight: 700;
+}
+.sb-mini-sc {
+  color: var(--sb-text-dim);
+  font-variant-numeric: tabular-nums;
+  font-size: 11.5px;
+}
+
+/* Centre column: the two win counts with the form strips beneath. */
+.sb-top-col.centre {
+  text-align: center;
+  padding: 0 8px;
+}
+.sb-top-form {
+  margin-bottom: 6px;
+}
+.sb-top-form .form-pills {
+  justify-content: center;
+}
+.sb-top-big {
+  color: var(--sb-green-bright);
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+.sb-top-big.away {
+  color: var(--sb-red);
+}
+.sb-top-sub {
+  margin-left: 3px;
+  color: var(--sb-text-dim);
+  font-size: 11px;
+  font-weight: 700;
+}
+.sb-top-line {
+  width: 1px;
+  height: 14px;
+  margin: 5px auto;
+  background: var(--sb-raised);
+}
+
+/* --- Previous meetings: outer "highest win", middle arcs --- */
+.sb-prev {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 10px;
+  align-items: center;
+  padding: 12px;
+}
+.sb-prev-side {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 11.5px;
+}
+.sb-prev-side.right {
+  text-align: right;
+}
+.sb-prev-k {
+  color: var(--sb-text-dim);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.sb-prev-best {
+  color: var(--sb-text);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.sb-best-date {
+  display: block;
+  color: var(--sb-text-dim);
+  font-size: 10.5px;
+  font-weight: 400;
+}
+.sb-prev-arcs {
+  display: flex;
+  gap: 6px;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+/* The crescent ring: a conic fill behind a centred number. */
+.sb-arc {
+  position: relative;
+  width: 62px;
+  text-align: center;
+}
+.sb-arc-sm {
+  width: 52px;
+}
+.sb-arc-ring {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  background: conic-gradient(
+    var(--sb-green) var(--fill),
+    var(--sb-raised) var(--fill)
+  );
+  /* Punch the middle out so it reads as a ring, not a disc. */
+  mask: radial-gradient(circle, transparent 54%, #000 55%);
+  -webkit-mask: radial-gradient(circle, transparent 54%, #000 55%);
+}
+.sb-arc-sm .sb-arc-ring {
+  width: 52px;
+  height: 52px;
+  background: conic-gradient(
+    var(--sb-red) var(--fill),
+    var(--sb-raised) var(--fill)
+  );
+}
+.sb-arc-ring.away {
+  background: conic-gradient(
+    var(--sb-red) var(--fill),
+    var(--sb-raised) var(--fill)
+  );
+}
+.sb-arc-val {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  transform: translateY(-60%);
+  color: var(--sb-text);
+  font-size: 17px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+.sb-arc-k {
+  margin-top: 4px;
+  color: var(--sb-text-dim);
+  font-size: 10.5px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+/* --- dated results list --- */
+.sb-meetings {
+  padding: 4px 0;
+}
+.sb-meet-row {
+  display: grid;
+  grid-template-columns: 96px 1fr auto 1fr;
+  gap: 8px;
+  align-items: center;
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--sb-raised);
+  font-size: 12.5px;
+}
+.sb-meet-row:last-child {
+  border-bottom: 0;
+}
+.sb-meet-meta {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.sb-meet-date {
+  color: var(--sb-text);
+  font-size: 10.5px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.sb-meet-comp {
+  color: var(--sb-text-dim);
+  font-size: 9.5px;
+  letter-spacing: 0.03em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.sb-meet-home,
+.sb-meet-away {
+  color: var(--sb-text);
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.sb-meet-away {
+  text-align: right;
+}
+.sb-meet-score {
+  padding: 1px 7px;
+  border-radius: var(--sb-radius);
+  background: var(--sb-page);
+  color: var(--sb-text);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* --- Season Stats grouped bar chart --- */
+.sb-chart {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  padding: 14px 16px 16px;
+}
+.sb-chart-group {
+  text-align: center;
+}
+.sb-chart-title {
+  margin-bottom: 10px;
+  color: var(--sb-text-dim);
+  font-size: 10.5px;
+  font-weight: 700;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+.sb-chart-bars {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+  justify-content: center;
+  height: 104px;
+}
+.sb-chart-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+}
+.sb-chart-val {
+  margin-bottom: 5px;
+  font-size: 13px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+.sb-chart-val.home {
+  color: var(--sb-green-bright);
+}
+.sb-chart-val.away {
+  color: var(--sb-red);
+}
+.sb-chart-bar {
+  width: 26px;
+  border-radius: 2px 2px 0 0;
+  min-height: 2px;
+}
+.sb-chart-bar.home {
+  background: var(--sb-green);
+}
+.sb-chart-bar.away {
+  background: var(--sb-red);
+}
+
+@media (max-width: 560px) {
+  .sb-top {
+    grid-template-columns: 1fr auto 1fr;
+    gap: 6px;
+  }
+  .sb-meet-row {
+    grid-template-columns: 78px 1fr auto 1fr;
+    gap: 6px;
+    padding: 8px 10px;
+  }
+  .sb-arc-ring {
+    width: 54px;
+    height: 54px;
+  }
+  .sb-arc-sm .sb-arc-ring {
+    width: 46px;
+    height: 46px;
+  }
+}
+/* ==========================================================================
+   Market listing pages (Option B)
+
+   Their market row is the site's signature control: a horizontally scrolling
+   strip of market names sitting directly under the filters, one highlighted.
+   The table below it is deliberately plain -- the data is the point, so the
+   surface stays quiet (base-100 rows on a base-200 page, a hairline between).
+   ========================================================================== */
+
+.mkt-strip {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  margin-bottom: 14px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.mkt-strip::-webkit-scrollbar {
+  height: 6px;
+}
+.mkt-strip::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+.mkt-strip::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Liquid glass, as on .chip -- these are market filter chips under another name,
+   so they carry the same four layers. */
+.mkt-tab {
+  position: relative;
+  flex: 0 0 auto;
+  padding: 7px 13px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--glass-rim-soft);
+  background: var(--glass-tint);
+  color: var(--text-dim);
+  font-size: 12.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  box-shadow:
+    inset 0 1px 0 0 var(--glass-rim),
+    inset 0 -5px 9px -6px var(--glass-refract),
+    0 5px 14px -6px var(--glass-cast);
+  transition:
+    color var(--t-fast),
+    background-color var(--t-fast),
+    border-color var(--t-fast),
+    box-shadow var(--t-fast),
+    transform var(--t-fast);
+}
+.mkt-tab:hover {
+  color: var(--text);
+  background: var(--glass-tint-strong);
+  border-color: var(--glass-rim);
+  transform: translateY(-1px);
+}
+.mkt-tab:active {
+  transform: translateY(0) scale(0.96);
+}
+/* The active market takes the green, the same accent the CTAs use. */
+.mkt-tab.active {
+  background: var(--accent);
+  background-image: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.22) 0%,
+    rgba(255, 255, 255, 0) 55%
+  );
+  border-color: rgba(255, 255, 255, 0.45);
+  color: #04140c;
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.45),
+    inset 0 -4px 8px -6px rgba(0, 0, 0, 0.35),
+    0 5px 14px -6px var(--glass-cast);
+}
+.mkt-tab.active:hover {
+  background-color: var(--accent-dim);
+}
+
+/* --- the listing table --- */
+.mkt-table {
+  padding: 0;
+  overflow: hidden;
+}
+
+.mkt-thead,
+.mkt-trow {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.2fr) 72px 84px;
+  gap: 12px;
+  align-items: center;
+  padding: 11px 16px;
+}
+
+.mkt-thead {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 700;
+  color: var(--text-faint);
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-2);
+}
+/* The last two columns are numeric, so they read right-aligned like a table. */
+.mkt-thead > :nth-child(3),
+.mkt-thead > :nth-child(4) {
+  text-align: right;
+}
+
+.mkt-trow {
+  border-bottom: 1px solid var(--border-soft);
+  color: var(--text);
+  transition: background-color var(--t-fast);
+}
+.mkt-trow:last-child {
+  border-bottom: 0;
+}
+.mkt-trow:hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.mkt-match {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.mkt-comp {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-faint);
+  font-weight: 700;
+}
+.mkt-teams {
+  font-weight: 600;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.mkt-teams i {
+  font-style: normal;
+  color: var(--text-faint);
+  font-weight: 400;
+  padding: 0 2px;
+}
+.mkt-time {
+  font-size: 11.5px;
+  color: var(--text-faint);
+}
+
+.mkt-sel {
+  font-weight: 600;
+  font-size: 13.5px;
+  color: var(--link);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mkt-prob {
+  text-align: right;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+}
+
+.mkt-fair {
+  text-align: right;
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 720px) {
+  .mkt-thead,
+  .mkt-trow {
+    grid-template-columns: minmax(0, 1.4fr) 64px;
+  }
+  .mkt-sel,
+  .mkt-thead > :nth-child(2) {
+    display: none;
+  }
+}
+
+/* ==========================================================================
+   Livescores
+   ==========================================================================
+   The board reads top-to-bottom as competition, then match row. Rows are a
+   5-column grid so the score of every match in a day sits on one vertical line
+   -- scanning a list of scores is the entire purpose of the page, and a score
+   column that wanders breaks it.
+
+   Colour follows Flashscore's meaning rather than its exact palette: green for
+   a match in play, muted text once it is over. Nothing else on the board is
+   coloured, so live is the only thing competing for attention. */
+
+.ls-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+/* Status tabs: ALL / LIVE / FINISHED / SCHEDULED. Pill buttons with the active
+   one filled, matching the reference board's toolbar. */
+.ls-tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.ls-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 13px;
+  border-radius: 999px;
+  border: 1px solid var(--glass-rim);
+  background: var(--glass-tint);
+  color: var(--text-dim);
+  font-size: 12.5px;
+  font-weight: 700;
+  font-family: inherit;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  cursor: pointer;
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  box-shadow:
+    inset 0 1px 0 0 var(--glass-rim),
+    inset 0 -5px 9px -6px var(--glass-refract),
+    0 5px 14px -6px var(--glass-cast);
+  transition:
+    background-color var(--t-fast),
+    color var(--t-fast),
+    border-color var(--t-fast),
+    box-shadow var(--t-fast),
+    transform var(--t-fast);
+}
+.ls-tab:hover {
+  color: var(--text);
+  background: var(--glass-tint-strong);
+  transform: translateY(-1px);
+}
+.ls-tab:active {
+  transform: translateY(0) scale(0.96);
+}
+.ls-tab.active {
+  background: var(--accent);
+  background-image: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.22) 0%,
+    rgba(255, 255, 255, 0) 55%
+  );
+  border-color: rgba(255, 255, 255, 0.5);
+  color: var(--on-accent);
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.5),
+    inset 0 -4px 8px -6px rgba(0, 0, 0, 0.4),
+    0 5px 16px -6px var(--glass-cast);
+}
+.ls-tab.active:hover {
+  background-color: var(--accent-dim);
+}
+.ls-tab-n {
+  font-size: 10.5px;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.75;
+  font-weight: 700;
+}
+/* The "Top leagues" narrowing sits at the end of the status tabs but is a
+   different kind of control -- it narrows by competition, not by state -- so it
+   is separated by a divider rather than reading as a fifth status tab. */
+.ls-tab-top {
+  margin-left: 4px;
+  border-left: 0;
+}
+.ls-tabs > .ls-tab-top::before {
+  content: "";
+  width: 1px;
+  height: 16px;
+  background: var(--border-soft);
+  margin-right: 8px;
+}
+.ls-tab-top .mi {
+  width: 13px;
+  height: 13px;
+}
+.ls-tab-top.active .mi {
+  /* Filled star once the narrowing is on, so the state reads without the
+     colour alone carrying it. */
+  fill: currentColor;
+}
+
+/* The audio control. This board has no sound, so it is present for parity with
+   the reference layout but reports its own uselessness in the tooltip rather
+   than implying goal alerts are switchable. */
+.ls-sound {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: none;
+  color: var(--text-faint);
+  cursor: pointer;
+}
+.ls-sound:hover {
+  color: var(--text);
+  background: var(--hover-wash);
+}
+.ls-sound.is-off {
+  color: var(--border);
+}
+
+/* A search box that lives in the toolbar of every tab. Kept visually identical
+   across pages so it reads as one control the site has, not four that happen to
+   look alike. */
+.search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  /* Glass, to match the chips and buttons it shares a toolbar with. It is a
+     form field rather than a control, so it gets the material but NOT the
+     hover-lift or the press: a field that rises under the pointer would read as
+     a button and invite a click that does nothing. */
+  background: var(--glass-tint);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  border: 1px solid var(--glass-rim-soft);
+  border-radius: var(--radius);
+  padding: 7px 10px;
+  box-shadow:
+    inset 0 1px 0 0 var(--glass-rim),
+    inset 0 -6px 10px -6px var(--glass-refract);
+  /* Wide enough for the longest placeholder, so the hint is never clipped to
+     "Search team, league or cou…" -- a truncated placeholder reads as a bug. */
+  min-width: 280px;
+  transition: border-color 0.15s var(--ease), box-shadow 0.15s var(--ease);
+}
+.search-box:focus-within {
+  /* Focus is the one state where the pane is allowed to light up with the
+     accent, because focus is the thing the user must be able to find. The rim
+     goes accent and the refraction keeps its depth below. */
+  border-color: var(--accent);
+  box-shadow:
+    inset 0 1px 0 0 var(--glass-rim),
+    inset 0 -6px 10px -6px var(--glass-refract),
+    0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+.search-box svg {
+  flex: 0 0 auto;
+  width: 15px;
+  height: 15px;
+  color: var(--text-faint);
+}
+.search-box:focus-within svg {
+  color: var(--accent);
+}
+.search-box input {
+  flex: 1 1 auto;
+  min-width: 0;
+  background: none;
+  border: 0;
+  outline: none;
+  color: var(--text);
+  font-size: 13.5px;
+  font-family: inherit;
+}
+.search-box input::placeholder {
+  color: var(--text-faint);
+}
+/* Hide the browser's own clear button: it is styled differently in every engine
+   and the count beside it already tells the reader what the box is doing. */
+.search-box input::-webkit-search-cancel-button {
+  appearance: none;
+}
+.search-count {
+  flex: 0 0 auto;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-faint);
+  /* A wash rather than a fixed light tint: on a white card this badge must sink
+     into the surface, not glow against it. */
+  background: var(--hover-wash);
+  border-radius: 999px;
+  padding: 1px 7px;
+  min-width: 22px;
+  text-align: center;
+}
+
+.ls-meta {
+  margin-left: auto;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+.ls-meta strong {
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The pulsing dot is the one animation on the page: it is the signal that the
+   board is live rather than a static snapshot. */
+.ls-pulse {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  margin-right: 6px;
+  vertical-align: middle;
+  animation: ls-pulse 1.6s var(--ease) infinite;
+}
+@keyframes ls-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.35; transform: scale(0.8); }
+}
+/* Respect a reader who has asked the OS to stop moving things. */
+@media (prefers-reduced-motion: reduce) {
+  .ls-pulse { animation: none; }
+}
+
+.ls-board {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.ls-group {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.ls-group-head {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 14px;
+  background: var(--bg-soft);
+  border-bottom: 1px solid var(--border-soft);
+  font-size: 13px;
+  cursor: pointer;
+  user-select: none;
+}
+.ls-group-head:hover {
+  background: var(--hover-wash);
+}
+.ls-comp {
+  font-weight: 700;
+  color: var(--text);
+  /* The competition is what the reader scans for, so it gets the space and
+     everything else in the bar yields to it. */
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* A placeholder that pushes the right-hand controls over; the reference board
+   has a match count here but this one shows the count in the tab, so it stays
+   empty rather than repeating the same number twice. */
+.ls-count {
+  margin-left: auto;
+  color: var(--text-faint);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The little striped block standing in for a country flag. Built from the
+   country code in JS, so it needs no network request and cannot render broken. */
+.ls-flag {
+  display: inline-flex;
+  flex: 0 0 auto;
+  width: 17px;
+  height: 12px;
+  border-radius: 2px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.ls-flag i {
+  flex: 1 1 0;
+  display: block;
+}
+.ls-flag-none {
+  background: var(--border-soft);
+}
+
+.ls-fav {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  color: var(--text-faint);
+  opacity: 0.55;
+}
+.ls-fav-head {
+  opacity: 0.4;
+}
+
+.ls-pin {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  color: var(--text-faint);
+  opacity: 0.5;
+}
+
+.ls-standings {
+  margin-left: auto;
+  flex: 0 0 auto;
+  font-size: 11.5px;
+  color: var(--link, var(--accent));
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  white-space: nowrap;
+}
+.ls-standings:hover {
+  color: var(--text);
+}
+
+.ls-collapse {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: 0;
+  background: none;
+  color: var(--text-dim);
+  cursor: pointer;
+  border-radius: 6px;
+}
+.ls-collapse:hover {
+  color: var(--text);
+  background: var(--hover-wash);
+}
+
+/* A collapsed group hides its rows but keeps its header, which is the whole
+   point of folding: the competition stays visible as a summary line. */
+.ls-group.is-collapsed .ls-rows {
+  display: none;
+}
+.ls-live-pill {
+  margin-left: 8px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: var(--green-soft);
+  color: var(--accent);
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.ls-rows {
+  display: flex;
+  flex-direction: column;
+}
+
+/* One match, two stacked team lines. The reference board stacks rather than
+   putting the teams side by side, and it is the better shape: a long club name
+   (".slug", "de", "Sinaloa") gets the full width instead of fighting the score
+   for half a row, and each score sits on the same line as the team it belongs
+   to, so there is never a question of which number is whose. */
+.ls-row {
+  display: grid;
+  grid-template-columns: 22px 84px minmax(0, 1fr) 26px minmax(0, 74px);
+  align-items: center;
+  gap: 10px;
+  padding: 7px 14px;
+  border-bottom: 1px solid var(--border-soft);
+  transition: background-color var(--t-fast);
+  cursor: pointer;
+}
+.ls-row:last-child {
+  border-bottom: 0;
+}
+/* The reference's row hover is a neutral wash, not a tint of the brand colour --
+   the accent is reserved for live state, so the row that is actually in play is
+   the only coloured one on the board. */
+.ls-row:hover {
+  background: var(--hover-wash);
+}
+
+/* The clock column. Sits beside the team names, vertically centred across both
+   lines, so the minute is the first thing the eye meets when scanning a day. */
+.ls-status {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 1px;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.ls-time {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text-dim);
+  /* Tabular figures keep a column of kick-off times aligned; without it the
+     minutes jitter row to row as the digits change width. */
+  font-variant-numeric: tabular-nums;
+  /* The clock is a 12-hour time ("03:00 PM") or a minute ("38'"), and neither
+     may be split across lines: a wrapped "PM" or "AM" reads as a stray column. */
+  white-space: nowrap;
+}
+/* In play. The minute is RED, not the brand colour -- on the reference board red
+   is the live status (--colors-status-live: #cb1818), and using the accent here
+   would make a live match indistinguishable from a selected one. */
+.ls-row.is-live .ls-time {
+  color: var(--live);
+  font-weight: 800;
+}
+/* The match date, under the clock. Dimmer than the minute because on a board
+   that is overwhelmingly "today" it is orientation, not news -- but it is still
+   there, so a row is never ambiguous about which day it belongs to. */
+.ls-date {
+  font-size: 10px;
+  color: var(--text-faint);
+}
+/* A settled match: the word replaces both the clock and the date, so it is sized
+   to read as a status rather than as a time. Dimmer than a live minute, because
+   a finished match is the least urgent thing on the board. */
+.ls-done {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-faint);
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+.ls-row.is-live .ls-date {
+  color: var(--live);
+  opacity: 0.75;
+}
+
+.ls-teams {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+.ls-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--text);
+}
+.ls-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* Only a settled match has a winner. The winner is BOLD rather than coloured --
+   the reference does not tint a winning club name, and colouring one during play
+   would call the result before it exists. The loser drops to the dim ink, so the
+   pair reads as a winner/loser at a glance instead of as two equal names. */
+.ls-line.winner .ls-name {
+  font-weight: 700;
+  color: var(--text);
+}
+.ls-row.is-done .ls-line:not(.winner) .ls-name {
+  color: var(--text-faint);
+  font-weight: 400;
+}
+
+/* The score column, right-aligned so every goal lines up down the board the way
+   a printed results table does. */
+.ls-scores {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  text-align: right;
+}
+.ls-goal-row {
+  line-height: 1.25;
+}
+.ls-goal {
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 14.5px;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+/* The winning side's score is the emphasised one. Colour alone was too quiet on
+   a mono figure, so weight AND ink both separate it -- a 1-0 must be readable as
+   a result without reading the two names beside it. */
+.ls-goal-row.winner .ls-goal {
+  font-weight: 800;
+  color: var(--text);
+}
+.ls-row.is-done .ls-goal-row:not(.winner) .ls-goal {
+  color: var(--text-faint);
+  font-weight: 600;
+}
+
+.ls-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+/* A hairline separating the match from the affordances, matching the reference
+   board's column rule. */
+.ls-divider {
+  width: 1px;
+  height: 26px;
+  background: var(--border-soft);
+}
+.ls-link {
+  color: var(--text-faint);
+  display: inline-flex;
+}
+.ls-link:hover {
+  color: var(--link, var(--accent));
+}
+
+@media (max-width: 720px) {
+  /* On a phone the five-column grid has no room: the score keeps its own
+     column (it is the point) and the status moves under the teams. */
+  .ls-row {
+    grid-template-columns: 18px 64px minmax(0, 1fr) 26px;
+    gap: 8px;
+    padding: 8px 10px;
+  }
+  .ls-actions {
+    display: none;
+  }
+  .ls-team {
+    font-size: 13px;
+  }
+  .ls-team .tip-logo {
+    width: 20px;
+    height: 20px;
+  }
+  .ls-group-head {
+    flex-wrap: wrap;
+  }
+}
+/* ------------------------------------------------------------ day navigation
+   The board reaches any day in the source's window (two years back), so the
+   three relative chips in the toolbar are shortcuts on top of a real picker,
+   not the whole of the navigation. Prev/next are clamped to the window, which
+   is why they are always enabled rather than disabled at the edge -- a disabled
+   button that looks the same as a working one says nothing. */
+.ls-daynav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 0 0 12px;
+}
+.ls-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: color var(--t-fast), border-color var(--t-fast), background-color var(--t-fast);
+}
+.ls-nav-btn:hover {
+  color: var(--text);
+  border-color: var(--border-strong, var(--border));
+  background: var(--hover-wash);
+}
+.ls-nav-btn:active {
+  transform: translateY(1px);
+}
+/* The native date input, themed to match the surrounding chips rather than left
+   as the browser default (which is a light control that would punch a hole in a
+   dark header). `color-scheme: dark` is what actually themes the calendar popup
+   and the picker glyph; the rest is just the closed-state box. */
+.ls-date-input {
+  height: 34px;
+  padding: 0 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  color-scheme: dark;
+}
+.ls-date-input:hover {
+  border-color: var(--border-strong, var(--border));
+}
+.ls-date-input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+/* The surrounding week. Given its own row so it never competes with the filter
+   tabs for width on a narrow screen. */
+.ls-quick {
+  margin: 0 0 14px;
+}
+
+/* ------------------------------------------------------- match detail panel
+   Expanded in place beneath its row. The left rule ties it visibly to the row
+   above; without it the panel reads as belonging to the group, not the match. */
+.ls-detail {
+  padding: 12px 14px 14px 46px;
+  border-bottom: 1px solid var(--border-soft);
+  border-left: 2px solid var(--accent);
+  background: var(--bg-soft);
+}
+.ls-row.is-open {
+  background: var(--hover-wash-soft);
+}
+.ls-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 10px 18px;
+  margin-bottom: 12px;
+}
+.ls-detail-grid > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.ls-detail-k {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-faint);
+}
+.ls-detail-v {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text);
+}
+/* "local time", "estimate" -- a qualifier on the value above it, so it is
+   smaller and unemphasised rather than shouting alongside the number. */
+.ls-detail-v em {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 11px;
+  color: var(--text-faint);
+}
+.ls-detail-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.ls-detail-note {
+  margin: 10px 0 0;
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--text-faint);
+}
+
+/* The expand affordance on the row. Styled as a control, not a link, because it
+   toggles in place rather than navigating. */
+.ls-expand {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-faint);
+  cursor: pointer;
+  transition: color var(--t-fast), border-color var(--t-fast);
+}
+.ls-expand:hover {
+  color: var(--text);
+  border-color: var(--border);
+}
+.ls-row.is-open .ls-expand {
+  color: var(--accent);
+}
+/* A row with no stored fixture cannot open. Marked with a neutral glyph rather
+   than a dead button, so nothing invites a click that would do nothing. */
+.ls-nodetail {
+  display: inline-flex;
+  color: var(--text-faint);
+  opacity: 0.5;
+}
+
+/* The live minute and kick-off time, stacked in the status cell. */
+.ls-minute {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--live, var(--accent));
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.ls-kick {
+  font-size: 10.5px;
+  color: var(--text-faint);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  .ls-detail {
+    padding-left: 14px;
+  }
+  .ls-detail-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ------------------------------------------------------------ match page
+   The page a livescore row opens into. Its job is to answer "what minute,
+   what score, what has happened" in one screen, so the header is the largest
+   thing on it and the minute sits beside the score rather than under it. */
+
+.mp-head {
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  border-radius: 14px;
+  padding: 18px 20px 14px;
+  margin-bottom: 16px;
+}
+/* A left rule, not a background wash: a live match is signalled by the clock,
+   and shouting it in colour would make a scheduled match look broken. */
+.mp-head.is-live {
+  border-left: 3px solid var(--live, var(--accent));
+}
+.mp-head.is-done {
+  opacity: 0.92;
+}
+
+.mp-head-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.mp-comp {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-dim);
+}
+.mp-headmisc {
+  font-size: 12.5px;
+  color: var(--text-faint);
+  font-variant-numeric: tabular-nums;
+}
+.mp-headmisc em {
+  font-style: normal;
+  font-size: 11px;
+}
+
+.mp-teams {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 14px;
+}
+.mp-team {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+.mp-team.away {
+  justify-content: flex-end;
+  text-align: right;
+}
+.mp-team-name {
+  font-size: 18px;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.mp-team.winner .mp-team-name {
+  color: var(--accent);
+}
+.mp-team .tip-logo {
+  width: 40px;
+  height: 40px;
+  flex: 0 0 auto;
+}
+
+.mp-centre {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 0 8px;
+  min-width: 132px;
+}
+.mp-score {
+  font-family: var(--mono);
+  font-size: 34px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.mp-score-none {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-faint);
+}
+.mp-status-note {
+  font-size: 11.5px;
+  color: var(--text-faint);
+}
+
+/* The clock. Bigger than anything else in the header because it is the one
+   number that is changing, and the reason the reader is on this page. */
+.mp-clock {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.mp-clock.is-live {
+  color: var(--live, var(--accent));
+}
+.mp-minute {
+  font-size: 17px;
+  font-weight: 800;
+}
+.mp-period {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Where the minute came from. Kept quiet: it is a footnote on a number, not a
+   headline -- but it must be present, because a derived minute and a published
+   one are different claims and the reader is entitled to tell them apart. */
+.mp-source-note {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 14px 0 0;
+  padding-top: 11px;
+  border-top: 1px solid var(--border-soft);
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--text-faint);
+}
+.mp-source-note .mi {
+  flex: 0 0 auto;
+}
+.mp-source-note.mp-derived {
+  color: var(--warn, var(--text-faint));
+}
+
+.mp-actions {
+  display: flex;
+  gap: 9px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+.mp-nomodel {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  color: var(--text-faint);
+}
+
+/* The tab bar reuses .mtabs/.mtab from the fixture page, so the two detail
+   pages are navigated identically; only the count pill is new. */
+.mp-tab-n {
+  display: inline-block;
+  margin-left: 5px;
+  padding: 1px 6px;
+  border-radius: 9px;
+  background: var(--bg-soft);
+  color: var(--text-faint);
+  font-size: 10.5px;
+  font-weight: 700;
+}
+
+.mp-panels {
+  padding-top: 2px;
+}
+.mp-count {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-faint);
+  margin-left: 6px;
+}
+.mp-empty {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+/* The "the feed reports 1 of the 2 goals" note. A quiet aside under the
+   timeline, not a warning: the page is being precise, not apologising. */
+.mp-gap {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  margin-top: 12px;
+  padding-top: 11px;
+  border-top: 1px solid var(--border-soft);
+  font-size: 12px;
+  color: var(--text-faint);
+}
+.mp-gap .mi {
+  flex: 0 0 auto;
+  margin-top: 1px;
+}
+
+/* ---------------------------------------------------------------- timeline */
+/*
+  The timeline is a centre line with the two teams on either side: home events
+  on the left, away events mirrored to the right, exactly as a match report is
+  laid out. The alternative -- everything left-aligned in one column -- makes
+  the reader parse the team name on every row to learn which side did what.
+
+  The rule down the middle is what makes the two halves read as one document
+  rather than as two lists that happen to be adjacent.
+*/
+.mp-events {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+.mp-events::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  background: var(--border-soft);
+}
+.mp-event {
+  display: grid;
+  grid-template-columns: 42px 26px minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--border-soft);
+  /* Only the home half takes the left column, so the centre rule stays clear. */
+  width: calc(50% - 12px);
+}
+.mp-event:last-child {
+  border-bottom: 0;
+}
+
+/* The away half: mirrored, so its text runs away from the centre line and the
+   minute ends up at the outer edge on both sides. `direction: rtl` on the row
+   and `ltr` on the text does this without reversing a single word. */
+.mp-event.is-away {
+  margin-left: auto;
+  direction: rtl;
+  border-bottom-color: transparent;
+}
+.mp-event.is-away > * {
+  direction: ltr;
+}
+.mp-event.is-away .mp-ev-body {
+  text-align: right;
+  align-items: flex-end;
+}
+.mp-event.is-away .mp-ev-line {
+  justify-content: flex-end;
+}
+.mp-event.is-away .mp-ev-minute {
+  text-align: left;
+}
+/* An event with no side (a neutral note) belongs to neither half, so it spans
+   the centre rather than being pushed onto one team's account. */
+.mp-event:not(.is-home):not(.is-away) {
+  width: 100%;
+  grid-template-columns: 42px 26px minmax(0, 1fr);
+}
+.mp-ev-minute {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text-dim);
+  text-align: right;
+  padding-top: 2px;
+  font-variant-numeric: tabular-nums;
+}
+.mp-ev-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 7px;
+  background: var(--bg-soft);
+  color: var(--text-dim);
+}
+/* A goal is the only event the reader is scanning for, so it is the only one
+   that gets the accent. Everything else stays neutral and legible. */
+.mp-ev-goal .mp-ev-icon,
+.mp-ev-own-goal .mp-ev-icon,
+.mp-ev-penalty .mp-ev-icon {
+  background: color-mix(in srgb, var(--accent) 18%, transparent);
+  color: var(--accent);
+}
+.mp-ev-assist .mp-ev-icon {
+  background: var(--bg-soft);
+  color: var(--text-faint);
+}
+.mp-ev-yellow .mp-ev-icon {
+  background: color-mix(in srgb, #e8b027 22%, transparent);
+  color: #d99a12;
+}
+.mp-ev-red .mp-ev-icon {
+  background: color-mix(in srgb, var(--neg, #e5484d) 20%, transparent);
+  color: var(--neg, #e5484d);
+}
+.mp-ev-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.mp-ev-line {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.mp-ev-line strong {
+  font-size: 13.5px;
+}
+.mp-ev-team {
+  font-size: 11.5px;
+  color: var(--text-faint);
+}
+.mp-ev-type {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+.mp-ev-text {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-faint);
+}
+
+/* ------------------------------------------------------------------- stats */
+/* The two team names, with their crests, above every block of statistics.
+   Home on the left, away on the right -- the same orientation as the values
+   below and as the timeline on the Summary tab. */
+.mp-team-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 9px;
+  margin: -4px 0 12px;
+  border-bottom: 1px solid var(--border-soft);
+}
+.mp-th-team {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text-dim);
+}
+.mp-th-team .tip-logo {
+  width: 22px;
+  height: 22px;
+  flex: 0 0 auto;
+}
+.mp-th-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.mp-th-away {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+
+/*
+  One statistic in three columns: home value, name, away value. The values sit
+  hard against their own edge so they line up down the card as a column of
+  figures, and the name is centred between them. A "7 - 3" pair would ask the
+  reader to work out the orientation on every row; a fixed left/right does not.
+*/
+.mp-stat {
+  margin-bottom: 12px;
+}
+.mp-stat:last-child {
+  margin-bottom: 0;
+}
+.mp-stat-head {
+  display: grid;
+  grid-template-columns: 1fr minmax(0, 2fr) 1fr;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 5px;
+}
+.mp-stat-name {
+  font-size: 12.5px;
+  color: var(--text-dim);
+  text-align: center;
+}
+.mp-stat-home-val,
+.mp-stat-away-val {
+  font-family: var(--mono);
+  font-size: 13.5px;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.mp-stat-home-val {
+  text-align: left;
+}
+.mp-stat-away-val {
+  text-align: right;
+}
+/* Two bars meeting in the middle: the split is the point of the row, so the
+   comparison reads as one shape rather than two independent numbers. */
+.mp-stat-bar {
+  display: flex;
+  height: 5px;
+  border-radius: 3px;
+  overflow: hidden;
+  background: var(--bg-soft);
+}
+.mp-stat-home {
+  background: var(--accent);
+}
+.mp-stat-away {
+  background: color-mix(in srgb, var(--accent) 35%, var(--border));
+}
+
+/* The row affordance into the match page. A control, not decoration: the row
+   itself is also clickable, and this makes that discoverable. */
+.ls-open-match {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  color: var(--text-faint);
+  transition: color var(--t-fast), border-color var(--t-fast);
+}
+.ls-open-match:hover {
+  color: var(--accent);
+  border-color: var(--border);
+}
+.ls-row.is-openable {
+  cursor: pointer;
+}
+
+@media (max-width: 720px) {
+  .mp-teams {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 10px;
+    text-align: center;
+  }
+  .mp-team,
+  .mp-team.away {
+    justify-content: center;
+    text-align: center;
+  }
+  .mp-centre {
+    order: -1;
+  }
+  .mp-score {
+    font-size: 30px;
+  }
+  .mp-event {
+    grid-template-columns: 36px 24px 1fr;
+    gap: 8px;
+  }
+}
+
+/* ------------------------------------------------- match page: information
+   The rows the reference page lists under "Match information": the round, the
+   venue, the referee, the attendance. A definition list rather than a table,
+   because the label/value pairing IS the content -- a table would add borders
+   that carry no meaning. */
+.mp-info {
+  margin-bottom: 14px;
+}
+.mp-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px 18px;
+  margin: 0;
+}
+.mp-info-grid > div {
+  min-width: 0;
+}
+.mp-info-grid dt {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-faint);
+  margin-bottom: 2px;
+}
+.mp-info-grid dd {
+  margin: 0;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+
+/* The running score on a goal row. Boxed so it reads as a state the match
+   passed through, not as another word in the sentence beside it. */
+.mp-ev-score {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  border-radius: 5px;
+  padding: 1px 6px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The player coming off, under the one coming on. The arrow says which way,
+   so the two names never have to be told apart by their order alone. */
+.mp-ev-sub {
+  display: block;
+}
+.mp-ev-out {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--text-faint);
+}
+.mp-ev-out .mi {
+  color: var(--neg, #e5484d);
+}
+
+/* ------------------------------------------------------ match page: lineups */
+.mp-lineups {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  align-items: start;
+}
+.mp-lineup {
+  margin: 0;
+}
+/* The XI and the bench sit side by side INSIDE one team card, not stacked.
+   Stacked, a 21-man squad made a card ~930px tall against a ~720px viewport, so
+   a reader could never see one team's full lineup on one screen -- which is
+   exactly the complaint this layout fixes. Two columns halve the height and the
+   whole squad then fits. `minmax(0, 1fr)` rather than `1fr` so a long name
+   cannot widen a column and break the split. */
+.mp-lineup-cols {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 6px 14px;
+  align-items: start;
+}
+.mp-lineup-col {
+  min-width: 0;
+}
+/* With no bench the XI keeps the full width rather than sitting in a half-empty
+   two-column grid. */
+.mp-lineup-cols > .mp-lineup-col:only-child {
+  grid-column: 1 / -1;
+}
+.mp-lineup-head {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 10px;
+}
+.mp-lineup-head .tip-logo {
+  width: 26px;
+  height: 26px;
+}
+.mp-lineup.away .mp-lineup-head {
+  flex-direction: row-reverse;
+}
+.mp-lineup-name {
+  font-size: 14.5px;
+  font-weight: 700;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.mp-lineup.away .mp-lineup-name {
+  text-align: right;
+}
+/* The formation, printed as the feed gives it. Monospaced so "1-4-2-3-1"
+   reads as a shape rather than as a hyphenated word. */
+.mp-formation {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--accent);
+  background: var(--bg-soft);
+  border-radius: 5px;
+  padding: 2px 7px;
+  white-space: nowrap;
+}
+.mp-coach {
+  font-size: 12px;
+  color: var(--text-faint);
+  margin-bottom: 10px;
+}
+.mp-lineup-section {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-faint);
+  padding-bottom: 5px;
+  margin: 12px 0 4px;
+  border-bottom: 1px solid var(--border-soft);
+}
+.mp-lineup-section:first-of-type {
+  margin-top: 0;
+}
+.mp-players {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.mp-player {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 0;
+  font-size: 12.5px;
+}
+/* The rating is pushed to the row's right edge so the name can run into the
+   space the badge no longer occupies. Without this the name, the number and the
+   rating all competed for one narrow column and the name lost -- "Becerril"
+   rendered as "Becer". */
+.mp-player .mp-rating,
+.mp-player .mp-role {
+  margin-left: auto;
+}
+/* Only the LAST badge in a row carries the auto margin. Giving it to BOTH the
+   role tag and the rating (or to the role alone when it precedes the rating)
+   handed the whole free space to the badge and left the name a 15px box, which
+   cut the two goalkeepers to "Ri" and "Mora". The name must win the space; the
+   badges sit at the end of what is left over. */
+.mp-player .mp-role + .mp-role,
+.mp-player .mp-rating + .mp-rating {
+  margin-left: 0;
+}
+/* --- the pitch ------------------------------------------------------------
+   ONE landscape pitch with both sides on it, matching the reference board: the
+   two teams face EACH OTHER across the halfway line, each keeper standing on its
+   own goal line at the outer edge of the field, and each side's lines running
+   inward from its own goal toward the middle. This replaces an earlier layout
+   that stacked the two halves vertically -- that arrangement drew both keepers
+   onto the halfway line, which is the one thing a pitch diagram must not say.
+
+   The green is a real pitch tone with a subtle stripe, and it is fixed rather
+   than tokenised -- a grass pitch is green in either theme, and an operator's
+   palette has no business recolouring it. */
+.mp-pitch-card {
+  padding: 14px;
+  /* Below the width at which eleven columns can be drawn legibly, the field
+     stops shrinking and the card scrolls instead. A horizontal scrollbar is an
+     honest answer; overlapping players are not, because the reader cannot tell
+     a hidden player from a missing one. 640px is the measured point where the
+     columns first collide. */
+  overflow-x: auto;
+}
+/* --- the formation strip ---------------------------------------------------
+   The reference's own header: the two outfield shapes hard left and hard right
+   with the word FORMATION between them, sitting on a pale board just above the
+   grass. Printing the shapes HERE rather than over the grass is what stops the
+   field carrying the same three numbers twice, and it gives the two mean
+   ratings a home beside the shape they summarise. */
+.mp-pitch-strip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  padding: 7px 12px;
+  border-radius: 6px;
+  background: var(--bg-soft);
+  border: 1px solid var(--border-soft);
+}
+.mp-pitch-strip-side {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1 1 0;
+  min-width: 0;
+}
+/* The away half mirrors the home half, so its shape and rating also read from
+   the outside in -- the board looks symmetrical rather than left-weighted. */
+.mp-pitch-strip-side-away {
+  justify-content: flex-end;
+}
+.mp-pitch-strip-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  flex: 0 0 auto;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+/* Says the shape was inferred because the feed published no formation. Quiet:
+   it qualifies the figure without competing with its label. */
+.mp-pitch-derived {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: var(--text-dim);
+  background: var(--surface-2);
+}
+
+/* --- the field ------------------------------------------------------------
+   The frame both halves are laid out in. `position: relative` is what lets the
+   markings layer sit over the grass rather than take part in the flex flow.
+
+   The field is sized to a PITCH-ISH RATIO, not to whatever the content happens
+   to need. Letting the height fall out of the cards produced an 890x348 field --
+   a 2.6:1 letterbox, twice as wide as a real pitch, on which the two halves read
+   as one long strip and the penalty boxes have nowhere to live. A real pitch is
+   ~1.5-1.6:1 and the reference board is 600x365 (1.64:1), so `aspect-ratio` is
+   pinned near there and the height follows the width instead.
+
+   `align-items: stretch` keeps both halves full height, so each side's lines can
+   spread top-to-bottom across the whole field rather than bunching at one end. */
+.mp-pitch {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  /* The board is sized to the REFERENCE's own proportions, measured off its live
+     layout: ~2:1, much wider than it is tall. The first attempt used 1.62:1 (a
+     real pitch's 105x68m ratio), which is the correct shape for a top-down pitch
+     but the wrong shape for this board -- it left the four formation columns
+     cramped into a narrow half, so the lines collided and the whole figure read
+     as a grid of names rather than a formation. The reference's wider board is
+     what gives each line its own clear strip of grass. */
+  aspect-ratio: 2.05 / 1;
+  /* A floor, so the deepest line of five portraits always has room. At these
+     portrait sizes a five-man line needs ~400px of height, so the field is never
+     allowed below 420px -- below that `space-evenly` has to overlap the cards and
+     a line stops being readable as a line. The ratio governs everything above
+     this floor. */
+  min-height: 420px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background-color: #2c8a4b;
+  /* Mown stripes, running across the LENGTH of the field (vertically here, since
+     the pitch is drawn side-on). Drawn once on the frame so the two halves
+     cannot show a seam where they meet. */
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05) 0 6.25%,
+    transparent 6.25% 12.5%
+  );
+  /* Faint white, so a marking looks drawn on grass instead of printed on it. */
+  --ml: rgba(255, 255, 255, 0.62);
+}
+
+/* --- the pitch markings ---------------------------------------------------
+   Drawn as ONE inline SVG on a pseudo-element rather than as a dozen layered
+   gradients. The gradient approach needed the background-size and
+   background-position lists to stay index-aligned across thirteen entries, and a
+   single slip silently painted the goal lines on top of the touchlines -- which
+   is exactly what happened: the penalty boxes and the boundary were in the DOM
+   but invisible on screen, so the field read as a plain green rectangle with a
+   stray centre circle.
+
+   With an SVG the geometry is stated once, in pitch coordinates, and scales with
+   the box (`preserveAspectRatio="none"` stretches it to the frame, which is what
+   keeps the markings glued to the edges at every card width). The viewBox is
+   105x68 -- a real pitch in metres -- so every offset below is a true proportion
+   of the field rather than a pixel guess. `vector-effect="non-scaling-stroke"`
+   keeps every line exactly 1px however far the SVG is stretched. */
+.mp-pitch::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 105 68' preserveAspectRatio='none'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='0.62' stroke-width='1' vector-effect='non-scaling-stroke'%3E%3Crect x='0.5' y='0.5' width='104' height='67'/%3E%3Cline x1='52.5' y1='0.5' x2='52.5' y2='67.5'/%3E%3Ccircle cx='52.5' cy='34' r='9.15'/%3E%3Ccircle cx='52.5' cy='34' r='0.6' fill='%23ffffff' stroke='none'/%3E%3Crect x='0.5' y='13.85' width='16.5' height='40.3'/%3E%3Crect x='0.5' y='24.85' width='5.5' height='18.3'/%3E%3Cpath d='M17 30.15 A 9.15 9.15 0 0 1 17 37.85'/%3E%3Ccircle cx='11' cy='34' r='0.6' fill='%23ffffff' stroke='none'/%3E%3Crect x='88' y='13.85' width='16.5' height='40.3'/%3E%3Crect x='99' y='24.85' width='5.5' height='18.3'/%3E%3Cpath d='M88 30.15 A 9.15 9.15 0 0 0 88 37.85'/%3E%3Ccircle cx='94' cy='34' r='0.6' fill='%23ffffff' stroke='none'/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+/* --- one side's half ------------------------------------------------------
+   Equal halves, each a ROW of lines. Home reads keeper-first, so with
+   `flex-direction: row` the keeper lands at the LEFT edge of the field -- its
+   own goal -- and the lines run inward toward the halfway line. Away is drawn as
+   the mirror image (`row-reverse`), so its keeper lands at the RIGHT edge.
+   Between them the two attacks meet at the halfway line.
+
+   `space-between`, not `space-around` or `space-evenly`. The three were measured
+   against each other on this field, and the first two both leave the half's
+   outer edges slack: `space-around` gave every column an equal outer margin so
+   the lone keeper reserved a full column of empty grass, and `space-evenly`
+   equalises the GAPS but lets the widest column (a five-man midfield) push
+   everything beside it inward. `space-between` pins the keeper to its own goal
+   line and the last line to the halfway line, which is exactly the span a
+   formation occupies, and everything between is divided evenly. */
+.mp-pitch-half {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 50%;
+  display: flex;
+  /* NO wrap. Wrapping was a wrong fix: when a five-man line did not fit it moved
+     to a second row, so the away side's lone striker (the "1" of 1-4-2-3-1)
+     ended up beside the half rather than in its own column -- the formation
+     stopped reading as the formation. The columns are allowed to SHRINK instead
+     (see .mp-pitch-player), which keeps every line a column at any width. */
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 3px;
+  /* A little breathing room down each goal line, so a keeper's portrait does not
+     sit flush against the boundary marking. */
+  padding: 14px 10px;
+  /* The halfway side gets a WIDER gutter than the goal side. With an even 10px
+     both ways the two teams' attacking lines ended up nearly touching across the
+     halfway line, so the eleven players read as one continuous twenty-two-man
+     field instead of two sides facing off. 26px is the point at which the two
+     blocks visibly separate without the halves looking unbalanced. */
+  padding-right: 26px;
+  /* The floor below which the figure stops being a pitch and becomes a pile of
+     overlapping names. At a 420px window each half is 175px but four columns
+     need ~200px just for the shirt number and name, so the columns collide and
+     hide each other -- the reader sees an incomplete lineup. Rather than draw a
+     collision, the field keeps a legible minimum width and the card scrolls
+     sideways instead (see .mp-pitch-card below). */
+  min-width: 0;
+}
+/* The away half is mirrored, so its gutter must mirror too: the extra space goes
+   on its LEFT edge, against the halfway line -- and its flex direction reverses so
+   its keeper lands at the right-hand goal. */
+.mp-pitch-half-home {
+  flex-direction: row;
+}
+.mp-pitch-half-away {
+  flex-direction: row-reverse;
+  padding-right: 10px;
+  padding-left: 26px;
+}
+
+/* One line of the formation: a column of players spread down the field.
+   `space-evenly` divides whatever height the line has between its players, so a
+   two-man attack sits at the top and bottom of its strip and a five-man midfield
+   fills it -- each line occupies exactly its own band of the field, which is what
+   makes the four bands read as a formation. A fixed `gap` cannot do this: a
+   five-man line needs ~400px at these portrait sizes and the field is 385px, so
+   the fixed gap overflowed and pushed the deepest line out of the field. */
+.mp-pitch-line {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 4px 0;
+  /* A line may SHRINK below its natural width so a five-man defence can squeeze
+     into a narrow half instead of overflowing it. Without the shrink the cards
+     kept their full width, ran past the half, and overlapped the next line. */
+  flex: 1 1 auto;
+  min-width: 0;
+}
+/* The keeper's line holds a single player and must NOT take an equal share of the
+   half's width -- that is what starved the four outfield lines. It sizes to its
+   content and the free space goes to the lines that actually carry several
+   players.
+
+   Centring matters here: with the line's `space-between`, a lone card pinned to
+   the top of the column left the keeper standing on the corner of its goal, when
+   a keeper stands in the MIDDLE of the goal mouth. `center` puts the single card
+   on the field's horizontal axis, which is where the goal actually is. */
+.mp-pitch-line:has(.mp-pitch-player:only-child) {
+  flex: 0 0 auto;
+  justify-content: center;
+}
+.mp-pitch-player {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  /* Headroom for the rating badge, which sits above the portrait's top edge and
+     would otherwise be clipped by the card's own box. */
+  padding-top: 8px;
+  /* The player sits in a COLUMN (its line), so a flexible main-size here grows
+     it VERTICALLY -- which is what stretched a two-man line's cards to 227px and
+     a lone keeper's to the full 458px field height, leaving the portraits
+     stranded at the top of tall empty boxes. `0 0 auto` keeps every card at its
+     natural height, and the line's own `space-between` distributes them.
+
+     The WIDTH is capped instead, which is the axis that actually needs bounding:
+     a hard 84px made a five-man line 420px wide -- more than half the field on
+     any window under ~1000px -- so the cards are capped at 96px and centred in
+     their column. */
+  flex: 0 0 auto;
+  width: 100%;
+  max-width: 84px;
+}
+/* The portrait, sized to the reference's own 42px bust on its own 600px field --
+   measured off the live board, not guessed. That is 7% of the field's width; a
+   54px portrait on this field was 6.8%, so the two sat at the same PROPORTION but
+   the card around it was far too tall, which is what made the faces read as
+   oversized blobs. `max-width: 100%` still caps it by its COLUMN: at 360px a half
+   is ~175px holding four columns (~40px each), and a fixed face wider than the
+   column it sat in made neighbouring columns overlap and hide each other. */
+.mp-pitch-photo {
+  position: relative;
+  display: inline-flex;
+  align-items: flex-end;
+  justify-content: center;
+  /* Matched to the reference's own face-to-field ratio: a 42px bust on its 600px
+     field is 7% of the width, so on this wider board the bust scales up with it.
+     `max-width: 100%` still caps it by its COLUMN: at 360px a half is ~175px
+     holding four columns (~40px each), and a fixed face wider than the column it
+     sat in made neighbouring columns overlap and hide each other. */
+  width: 46px;
+  height: 46px;
+  max-width: 100%;
+  aspect-ratio: 1 / 1;
+  flex: 0 0 auto;
+}
+.mp-pitch-photo .mp-photo,
+.mp-pitch-photo .mp-photo-fallback {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  object-fit: contain;
+  object-position: bottom center;
+  font-size: 12px;
+}
+/* A missing portrait becomes a small, quiet disc with the monogram. The first
+   attempt drew it as a white-ringed bubble the full width of the photo box, which
+   made three empty circles per side the LOUDEST thing on the pitch -- louder than
+   the real cut-out busts beside them, because a filled disc has far more visual
+   weight than a head-and-shoulders cut-out on transparent grass. Sized down to
+   ~2/3 of the box and muted to a dark, ringless disc, it recedes to the same
+   visual weight as a portrait. */
+.mp-pitch-photo .mp-photo-fallback {
+  width: 66%;
+  height: 66%;
+  margin: auto;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.22);
+  border: 0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+/* The captain's armband rides the portrait's BOTTOM-LEFT, as the reference
+   wears it -- a marker on the player, not a row of its own. */
+.mp-pitch-armband {
+  position: absolute;
+  left: 0;
+  bottom: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  background: #ffd60a;
+  color: #1a1a1a;
+  font-size: 9px;
+  font-weight: 800;
+  line-height: 14px;
+  text-align: center;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+/* --- the name plate -------------------------------------------------------
+   Shirt number and name on a small WHITE plate, as the reference prints them,
+   rather than white text haloed over the grass. The plate is what makes a
+   surname readable against both the green and the paler mown stripes without a
+   per-player text shadow, and the 2px drop is the reference's own.
+
+   ONE line, always. Letting the name wrap made `Chavez Suarez` a two-line plate
+   and every other card a one-line plate, so a line of four players stood at four
+   different heights and the rows stopped reading as rows. A single line with the
+   overflow elided is what keeps every card the same shape -- and it is what the
+   reference does, printing `Rak Barragan` on one line. */
+.mp-pitch-plate {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  max-width: 100%;
+  min-width: 0;
+  padding: 1px 4px;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
+}
+.mp-pitch-shirt {
+  flex: 0 0 auto;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.35;
+  color: #00141e;
+  font-variant-numeric: tabular-nums;
+}
+/* --- the rating note ------------------------------------------------------
+   The feed's own rating, printed exactly as sent (e.g. "7.2") and coloured by
+   BAND, as the reference colours it: a good game and a poor one must not look
+   alike. Only rendered when the feed sent a rating (see matchPitchPlayer), so it
+   is never a blank stand-in for a missing value. */
+/* The rating note rides the portrait's top-right corner, as the reference wears
+   it -- but OUTSIDE the face, not over it. Sitting it at `right: -8px` still
+   clipped the head on the cards whose cut-out fills the frame, so it is nudged
+   further clear and the card reserves a little headroom for it (see
+   `.mp-pitch-player`'s padding-top). */
+.mp-pitch-rating {
+  position: absolute;
+  right: -10px;
+  top: -8px;
+  z-index: 2;
+  min-width: 22px;
+  height: 14px;
+  padding: 0 3px;
+  border-radius: 4px;
+  background: #f3a000;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 14px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+/* The bands, matching the reference's own cutoffs. */
+.mp-pitch-rating-elite { background: #0033ff; }
+.mp-pitch-rating-great { background: #0b7929; }
+.mp-pitch-rating-good { background: #76b100; }
+.mp-pitch-rating-ok { background: #f3a000; }
+.mp-pitch-rating-poor { background: #ec6b07; }
+/* The mean rating sits in the formation strip, not on a portrait, so it is a
+   normal inline badge at the reference's larger size. */
+.mp-pitch-rating-avg {
+  position: static;
+  /* 44x20, the reference's own mean-badge size (measured off its board). */
+  min-width: 44px;
+  height: 20px;
+  line-height: 20px;
+  font-size: 12px;
+}
+/* --- the incident marks ---------------------------------------------------
+   What the feed reported a player DID in this match: a ball for a goal, an
+   arrow down when taken off, an arrow up when sent on. They ride the portrait's
+   bottom-right corner -- the opposite corner from the rating note -- so the two
+   never collide, and they sit in a small dark row so a white ball reads against
+   both the green grass and a pale shirt. A player with no incident wears none. */
+.mp-pitch-marks {
+  position: absolute;
+  right: -6px;
+  bottom: -2px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+.mp-pitch-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 1px;
+  height: 14px;
+  padding: 0 3px;
+  border-radius: 7px;
+  background: rgba(0, 20, 30, 0.82);
+  color: #fff;
+  line-height: 1;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+.mp-pitch-mark .mi {
+  width: 11px;
+  height: 11px;
+}
+.mp-pitch-mark-n {
+  font-size: 9px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+/* A goal ball is solid white; an assist's is an outline so the two are told
+   apart at a glance without a legend. A substitution arrow is tinted so it is
+   not mistaken for a goal. */
+.mp-pitch-mark-assist { background: rgba(0, 20, 30, 0.6); }
+.mp-pitch-mark-off { background: rgba(196, 43, 28, 0.9); }
+.mp-pitch-mark-on { background: rgba(11, 121, 41, 0.92); }
+/* The name itself, on ONE line with a trailing ellipsis. Measured: `Chavez
+   Suarez` wrapped and made its card a line taller than every neighbour, so the
+   rows stopped reading as rows and the field's vertical rhythm broke up. The
+   reference keeps one line and elides, so this does too. */
+.mp-pitch-name {
+  min-width: 0;
+  max-width: 100%;
+  /* 10px against the reference's 13px on a wider board: the reference plate holds
+     one short name, while these plates must fit `Chavez Suarez` in the same
+     column, so the type steps down one size to keep the common case unwrapped
+     rather than eliding nearly every name. */
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.3;
+  text-align: center;
+  color: #00141e;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* The formation shape, printed in the strip at each side's own end of the board
+   -- a plain figure, as the reference prints it, not a coloured pill on grass. */
+.mp-pitch-formation {
+  flex: 0 0 auto;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+/* The halfway marker is a pure positioner -- the half is `flex: 1 1 50%` so the
+   two always meet at 50% already. It draws NOTHING: an element here with a
+   background or border is what put a seam down the middle of the field and made
+   one pitch read as two cards butted together. */
+.mp-pitch-mid {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  z-index: 0;
+  background: none;
+}
+
+/* --- the side names along the bottom ------------------------------------- */
+.mp-pitch-legend {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+.mp-pitch-legend-team {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13.5px;
+  font-weight: 600;
+}
+.mp-pitch-legend-away {
+  flex-direction: row-reverse;
+}
+
+/* Narrow screens: the field stays landscape and the columns keep dividing the
+   half between them. The only things that change are the portrait size and the
+   name font -- the WIDTH is deliberately left to the fluid `flex: 1 1 0` rule,
+   because a fixed width here was what made the cards overlap again on a phone
+   (an override of 62px/48px beat the fluid basis and the columns could no longer
+   shrink to fit). The HEIGHT follows the `aspect-ratio` on the field, so there is
+   no min-height override here any more: pinning one back was what let the field
+   drift away from a pitch's proportions at narrow widths. */
+@media (max-width: 720px) {
+  .mp-pitch {
+    /* Keep the field wide enough to draw eleven columns without collision; the
+       card scrolls sideways below this rather than overlapping the players. */
+    min-width: 660px;
+  }
+  .mp-pitch-photo {
+    width: 36px;
+    height: 36px;
+  }
+  .mp-pitch-name {
+    font-size: 9px;
+  }
+  .mp-pitch-shirt {
+    font-size: 9px;
+  }
+  .mp-pitch-rating {
+    min-width: 21px;
+    font-size: 9px;
+    height: 13px;
+    line-height: 13px;
+    padding: 0 3px;
+  }
+  .mp-pitch-strip {
+    padding: 5px 8px;
+  }
+  .mp-pitch-formation {
+    font-size: 11px;
+  }
+}
+@media (max-width: 520px) {
+  .mp-pitch-half {
+    gap: 1px;
+    padding: 8px 3px;
+  }
+  .mp-pitch-line {
+    gap: 2px;
+  }
+  .mp-pitch-photo {
+    width: 28px;
+    height: 28px;
+  }
+  .mp-pitch-photo .mp-photo,
+  .mp-pitch-photo .mp-photo-fallback {
+    font-size: 9px;
+  }
+  .mp-pitch-photo .mp-photo-fallback {
+    border-width: 1px;
+  }
+  .mp-pitch-name {
+    font-size: 8px;
+  }
+  .mp-pitch-plate {
+    padding: 0 3px;
+    gap: 3px;
+  }
+  .mp-pitch-shirt {
+    font-size: 8px;
+  }
+  .mp-pitch-rating {
+    min-width: 18px;
+    font-size: 8px;
+    height: 12px;
+    line-height: 12px;
+    padding: 0 2px;
+  }
+  .mp-pitch-strip {
+    gap: 6px;
+    padding: 4px 6px;
+  }
+  .mp-pitch-strip-label span:not(.mi) {
+    display: none;
+  }
+  .mp-pitch-formation {
+    font-size: 10px;
+  }
+}
+
+/* --- the player portrait --------------------------------------------------
+   A circular crop, matching how a face reads in a list of names. The fallback
+   is the same box with the player's initials in it, so a row with no portrait
+   keeps the column alignment instead of collapsing the name leftward. */
+.mp-photo {
+  flex: 0 0 auto;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: top center; /* faces sit high in the frame, not centred */
+  background: var(--surface-2);
+  border: 1px solid var(--border-soft);
+}
+.mp-photo-fallback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--text-faint);
+  text-transform: uppercase;
+}
+/* A portrait that fails to load keeps its circle and shows the fallback tint
+   rather than the browser's broken-image glyph. Removing `src` in the onerror
+   handler is what stops the broken icon appearing at all. */
+.mp-photo-broken {
+  background: var(--surface-2);
+}
+.mp-shirt {
+  flex: 0 0 auto;
+  width: 22px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--text-faint);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.mp-player-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  line-height: 1.2;
+  /* Wrap at SPACES only. `word-break: break-word` sliced real names mid-word --
+     "Becerril" rendered as "Becer ril" and "Riley" as "Ril e y" -- which is a
+     worse failure than an ellipsis, because it misspells the player. A long
+     single word now overflows to its own elided line instead of being cut in
+     half. */
+  overflow-wrap: normal;
+  word-break: normal;
+}
+/* A captain's armband and a goalkeeper are the two roles a reader looks for in
+   a list of eleven names, so they get a mark rather than being plain text. */
+.mp-role {
+  flex: 0 0 auto;
+  /* Capped so the badge cannot outgrow the name it annotates; the full word
+     "GOALKEEPER" beside a 15px name box was the bug this prevents. */
+  max-width: 40%;
+  overflow: hidden;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-radius: 4px;
+  padding: 2px 5px;
+}
+.mp-role-captain {
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+}
+.mp-role-goalkeeper {
+  color: #d99a12;
+  background: color-mix(in srgb, #e8b027 20%, transparent);
+}
+/* The feed's own player rating. Quiet: it is a number the source computed, not
+   one this app stands behind. */
+.mp-rating {
+  flex: 0 0 auto;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--text-dim);
+  background: var(--bg-soft);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 860px) {
+  .mp-lineups {
+    grid-template-columns: 1fr;
+  }
+  /* The reversed head is a two-column device; stacked, both sides read
+     left-to-right. */
+  .mp-lineup.away .mp-lineup-head {
+    flex-direction: row;
+  }
+  .mp-lineup.away .mp-lineup-name {
+    text-align: left;
+  }
+}
+
+/* --------------------------------------------- results page: market filter
+   The same market set the Predictions tab offers, as a filter over the settled
+   list. It gets its own row rather than joining the day/source chips, because
+   it is a different KIND of choice: those narrow the window, this narrows the
+   question. Mixing them in one wrapped row made a thirteen-button market list
+   look like part of the date picker. */
+.res-market-row {
+  width: 100%;
+}
+.res-market-row .chip {
+  font-size: 12px;
+}
+/* The per-market summary under the chips. Quiet and factual: a hit-rate over a
+   handful of selections is not a claim worth shouting about. */
+.res-market-note {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+.res-market-stat {
+  white-space: nowrap;
+  font-size: 12.5px;
+  color: var(--text-dim);
+}
+.res-market-stat strong {
+  color: var(--text);
+  font-family: var(--mono);
+}
+
+
+/* ==========================================================================
+   Operator-controlled design layer
+   ==========================================================================
+
+   Everything below is driven by `html[data-*]` attributes that the admin panel
+   sets, so an operator's choices are expressed as CSS rather than as inline
+   styles injected per element. Three reasons for that:
+
+   1. It cannot be escaped by an attribute value -- the selector names a fixed
+      rule, it does not interpolate operator text into a declaration.
+   2. `:hover` cannot be expressed inline at all, so the hover templates have to
+      live in a stylesheet regardless.
+   3. The browser applies it before paint, so there is no flash of the wrong
+      layout while a script runs.
+
+   The colour TOKENS are the exception: they are a variable block written to a
+   `<style>` element by `applySiteDesign()`, because a token is a value rather
+   than a rule. Those values are validated server-side (see app/design.py) and
+   re-checked in the client before being written.
+   ========================================================================== */
+
+/* --- hover templates ------------------------------------------------------
+   Applied to the same card/row selectors the site already uses, so a hover
+   template changes what happens on hover without changing what can be hovered.
+   `html[data-hover="none"]` removes every effect, which is why the rules are
+   written as "apply when the attribute says so" rather than as a default that
+   is then overridden. */
+html[data-hover="lift"] .tip-card:hover,
+html[data-hover="lift"] .fx-row:hover,
+html[data-hover="lift"] .ls-row:hover,
+html[data-hover="lift"] .mkt-row:hover {
+  transform: translateY(calc(-2px * var(--hover-scale, 1)));
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.28);
+}
+
+html[data-hover="glow"] .tip-card:hover,
+html[data-hover="glow"] .fx-row:hover,
+html[data-hover="glow"] .ls-row:hover,
+html[data-hover="glow"] .mkt-row:hover {
+  box-shadow: 0 0 0 calc(3px * var(--hover-scale, 1))
+    color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+html[data-hover="tint"] .tip-card:hover,
+html[data-hover="tint"] .fx-row:hover,
+html[data-hover="tint"] .ls-row:hover,
+html[data-hover="tint"] .mkt-row:hover {
+  background: color-mix(
+    in srgb,
+    var(--accent) calc(12% * var(--hover-scale, 1)),
+    var(--surface)
+  );
+}
+
+html[data-hover="border"] .tip-card:hover,
+html[data-hover="border"] .fx-row:hover,
+html[data-hover="border"] .ls-row:hover,
+html[data-hover="border"] .mkt-row:hover {
+  border-color: var(--accent);
+}
+
+html[data-hover="scale"] .tip-card:hover,
+html[data-hover="scale"] .ls-row:hover {
+  transform: scale(calc(1 + 0.015 * var(--hover-scale, 1)));
+}
+
+/* The transition belongs to the hover system, not to each template, so the
+   timing stays identical across templates. */
+html[data-hover] .tip-card,
+html[data-hover] .fx-row,
+html[data-hover] .ls-row,
+html[data-hover] .mkt-row {
+  transition: transform 140ms ease, box-shadow 140ms ease,
+    background-color 140ms ease, border-color 140ms ease;
+}
+
+/* `none` disables the transition too -- a hover style that still animates
+   because a transition rule outlived it reads as a bug. */
+html[data-hover="none"] .tip-card,
+html[data-hover="none"] .fx-row,
+html[data-hover="none"] .ls-row,
+html[data-hover="none"] .mkt-row {
+  transition: none;
+}
+
+/* Respect a reader who has asked the OS for less motion: a lift or a scale is
+   exactly the kind of movement that setting exists to stop. */
+@media (prefers-reduced-motion: reduce) {
+  html[data-hover] .tip-card:hover,
+  html[data-hover] .fx-row:hover,
+  html[data-hover] .ls-row:hover,
+  html[data-hover] .mkt-row:hover {
+    transform: none;
+  }
+}
+
+/* --- layout templates -----------------------------------------------------
+   Each sets the shell width and the density in one place, so a template is a
+   complete arrangement rather than a partial override that fights the base
+   rules. */
+html[data-layout="wide"] .shell {
+  max-width: 1720px;
+}
+html[data-layout="wide"] .grid-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+html[data-layout="centered"] .shell {
+  max-width: 1100px;
+}
+
+html[data-layout="compact"] .card {
+  padding: 12px 14px;
+}
+html[data-layout="compact"] .tip-card,
+html[data-layout="compact"] .fx-row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+html[data-layout="compact"] .grid-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+html[data-layout="compact"] .page-head h1 {
+  font-size: 22px;
+}
+
+html[data-layout="comfortable"] .shell {
+  max-width: 1320px;
+}
+
+/* --- corner radius --------------------------------------------------------
+   One choice, applied to the three radius tokens the existing stylesheet
+   already reads, so radius stays a single decision rather than per-component. */
+html[data-radius="sharp"] {
+  --radius: 2px;
+  --radius-sm: 2px;
+  --radius-lg: 3px;
+}
+html[data-radius="pill"] {
+  --radius: 16px;
+  --radius-sm: 12px;
+  --radius-lg: 24px;
+}
+/* Buttons are fully round under every corner choice. The preset below is the
+   only thing meant to square them off, and even then only the cards move. */
+html[data-radius="sharp"] {
+  --radius-btn: 12px;
+}
+
+/* --- admin panel ---------------------------------------------------------- */
+.admin-tabs {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--border);
+  margin: 4px 0 18px;
+}
+.admin-tab {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-dim);
+  font: inherit;
+  font-weight: 600;
+  font-size: 13.5px;
+  padding: 9px 14px;
+  cursor: pointer;
+}
+.admin-tab:hover {
+  color: var(--text);
+}
+.admin-tab.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+.admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 12px;
+}
+.admin-kpi {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+}
+.admin-kpi .kpi-label {
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+}
+.admin-kpi .kpi-value {
+  font-size: 26px;
+  font-weight: 800;
+  font-family: var(--mono);
+  margin-top: 4px;
+}
+.admin-kpi .kpi-sub {
+  font-size: 12px;
+  color: var(--text-faint);
+  margin-top: 2px;
+}
+
+/* The colour editor. A swatch and a text field for the same value: the swatch
+   is fast to use, the text field is precise and is the only way to reach a
+   colour the OS picker cannot express. */
+.token-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border-soft);
+}
+.token-row:last-child {
+  border-bottom: none;
+}
+.token-label {
+  flex: 1 1 auto;
+  font-size: 13px;
+}
+.token-code {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-faint);
+  display: block;
+}
+.token-swatch {
+  width: 34px;
+  height: 26px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0;
+  cursor: pointer;
+  background: none;
+}
+.token-text {
+  width: 108px;
+  font-family: var(--mono);
+  font-size: 12px;
+}
+.token-text.invalid {
+  border-color: var(--danger);
+  outline-color: var(--danger);
+}
+
+.template-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 10px;
+}
+.template-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  cursor: pointer;
+  background: var(--surface-2);
+  text-align: left;
+  font: inherit;
+  color: inherit;
+}
+.template-card.selected {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+.template-card .tpl-label {
+  font-weight: 700;
+  font-size: 13.5px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.template-card .tpl-note {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.admin-table th {
+  text-align: left;
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-dim);
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+.admin-table td {
+  padding: 9px 10px;
+  border-bottom: 1px solid var(--border-soft);
+  vertical-align: middle;
+}
+.admin-table tr:hover td {
+  background: var(--hover-wash);
+}
+
+.status-pill {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+}
+.status-pill.active {
+  color: var(--green);
+  border-color: var(--green);
+}
+.status-pill.blocked {
+  color: var(--danger);
+  border-color: var(--danger);
+}
+.status-pill.kicked {
+  color: var(--warn);
+  border-color: var(--warn);
+}
+
+.online-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+  margin-right: 5px;
+}
+.online-dot.off {
+  background: var(--text-faint);
+}
+
+.audit-row td {
+  font-size: 12.5px;
+}
+.audit-action {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--accent);
+}
+
+/* The unsaved-changes bar.
+
+   It sits at the END of the editor rather than floating over it. A `sticky`
+   version was tried first and was genuinely broken: the editor is a column of
+   cards, so `bottom: 0` pinned the bar to the bottom of whichever card it was
+   inside and it landed in the MIDDLE of the colour list, overlapping a token
+   row -- "Highlight wash" ended up above it and "Link (hover)" below, with the
+   bar on top of the field between them. Only a screenshot showed that; every
+   assertion passed, because the buttons were present and clickable.
+
+   Fixed at the viewport bottom instead, which is what "pinned" was meant to
+   mean: an operator scrolled deep into 20 colour rows still sees that nothing
+   is saved yet. `left`/`right` are set for the fixed positioning, and the
+   offset clears the shell's own padding. */
+.admin-savebar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 10px 20px;
+  z-index: 20;
+  box-shadow: 0 -6px 18px rgba(0, 0, 0, 0.22);
+}
+
+/* The bar overlays the end of the page, so the content needs room beneath it or
+   the last card is unreachable behind it. */
+.admin-with-savebar {
+  padding-bottom: 84px;
+}
+.admin-savebar .dirty-note {
+  font-size: 12.5px;
+  color: var(--warn);
+}

@@ -1,0 +1,580 @@
+INFO goaledge: frontend served from E:\HTML\Predictions\frontend
+INFO:     Started server process [17776]
+INFO:     Waiting for application startup.
+INFO goaledge: seed: {'status': 'skipped', 'reason': 'database already seeded', 'fixtures': 15051}
+INFO goaledge.refresh: flashscore refresher: started (every 1800s, lookback 2d)
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8080 (Press CTRL+C to quit)
+INFO goaledge: flashscore sync: {'date': '0', 'fetched': 236, 'created': 0, 'updated': 236, 'finished': 0, 'competitions_created': 0, 'teams_created': 0, 'error': None}
+INFO goaledge: flashscore sync: {'date': '-1', 'fetched': 400, 'created': 0, 'updated': 400, 'finished': 0, 'competitions_created': 0, 'teams_created': 0, 'error': None}
+INFO goaledge: flashscore sync: {'date': '-2', 'fetched': 400, 'created': 0, 'updated': 400, 'finished': 0, 'competitions_created': 0, 'teams_created': 0, 'error': None}
+INFO goaledge.refresh: flashscore refresher: 2832 fixture(s) refreshed
+ERROR goaledge: unhandled error on /api/matches/YDBozlEs
+NoneType: None
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 422, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.scope, self.receive, self.send
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 63, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\applications.py", line 1163, in __call__
+    await super().__call__(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\applications.py", line 96, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\middleware\errors.py", line 186, in __call__
+    raise exc
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\middleware\cors.py", line 88, in __call__
+    await self.app(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\routing.py", line 670, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 2734, in app
+    await route.handle(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 1780, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 2789, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 1800, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 1279, in handle
+    await app(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 158, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 144, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 706, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 354, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\anyio\to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2706, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1100, in run
+    result = context.run(func, *args)
+  File "E:\HTML\Predictions\backend\app\routers.py", line 975, in get_match
+    live = matchdetail.build_match_detail(
+        match_id,
+    ...<3 lines>...
+        away_goals=base.get("away_goals"),
+    )
+  File "E:\HTML\Predictions\backend\app\matchdetail.py", line 902, in build_match_detail
+    clock = feed.clock(kickoff, status, now)
+  File "E:\HTML\Predictions\backend\app\matchdetail.py", line 432, in clock
+    derived = derived_clock(kickoff, status, now)
+  File "E:\HTML\Predictions\backend\app\matchdetail.py", line 499, in derived_clock
+    return fs.live_clock(kickoff, now)
+           ^^^^^^^^^^
+NameError: name 'flashscore' is not defined
+ERROR goaledge: unhandled error on /api/matches/YDBozlEs
+NoneType: None
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 422, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.scope, self.receive, self.send
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 63, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\applications.py", line 1163, in __call__
+    await super().__call__(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\applications.py", line 96, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\middleware\errors.py", line 186, in __call__
+    raise exc
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\middleware\cors.py", line 88, in __call__
+    await self.app(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\routing.py", line 670, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 2734, in app
+    await route.handle(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 1780, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 2789, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 1800, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 1279, in handle
+    await app(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 158, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 144, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 706, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 354, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\anyio\to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2706, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1100, in run
+    result = context.run(func, *args)
+  File "E:\HTML\Predictions\backend\app\routers.py", line 975, in get_match
+    live = matchdetail.build_match_detail(
+        match_id,
+    ...<3 lines>...
+        away_goals=base.get("away_goals"),
+    )
+  File "E:\HTML\Predictions\backend\app\matchdetail.py", line 902, in build_match_detail
+    clock = feed.clock(kickoff, status, now)
+  File "E:\HTML\Predictions\backend\app\matchdetail.py", line 432, in clock
+    derived = derived_clock(kickoff, status, now)
+  File "E:\HTML\Predictions\backend\app\matchdetail.py", line 499, in derived_clock
+    return fs.live_clock(kickoff, now)
+           ^^^^^^^^^^
+NameError: name 'flashscore' is not defined
+ERROR goaledge: unhandled error on /api/matches/xrQFuAjK
+NoneType: None
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 422, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.scope, self.receive, self.send
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 63, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\applications.py", line 1163, in __call__
+    await super().__call__(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\applications.py", line 96, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\middleware\errors.py", line 186, in __call__
+    raise exc
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\middleware\cors.py", line 88, in __call__
+    await self.app(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\routing.py", line 670, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 2734, in app
+    await route.handle(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 1780, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 2789, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 1800, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 1279, in handle
+    await app(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 158, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 144, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 706, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 354, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\anyio\to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2706, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1100, in run
+    result = context.run(func, *args)
+  File "E:\HTML\Predictions\backend\app\routers.py", line 975, in get_match
+    live = matchdetail.build_match_detail(
+        match_id,
+    ...<3 lines>...
+        away_goals=base.get("away_goals"),
+    )
+  File "E:\HTML\Predictions\backend\app\matchdetail.py", line 902, in build_match_detail
+    clock = feed.clock(kickoff, status, now)
+  File "E:\HTML\Predictions\backend\app\matchdetail.py", line 432, in clock
+    derived = derived_clock(kickoff, status, now)
+  File "E:\HTML\Predictions\backend\app\matchdetail.py", line 499, in derived_clock
+    return fs.live_clock(kickoff, now)
+           ^^^^^^^^^^
+NameError: name 'flashscore' is not defined
+ERROR goaledge: unhandled error on /api/matches/xrQFuAjK
+NoneType: None
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 422, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.scope, self.receive, self.send
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 63, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\applications.py", line 1163, in __call__
+    await super().__call__(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\applications.py", line 96, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\middleware\errors.py", line 186, in __call__
+    raise exc
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\middleware\cors.py", line 88, in __call__
+    await self.app(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\routing.py", line 670, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 2734, in app
+    await route.handle(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 1780, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 2789, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 1800, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 1279, in handle
+    await app(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 158, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 144, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 706, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 354, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\anyio\to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2706, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1100, in run
+    result = context.run(func, *args)
+  File "E:\HTML\Predictions\backend\app\routers.py", line 975, in get_match
+    live = matchdetail.build_match_detail(
+        match_id,
+    ...<3 lines>...
+        away_goals=base.get("away_goals"),
+    )
+  File "E:\HTML\Predictions\backend\app\matchdetail.py", line 902, in build_match_detail
+    clock = feed.clock(kickoff, status, now)
+  File "E:\HTML\Predictions\backend\app\matchdetail.py", line 432, in clock
+    derived = derived_clock(kickoff, status, now)
+  File "E:\HTML\Predictions\backend\app\matchdetail.py", line 499, in derived_clock
+    return fs.live_clock(kickoff, now)
+           ^^^^^^^^^^
+NameError: name 'flashscore' is not defined
+INFO goaledge.refresh: flashscore refresher: 2832 fixture(s) refreshed
+INFO goaledge.refresh: flashscore refresher: 2829 fixture(s) refreshed
+INFO goaledge.refresh: flashscore refresher: 2829 fixture(s) refreshed
+ERROR goaledge: unhandled error on /api/matches/tvFgYRrf
+NoneType: None
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 422, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.scope, self.receive, self.send
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 63, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\applications.py", line 1163, in __call__
+    await super().__call__(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\applications.py", line 96, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\middleware\errors.py", line 186, in __call__
+    raise exc
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\middleware\cors.py", line 88, in __call__
+    await self.app(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\routing.py", line 670, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 2734, in app
+    await route.handle(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 1780, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 2789, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 1800, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 1279, in handle
+    await app(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 158, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 144, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 706, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 354, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\anyio\to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2706, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1100, in run
+    result = context.run(func, *args)
+  File "E:\HTML\Predictions\backend\app\routers.py", line 975, in get_match
+    # page simply says there is no prediction available -- it must never turn a
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                base = _match_page_base(db, match_id)
+    
+  File "E:\HTML\Predictions\backend\app\matchdetail.py", line 902, in build_match_detail
+  File "E:\HTML\Predictions\backend\app\matchdetail.py", line 432, in clock
+    # Only reachable with no usable kick-off. Anchored on the last recorded
+  File "E:\HTML\Predictions\backend\app\matchdetail.py", line 499, in derived_clock
+NameError: name 'flashscore' is not defined
+ERROR goaledge: unhandled error on /api/matches/tvFgYRrf
+NoneType: None
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 422, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.scope, self.receive, self.send
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 63, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\applications.py", line 1163, in __call__
+    await super().__call__(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\applications.py", line 96, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\middleware\errors.py", line 186, in __call__
+    raise exc
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\middleware\cors.py", line 88, in __call__
+    await self.app(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\routing.py", line 670, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 2734, in app
+    await route.handle(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 1780, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 2789, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 1800, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 1279, in handle
+    await app(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 158, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 144, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 706, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\fastapi\routing.py", line 354, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\anyio\to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2706, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "E:\HTML\Predictions\backend\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1100, in run
+    result = context.run(func, *args)
+  File "E:\HTML\Predictions\backend\app\routers.py", line 975, in get_match
+    # page simply says there is no prediction available -- it must never turn a
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                base = _match_page_base(db, match_id)
+    
+  File "E:\HTML\Predictions\backend\app\matchdetail.py", line 902, in build_match_detail
+  File "E:\HTML\Predictions\backend\app\matchdetail.py", line 432, in clock
+    # Only reachable with no usable kick-off. Anchored on the last recorded
+  File "E:\HTML\Predictions\backend\app\matchdetail.py", line 499, in derived_clock
+NameError: name 'flashscore' is not defined
+INFO goaledge.refresh: flashscore refresher: 2829 fixture(s) refreshed
+INFO goaledge.refresh: flashscore refresher: 2806 fixture(s) refreshed
+INFO goaledge.refresh: flashscore refresher: 2830 fixture(s) refreshed
+WARNING goaledge.refresh: flashscore refresher: Flashscore request failed: <urlopen error [WinError 10053] An established connection was aborted by the software in your host machine>
+WARNING goaledge.refresh: flashscore refresher: Flashscore request failed: <urlopen error [Errno 11001] getaddrinfo failed>
+WARNING goaledge.refresh: flashscore refresher: Flashscore request failed: <urlopen error [Errno 11001] getaddrinfo failed>
+WARNING goaledge.refresh: flashscore refresher: Flashscore request failed: <urlopen error [Errno 11001] getaddrinfo failed>
+WARNING goaledge.refresh: flashscore refresher: Flashscore request failed: <urlopen error [Errno 11001] getaddrinfo failed>
+WARNING goaledge.refresh: flashscore refresher: Flashscore request failed: <urlopen error [Errno 11001] getaddrinfo failed>
+WARNING goaledge.refresh: flashscore refresher: Flashscore request failed: <urlopen error [Errno 11001] getaddrinfo failed>
+WARNING goaledge.refresh: flashscore refresher: Flashscore request failed: <urlopen error [Errno 11001] getaddrinfo failed>
+WARNING goaledge.refresh: flashscore refresher: Flashscore request failed: <urlopen error [Errno 11001] getaddrinfo failed>
+WARNING goaledge.refresh: flashscore refresher: Flashscore request failed: <urlopen error [Errno 11001] getaddrinfo failed>
+WARNING goaledge.refresh: flashscore refresher: Flashscore request failed: <urlopen error [Errno 11001] getaddrinfo failed>
+WARNING goaledge.refresh: flashscore refresher: Flashscore request failed: <urlopen error [Errno 11001] getaddrinfo failed>
+WARNING goaledge.refresh: flashscore refresher: Flashscore request failed: <urlopen error [Errno 11001] getaddrinfo failed>
+WARNING goaledge.refresh: flashscore refresher: Flashscore request failed: <urlopen error [Errno 11001] getaddrinfo failed>
+WARNING goaledge.refresh: flashscore refresher: Flashscore request failed: <urlopen error [Errno 11001] getaddrinfo failed>
+WARNING goaledge.refresh: flashscore refresher: Flashscore request failed: <urlopen error [Errno 11001] getaddrinfo failed>
+WARNING goaledge.refresh: flashscore refresher: Flashscore request failed: <urlopen error [Errno 11001] getaddrinfo failed>
+WARNING goaledge.refresh: flashscore refresher: Flashscore request failed: <urlopen error [Errno 11001] getaddrinfo failed>
+WARNING goaledge.refresh: flashscore refresher: Flashscore request failed: <urlopen error [Errno 11001] getaddrinfo failed>
+WARNING goaledge.refresh: flashscore refresher: Flashscore request failed: <urlopen error [Errno 11001] getaddrinfo failed>
+WARNING goaledge.refresh: flashscore refresher: Flashscore request failed: <urlopen error [Errno 11001] getaddrinfo failed>
+WARNING goaledge.refresh: flashscore refresher: Flashscore request failed: <urlopen error [Errno 11001] getaddrinfo failed>
+WARNING goaledge.refresh: flashscore refresher: Flashscore request failed: <urlopen error [Errno 11001] getaddrinfo failed>

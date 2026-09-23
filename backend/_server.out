@@ -1,0 +1,442 @@
+INFO:     127.0.0.1:61076 - "GET /api/livescores?date=2026-09-20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59352 - "GET /api/livescores?date=2026-09-20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59381 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62278 - "GET /api/livescores?date=2026-09-20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62282 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62283 - "GET /api/livescores?date=tomorrow HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51010 - "GET /api/livescores?date=2026-09-20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51069 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51070 - "GET /api/livescores?date=tomorrow HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51071 - "GET /api/livescores?date=yesterday HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:51072 - "GET /api/livescores?date=2026-09-16 HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:51073 - "GET /api/livescores?date=2019-01-01 HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:51074 - "GET /api/livescores?date=bogus HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:51075 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51076 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51077 - "GET /api/livescores?date=today&live_only=true HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51126 - "GET /api/tips?limit=60 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51259 - "GET /api/livescores?date=2026-09-20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62803 - "GET /api/livescores?date=2026-09-20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62803 - "GET /api/days HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62803 - "GET /api/tips?limit=60 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51261 - "GET /api/results?days=3&limit=2000 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63931 - "GET /api/tips?limit=60&sort=confidence HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58267 - "GET /api/results?days=1&limit=1200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62241 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64560 - "GET /api/results?days=1&limit=1200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61309 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57865 - "GET /api/matches/6sp08dE6 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51206 - "GET /api/matches/6sp08dE6 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49347 - "GET /api/fixtures/12666 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58021 - "GET /api/fixtures/12666 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56847 - "GET /api/fixtures/12666/ai HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49347 - "GET /api/fixtures/12666/sportybet-markets HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56847 - "GET /api/fixtures/12666/ai HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49347 - "GET /api/fixtures/12666/sportybet-markets HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58021 - "GET /api/fixtures/12666/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49347 - "GET /api/fixtures/12666/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58572 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52880 - "GET /api/matches/0to6Bpxp HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62058 - "GET /api/matches/0to6Bpxp HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56218 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56218 - "GET /api/matches/E7TWbTEr HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56218 - "GET /api/matches/E7TWbTEr HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56218 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56218 - "GET /api/matches/bPAxAaTG HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54089 - "GET /api/matches/bPAxAaTG HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49315 - "GET / HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:49315 - "GET /styles.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:51958 - "GET /app.js HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:51958 - "GET /icons.js HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:51958 - "GET /api/competitions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49315 - "GET /api/days HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49315 - "GET /api/matches/bPAxAaTG HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50107 - "GET /api/days HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50107 - "GET /api/tips?limit=60 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62117 - "GET /api/fixtures/12916 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52276 - "GET /api/fixtures/12916 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49963 - "GET /api/fixtures/12916/ai HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62117 - "GET /api/fixtures/12916/sportybet-markets HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52276 - "GET /api/fixtures/12916/ai HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49963 - "GET /api/fixtures/12916/sportybet-markets HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60628 - "GET /api/fixtures/12916/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49963 - "GET /api/fixtures/12916/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52114 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52115 - "GET /api/livescores?date=tomorrow HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52116 - "GET /api/livescores?date=yesterday HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:52117 - "GET /api/livescores?date=2026-09-16 HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:52118 - "GET /api/livescores?date=2019-01-01 HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:52119 - "GET /api/livescores?date=bogus HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:52120 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59691 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59692 - "GET /api/livescores?date=today&live_only=true HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65441 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56171 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56645 - "GET /api/livescores?date=2026-09-21 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60389 - "GET /api/matches/YDBozlEs HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:65444 - "GET /api/matches/YDBozlEs HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:50960 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50960 - "GET /api/matches/xrQFuAjK HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:62593 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55578 - "GET /api/matches/xrQFuAjK HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:65070 - "GET /api/livescores?date=2026-09-21 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57503 - "GET /api/livescores?date=2026-09-21 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51891 - "GET /api/livescores?date=2026-09-21 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64993 - "GET /api/livescores?date=2026-09-21 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53642 - "GET /api/livescores?date=2026-09-21 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54033 - "GET /api/livescores?date=2026-09-21 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60208 - "GET /api/livescores?date=2026-09-21 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64498 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64499 - "GET /api/livescores?date=tomorrow HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64501 - "GET /api/livescores?date=yesterday HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:64502 - "GET /api/livescores?date=2026-09-16 HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:64503 - "GET /api/livescores?date=2019-01-01 HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:64504 - "GET /api/livescores?date=bogus HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:64505 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64506 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64507 - "GET /api/livescores?date=today&live_only=true HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58630 - "GET /api/livescores?date=2026-09-21 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49490 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49490 - "GET /styles.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58764 - "GET /app.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58764 - "GET /icons.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58764 - "GET /api/competitions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49490 - "GET /api/days HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49490 - "GET /api/fixtures/726 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54675 - "GET /api/fixtures/726/ai HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49490 - "GET /api/fixtures/726/sportybet-markets HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58764 - "GET /api/fixtures/726/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49637 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49637 - "GET /styles.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51004 - "GET /app.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51004 - "GET /icons.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51004 - "GET /api/competitions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49637 - "GET /api/days HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49637 - "GET /api/fixtures/726 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58186 - "GET /api/fixtures/726/ai HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49637 - "GET /api/fixtures/726/sportybet-markets HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51004 - "GET /api/fixtures/726/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60927 - "GET /api/livescores?date=2026-09-21 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54647 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54647 - "GET /styles.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50529 - "GET /app.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50529 - "GET /icons.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50529 - "GET /api/competitions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54647 - "GET /api/days HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54647 - "GET /api/fixtures/726 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63038 - "GET /api/fixtures/726/ai HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54647 - "GET /api/fixtures/726/sportybet-markets HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50529 - "GET /api/fixtures/726/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51470 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51470 - "GET /styles.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65311 - "GET /app.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62625 - "GET /icons.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62625 - "GET /api/competitions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63027 - "GET /api/days HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63027 - "GET /api/fixtures/726 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63027 - "GET /api/fixtures/726/sportybet-markets HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51262 - "GET /api/fixtures/726/ai HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62625 - "GET /api/fixtures/726/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60120 - "GET /api/fixtures/726/sportybet-markets HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53164 - "GET /api/livescores?date=2026-09-21 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53165 - "GET /api/fixtures/726/sportybet-markets HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53988 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53988 - "GET /styles.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54340 - "GET /app.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54340 - "GET /icons.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54340 - "GET /api/competitions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53988 - "GET /api/days HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63047 - "GET /api/livescores?date=2026-09-21 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62903 - "GET /api/livescores?date=2026-09-21 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59355 - "GET /api/livescores?date=2026-09-21 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60608 - "GET /api/livescores?date=2026-09-21 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62108 - "GET /api/livescores?date=2026-09-21 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54677 - "GET /api/livescores?date=2026-09-21 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58368 - "GET /api/livescores?date=2026-09-21 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51544 - "GET /api/livescores?date=2026-09-21 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51544 - "GET / HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:51544 - "GET /styles.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:61650 - "GET /app.js HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:61650 - "GET /icons.js HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:61650 - "GET /api/competitions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51544 - "GET /api/days HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51544 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52508 - "GET /api/days HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52508 - "GET /api/tips?limit=60&competition_id=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55792 - "GET /api/matches/YDBozlEs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52508 - "GET /api/matches/YDBozlEs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51386 - "GET /api/fixtures/12917 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49746 - "GET /api/fixtures/12917 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55641 - "GET /api/fixtures/12917/ai HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49746 - "GET /api/fixtures/12917/sportybet-markets HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55641 - "GET /api/fixtures/12917/ai HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49746 - "GET /api/fixtures/12917/sportybet-markets HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51386 - "GET /api/fixtures/12917/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49746 - "GET /api/fixtures/12917/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49746 - "GET /api/days HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49746 - "GET /api/tips?limit=60&competition_id=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49746 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62196 - "GET /api/matches/xrQFuAjK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62196 - "GET /api/matches/xrQFuAjK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60441 - "GET /api/fixtures/12916 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62876 - "GET /api/fixtures/12916 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53813 - "GET /api/fixtures/12916/ai HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62876 - "GET /api/fixtures/12916/sportybet-markets HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59995 - "GET /api/fixtures/12916/ai HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51567 - "GET /api/fixtures/12916/sportybet-markets HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60441 - "GET /api/fixtures/12916/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51567 - "GET /api/fixtures/12916/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63651 - "GET /api/days HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63651 - "GET /api/tips?limit=60 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63651 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59915 - "GET /api/matches/xrQFuAjK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55060 - "GET /api/matches/xrQFuAjK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63048 - "GET /api/matches/xrQFuAjK/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51229 - "GET /api/matches/xrQFuAjK/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55268 - "GET /api/matches/xrQFuAjK/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59821 - "GET /api/matches/xrQFuAjK/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55626 - "GET /api/matches/xrQFuAjK/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56709 - "GET /api/matches/xrQFuAjK/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59686 - "GET /api/matches/xrQFuAjK/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60460 - "GET /api/matches/xrQFuAjK/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55246 - "GET /api/matches/xrQFuAjK/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55246 - "GET /api/matches/xrQFuAjK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51419 - "GET /api/matches/xrQFuAjK/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51419 - "GET /api/matches/xrQFuAjK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63899 - "GET /api/matches/xrQFuAjK/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53051 - "GET /api/matches/xrQFuAjK/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61594 - "GET /api/matches/xrQFuAjK/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63544 - "GET /api/matches/xrQFuAjK/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63823 - "GET /api/matches/xrQFuAjK/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63188 - "GET /api/matches/xrQFuAjK/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52229 - "GET /api/matches/xrQFuAjK/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54091 - "GET /api/matches/xrQFuAjK/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56367 - "GET /api/matches/xrQFuAjK/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57167 - "GET /api/matches/xrQFuAjK/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59522 - "GET /api/matches/xrQFuAjK/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65386 - "GET /api/matches/xrQFuAjK/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53549 - "GET /api/matches/xrQFuAjK/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57491 - "GET /api/matches/xrQFuAjK/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57491 - "GET /api/matches/xrQFuAjK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50872 - "GET /api/matches/xrQFuAjK/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59438 - "GET /api/matches/xrQFuAjK/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58971 - "GET /api/matches/xrQFuAjK/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55796 - "GET /api/matches/xrQFuAjK/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61446 - "GET /api/matches/xrQFuAjK/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58156 - "GET /api/matches/xrQFuAjK/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63168 - "GET /api/matches/xrQFuAjK/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65434 - "GET /api/matches/xrQFuAjK/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49331 - "GET /api/matches/xrQFuAjK/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64934 - "GET /api/matches/xrQFuAjK/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64982 - "GET /api/matches/xrQFuAjK/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61899 - "GET /api/matches/xrQFuAjK/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51118 - "GET /api/matches/xrQFuAjK/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54277 - "GET /api/matches/xrQFuAjK/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65125 - "GET /api/matches/xrQFuAjK/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62889 - "GET /api/matches/xrQFuAjK/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50402 - "GET /api/matches/xrQFuAjK/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57352 - "GET /api/matches/xrQFuAjK/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60185 - "GET /api/matches/xrQFuAjK/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49337 - "GET /api/matches/xrQFuAjK/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53711 - "GET /api/matches/xrQFuAjK/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50355 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50356 - "GET /api/livescores?date=tomorrow HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50357 - "GET /api/livescores?date=yesterday HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:50358 - "GET /api/livescores?date=2026-09-16 HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:50359 - "GET /api/livescores?date=2019-01-01 HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:50360 - "GET /api/livescores?date=bogus HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:50361 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50362 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50363 - "GET /api/livescores?date=today&live_only=true HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58401 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58402 - "GET /api/livescores?date=tomorrow HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58403 - "GET /api/livescores?date=yesterday HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:58404 - "GET /api/livescores?date=2026-09-16 HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:58405 - "GET /api/livescores?date=2019-01-01 HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:58406 - "GET /api/livescores?date=bogus HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:58407 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58408 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58409 - "GET /api/livescores?date=today&live_only=true HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57373 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57374 - "GET /api/livescores?date=tomorrow HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57375 - "GET /api/livescores?date=yesterday HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:57376 - "GET /api/livescores?date=2026-09-16 HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:57377 - "GET /api/livescores?date=2019-01-01 HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:57378 - "GET /api/livescores?date=bogus HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:57379 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57380 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57381 - "GET /api/livescores?date=today&live_only=true HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55182 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55182 - "GET /styles.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53060 - "GET /app.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53060 - "GET /icons.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53060 - "GET /api/competitions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55182 - "GET /api/days HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55182 - "GET /api/fixtures/726 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58816 - "GET /api/fixtures/726/ai HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53060 - "GET /api/fixtures/726/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55182 - "GET /api/fixtures/726/sportybet-markets HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58126 - "GET /api/matches/xrQFuAjK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58126 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49325 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62284 - "GET /api/matches/xrQFuAjK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53001 - "GET /api/matches/xrQFuAjK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58793 - "GET /api/fixtures/12916 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51957 - "GET /api/fixtures/12916 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50238 - "GET /api/fixtures/12916/ai HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51957 - "GET /api/fixtures/12916/sportybet-markets HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50238 - "GET /api/fixtures/12916/ai HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51957 - "GET /api/fixtures/12916/sportybet-markets HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58793 - "GET /api/fixtures/12916/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57743 - "GET /api/matches/xrQFuAjK/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51957 - "GET /api/fixtures/12916/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51957 - "GET /api/days HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51957 - "GET /api/tips?limit=60 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51957 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55655 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51957 - "GET /api/days HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51957 - "GET /api/tips?limit=60&competition_id=3 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55655 - "GET /api/matches/YDBozlEs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51957 - "GET /api/matches/YDBozlEs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51635 - "GET /api/fixtures/12917 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61027 - "GET /api/fixtures/12917 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65285 - "GET /api/fixtures/12917/ai HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61027 - "GET /api/fixtures/12917/sportybet-markets HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65285 - "GET /api/fixtures/12917/ai HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61027 - "GET /api/fixtures/12917/sportybet-markets HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51635 - "GET /api/fixtures/12917/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61027 - "GET /api/fixtures/12917/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57016 - "GET /api/days HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57016 - "GET /api/tips?limit=60&competition_id=3 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52341 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52341 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52341 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50621 - "GET /api/matches/zNO4CwWH HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53617 - "GET /api/matches/zNO4CwWH HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58048 - "GET /api/fixtures/12918 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56921 - "GET /api/fixtures/12918 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56687 - "GET /api/fixtures/12918/ai HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56921 - "GET /api/fixtures/12918/sportybet-markets HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56687 - "GET /api/fixtures/12918/ai HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56921 - "GET /api/fixtures/12918/sportybet-markets HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58048 - "GET /api/fixtures/12918/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56921 - "GET /api/fixtures/12918/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63220 - "GET /api/days HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63220 - "GET /api/tips?limit=60 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54305 - "GET /api/tips?limit=60 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51100 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51100 - "GET /api/days HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63241 - "GET /api/days HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51100 - "GET /api/tips?limit=60 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63241 - "GET /api/tips?limit=60 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51882 - "GET /api/days HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51882 - "GET /api/tips?limit=60 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51882 - "GET /api/days HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51882 - "GET /api/tips?limit=60 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51882 - "GET /api/days HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51882 - "GET /api/tips?limit=60 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52720 - "POST /api/auth/login HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:65340 - "POST /api/auth/register HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:63109 - "POST /api/auth/register HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63109 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54570 - "GET /api/value-bets?limit=50 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54570 - "GET /api/markets HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54570 - "GET /api/results?days=1&limit=1200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63717 - "GET /api/results?days=2&limit=1200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59590 - "GET /api/stats/overview HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55614 - "GET /api/results?days=2&limit=1200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65279 - "GET /api/results?days=1&limit=1200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65279 - "GET /api/results?days=1&limit=1200&source=flashscore HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65279 - "GET /api/results?days=1&limit=1200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58356 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58356 - "GET /api/matches/zNO4CwWH HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59587 - "GET /api/matches/zNO4CwWH HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59587 - "GET /api/fixtures/12918 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56864 - "GET /api/fixtures/12918 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56864 - "GET /api/fixtures/12918/sportybet-markets HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65384 - "GET /api/fixtures/12918/ai HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56864 - "GET /api/fixtures/12918/ai HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65384 - "GET /api/fixtures/12918/sportybet-markets HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59587 - "GET /api/fixtures/12918/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65384 - "GET /api/fixtures/12918/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65384 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51406 - "GET /api/matches/OCwnvpx8 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55502 - "GET /api/matches/OCwnvpx8 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55502 - "GET /api/fixtures/12921 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63816 - "GET /api/fixtures/12921 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49679 - "GET /api/fixtures/12921/ai HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63816 - "GET /api/fixtures/12921/sportybet-markets HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49679 - "GET /api/fixtures/12921/ai HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50614 - "GET /api/fixtures/12921/sportybet-markets HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55502 - "GET /api/fixtures/12921/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50614 - "GET /api/fixtures/12921/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59319 - "GET /api/days HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59319 - "GET /api/tips?limit=60 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56592 - "GET /api/tips?limit=60 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54472 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54472 - "GET /api/days HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54472 - "GET /api/tips?limit=60 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63322 - "GET /api/days HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63322 - "GET /api/tips?limit=60 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50897 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56633 - "GET /api/matches/tvFgYRrf HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:55404 - "GET /api/matches/tvFgYRrf HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:57337 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54441 - "GET /api/matches/zNO4CwWH HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49901 - "GET /api/matches/zNO4CwWH HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63763 - "GET /api/days HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63763 - "GET /api/tips?limit=60 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63772 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63773 - "GET /api/livescores?date=tomorrow HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63774 - "GET /api/livescores?date=yesterday HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:63775 - "GET /api/livescores?date=2026-09-16 HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:63776 - "GET /api/livescores?date=2019-01-01 HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:63777 - "GET /api/livescores?date=bogus HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:63778 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63779 - "GET /api/livescores?date=today HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63780 - "GET /api/livescores?date=today&live_only=true HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50118 - "POST /api/auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50118 - "GET /api/admin/stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53523 - "GET / HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:53523 - "GET /styles.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52298 - "GET /app.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52298 - "GET /admin.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53523 - "GET /icons.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52298 - "GET /api/competitions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53523 - "GET /api/days HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53523 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53523 - "GET /api/site/design HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:53523 - "GET /api/days HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53523 - "GET /api/tips?limit=60 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64567 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55986 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55986 - "GET /styles.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54857 - "GET /app.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52456 - "GET /icons.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54535 - "GET /admin.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54535 - "GET /api/competitions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52456 - "GET /api/days HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52456 - "GET /api/site/design HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54535 - "GET /api/days HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54535 - "GET /api/tips?limit=60 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55401 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55401 - "GET /styles.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59949 - "GET /app.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55401 - "GET /admin.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59949 - "GET /icons.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51484 - "GET /api/competitions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54192 - "GET /api/days HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54192 - "GET /api/site/design HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:51484 - "GET /api/days HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51484 - "GET /api/tips?limit=60 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50860 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50860 - "GET /styles.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53586 - "GET /app.js HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:53586 - "GET /icons.js HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:50860 - "GET /admin.js HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:50860 - "GET /api/competitions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53586 - "GET /api/days HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53586 - "GET /api/auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53586 - "GET /api/site/design HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50860 - "GET /api/days HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50860 - "GET /api/tips?limit=60 HTTP/1.1" 200 OK
