@@ -1,0 +1,17 @@
+# Vercel's Python builder looks for a requirements file next to the function
+# entrypoint (api/index.py), NOT next to the package it imports. Without this
+# file the function has no dependencies, `backend.app.main` cannot be imported,
+# and every /api/* route 404s while the static frontend deploys normally.
+#
+# Keep this in sync with backend/requirements.txt. Both are intentionally
+# pinned: a drifting pin between local dev and the deployed function is how a
+# route works on 127.0.0.1:8080 and 404s in production.
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+sqlalchemy==2.0.36
+pydantic==2.10.4
+pydantic-settings==2.7.0
+email-validator==2.2.0
+httpx==0.28.1
+PyJWT==2.10.1
+python-multipart==0.0.20
