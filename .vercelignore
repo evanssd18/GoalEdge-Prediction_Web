@@ -1,0 +1,7 @@
+backend/goaledge.db
+**/*.jpg
+**/*.jpeg
+**/*.png
+**/*.gif
+**/*.webp
+**/*.bmp

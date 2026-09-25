@@ -1476,7 +1476,7 @@ def list_tips(
                 # Provenance: a real feed match must be distinguishable from a
                 # simulated one, in the UI and in the API.
                 "source": fx.source,
-                "is_real": fx.source == "flashscore",
+                "is_real": fx.is_real,
                 "market": p["best_market"],
                 "selection": p["best_selection"],
                 "probability": p["best_probability"],
@@ -1633,7 +1633,7 @@ def list_results(
                 # built-in simulated dataset. The UI labels the difference so a
                 # generated scoreline is never presented as a real one.
                 "source": fx.source,
-                "is_real": fx.source == "flashscore",
+                "is_real": fx.is_real,
                 "sportybet_url": _sportybet_result_url(fx),
                 "flashscore_url": settings.flashscore_base_url,
             }
@@ -1685,7 +1685,7 @@ def _find_value_bets(
     # book we invented -- a double-digit "edge" against no real market. Once the
     # live feed has real fixtures, value must come from those or not be shown.
     if source is None:
-        real = [fx for fx in fixtures if fx.source == "flashscore"]
+        real = [fx for fx in fixtures if fx.is_real]
         if real:
             fixtures = real
     out = []
@@ -1712,7 +1712,7 @@ def _find_value_bets(
                     # Provenance, so the UI can never present a simulated fixture
                     # as a real one -- the same contract /tips honours.
                     "source": fx.source,
-                    "is_real": fx.source == "flashscore",
+                    "is_real": fx.is_real,
                     "market": sel["market"],
                     "market_name": sel["market_name"],
                     "selection": sel["key"],

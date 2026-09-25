@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import logging
+import os
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -15,6 +16,32 @@ from .config import settings
 from .database import Base, SessionLocal, engine
 from .routers import router
 from .seed import seed as seed_database
+
+
+def require_persistent_database() -> None:
+    """Refuse to serve on Vercel with the local SQLite default.
+
+    ``goaledge.db`` is excluded from the deployment (.vercelignore) and a
+    deployed function has no writable, persistent filesystem, so the SQLite
+    default cannot work. Without this check the failure is *late* and *opaque*:
+    ``create_all`` runs inside the startup lifespan, raises "unable to open
+    database file" only on the first write, and every route then returns a
+    generic 500 -- which reads like an application bug rather than a missing
+    configuration value. Failing at the top of the lifespan instead names the
+    variable and the reason.
+
+    Vercel sets ``VERCEL`` in every function's environment, including the
+    preview deployments, so its presence is a reliable signal.
+    """
+    if os.environ.get("VERCEL") and settings.database_url.startswith("sqlite"):
+        raise RuntimeError(
+            "DATABASE_URL is not set. Vercel has no persistent writable "
+            "filesystem, so the local SQLite default cannot be used there. "
+            "Set DATABASE_URL (for example "
+            "postgresql+psycopg://user:pass@host/db) in the project's "
+            "environment variables."
+        )
+
 
 def _ensure_columns() -> None:
     """Add columns introduced after the database was first created.
@@ -49,6 +76,7 @@ log = logging.getLogger("goaledge")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    require_persistent_database()
     Base.metadata.create_all(bind=engine)
     _ensure_columns()
     db = SessionLocal()
@@ -76,9 +104,12 @@ async def lifespan(app: FastAPI):
         def _sync_in_background() -> None:
             bg = SessionLocal()
             try:
+                from .oddsapi import apply_book_odds
                 from .sync import sync_recent
                 for outcome in sync_recent(bg, days=2, history=False):
                     log.info("flashscore sync: %s", outcome.as_dict())
+                odds = apply_book_odds(bg)
+                log.info("odds overlay: %s", odds)
             except Exception as exc:  # noqa: BLE001 - a feed fault must not crash the app
                 log.warning("flashscore sync failed: %s", exc)
             finally:

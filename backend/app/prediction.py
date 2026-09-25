@@ -32,7 +32,7 @@ MAX_GOALS = 9
 # this differs from the stored value, so adding or removing markets without
 # bumping it keeps serving the old payload (duplicate 1UP markets reappearing
 # from cache, for example) even though the code is correct.
-MODEL_VERSION = "dc-2.6"  # 2.6 adds the five-market top_picks shortlist
+MODEL_VERSION = "dc-2.7"  # 2.7 shades lambdas with API-Football injuries when a key is set
 
 
 # --------------------------------------------------------------------------
@@ -184,9 +184,15 @@ def _recency_weight(index_from_latest: int) -> float:
     return math.exp(-0.10 * index_from_latest)
 
 
-def collect_team_stats(db: Session, team_id: int, limit: int = 30) -> TeamStats:
-    """Aggregate a team's recent finished matches into a TeamStats record."""
-    fixtures = db.scalars(
+def collect_team_stats(
+    db: Session, team_id: int, limit: int = 30, source: str | None = None
+) -> TeamStats:
+    """Aggregate a team's recent finished matches into a TeamStats record.
+
+    ``source`` keeps real ratings on real results: a Flashscore club must not
+    be shaped by the simulated seed scorelines sitting in the same table.
+    """
+    stmt = (
         select(Fixture)
         .options(selectinload(Fixture.home_team), selectinload(Fixture.away_team))
         .where(
@@ -196,7 +202,14 @@ def collect_team_stats(db: Session, team_id: int, limit: int = 30) -> TeamStats:
         )
         .order_by(Fixture.kickoff.desc())
         .limit(limit)
-    ).all()
+    )
+    if source == "seed":
+        stmt = stmt.where(Fixture.source == "seed")
+    elif source:
+        # Real clubs (Flashscore, Odds API, …) share one ratings history.
+        # A synthetic seed scoreline must never shape a real prediction.
+        stmt = stmt.where(Fixture.source != "seed")
+    fixtures = db.scalars(stmt).all()
 
     stats = TeamStats(team_id=team_id, name="")
     for idx, fx in enumerate(fixtures):
@@ -1564,8 +1577,8 @@ def key_factors_and_risks(
 def predict_fixture(db: Session, fixture: Fixture, include_context: bool = True) -> dict:
     """Run the full prediction pipeline for one fixture."""
     league = fixture.competition.avg_goals or settings.league_avg_goals
-    home_stats = collect_team_stats(db, fixture.home_team_id)
-    away_stats = collect_team_stats(db, fixture.away_team_id)
+    home_stats = collect_team_stats(db, fixture.home_team_id, source=fixture.source)
+    away_stats = collect_team_stats(db, fixture.away_team_id, source=fixture.source)
     home_stats.name = fixture.home_team.display_name
     away_stats.name = fixture.away_team.display_name
 
@@ -1573,6 +1586,16 @@ def predict_fixture(db: Session, fixture: Fixture, include_context: bool = True)
     away_ratings = estimate_ratings(away_stats, league)
 
     lam_h, lam_a = expected_goals(home_ratings, away_ratings, league)
+    injury_notes: list[str] = []
+    if fixture.source != "seed":
+        from .apifootball import shade_lambdas
+
+        lam_h, lam_a, injury_notes = shade_lambdas(
+            lam_h,
+            lam_a,
+            fixture.home_team.display_name,
+            fixture.away_team.display_name,
+        )
     matrix = build_matrix(lam_h, lam_a, settings.dixon_coles_rho)
 
     markets, flat, headline = build_markets(matrix, fixture)
@@ -1663,6 +1686,7 @@ def predict_fixture(db: Session, fixture: Fixture, include_context: bool = True)
         fixture.home_team.display_name,
         fixture.away_team.display_name,
     )
+    factors.extend(injury_notes)
 
     result: dict = {
         "fixture_id": fixture.id,

@@ -19,7 +19,12 @@ class Settings(BaseSettings):
     app_description: str = "AI-powered football match predictions and betting tips"
     version: str = "1.0.0"
 
-    # SQLite by default; swap DATABASE_URL for Postgres in production.
+    # SQLite by default, which is correct for local development. On a serverless
+    # host it is not a valid fallback: ``goaledge.db`` is excluded from the
+    # deployment (see .vercelignore) and the bundle is read-only at runtime, so
+    # the default fails at startup with an opaque "unable to open database file"
+    # -- after the app appeared to boot fine. ``main.require_persistent_database``
+    # turns that into one explicit error naming the missing variable.
     database_url: str = f"sqlite:///{(BASE_DIR / 'goaledge.db').as_posix()}"
 
     # --- AI layer -------------------------------------------------------
@@ -48,6 +53,30 @@ class Settings(BaseSettings):
     prior_weight: float = 6.0
     # Minimum edge (model prob - market prob) to flag a value bet.
     value_edge_threshold: float = 0.045
+    # --- The Odds API (real bookmaker prices) ------------------------------
+    # Overlay live 1X2 / totals onto Flashscore fixtures. Without a key the
+    # engine keeps model-derived fair prices and does not claim an edge.
+    odds_api_key: str | None = None
+    odds_api_base_url: str = "https://api.the-odds-api.com/v4"
+    # Each extra region costs another credit; UK books are enough for decimal
+    # 1X2 and (when the book offers it) totals.
+    odds_api_regions: str = "uk"
+    odds_api_markets: str = "h2h,totals"
+    # Free tiers are a few hundred credits a month, so a long cache is the
+    # difference between lasting the month and burning the quota on boot.
+    # 12h cache × 4 sports × 2 markets ≈ 16 credits/day, which fits a
+    # 500-credit monthly quota. Refreshing every 30 minutes with a short
+    # cache would burn the month in a few days.
+    odds_api_cache_seconds: int = 43200
+    odds_api_max_sports_per_run: int = 4
+    odds_api_timeout_seconds: float = 20.0
+    odds_api_kickoff_slack_hours: float = 8.0
+    # --- API-Football (API-Sports) -----------------------------------------
+    # Fixtures, injuries, lineups. Optional: a missing or rejected key is
+    # logged and ignored; Flashscore stays the schedule source.
+    api_football_key: str | None = None
+    api_football_base_url: str = "https://v3.football.api-sports.io"
+    api_football_timeout_seconds: float = 20.0
     # --- SportyBet odds display ------------------------------------------
     # Read-only market board, shown next to (never blended into) the model's
     # own selections. Disabled by default: the board is large, so it is only

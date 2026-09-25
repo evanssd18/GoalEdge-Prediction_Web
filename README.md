@@ -348,6 +348,14 @@ the template provider, so the product never breaks.
 Copy `backend/.env.example` to `backend/.env`:
 
 ```ini
+# Real bookmaker odds — required before the site can claim edge / value
+ODDS_API_KEY=
+ODDS_API_REGIONS=uk
+ODDS_API_MARKETS=h2h,totals
+
+# API-Football dashboard key (optional; injuries / lineups)
+API_FOOTBALL_KEY=
+
 # Optional — leave blank for the built-in offline analyst
 OPENAI_API_KEY=sk-...
 OPENAI_MODEL=gpt-4o-mini
@@ -363,6 +371,14 @@ VALUE_EDGE_THRESHOLD=0.045   # min edge to flag a value bet
 
 Swap SQLite for Postgres by setting
 `DATABASE_URL=postgresql+psycopg://user:pass@host/db`.
+
+**Required on Vercel.** The SQLite default only works locally: `goaledge.db` is
+excluded from the upload (`.vercelignore`) and a deployed function has no
+persistent, writable filesystem. Set `DATABASE_URL` in the project's environment
+variables, or the app refuses to start (it raises on `VERCEL=1` with a message
+naming the missing variable, rather than failing later on the first write). To
+confirm a deployment is pointed at a real database, call any data endpoint —
+e.g. `GET /api/stats/overview` — and check it returns real fixtures.
 
 ---
 
@@ -412,7 +428,7 @@ invalidated when `MODEL_VERSION` changes, so the model isn't recomputed per requ
 
 ## Project layout
 
-```
+```text
 Predictions/
 ├── backend/
 │   ├── app/

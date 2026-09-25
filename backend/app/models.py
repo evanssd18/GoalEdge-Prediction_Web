@@ -134,6 +134,11 @@ class Fixture(Base):
     def is_finished(self) -> bool:
         return self.status == "finished" and self.home_goals is not None
 
+    @property
+    def is_real(self) -> bool:
+        """True when this row is football, not the simulated seed set."""
+        return self.source != "seed"
+
 
 class Standing(Base):
     """Lite league table row, used for context in the AI analysis."""

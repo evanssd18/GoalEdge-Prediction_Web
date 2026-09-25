@@ -367,8 +367,12 @@ def price_flashscore_fixtures(db: Session, limit: int = 500) -> int:
     priced = 0
     for fx in pending:
         league = fx.competition.avg_goals or settings.league_avg_goals
-        home_r = estimate_ratings(collect_team_stats(db, fx.home_team_id), league)
-        away_r = estimate_ratings(collect_team_stats(db, fx.away_team_id), league)
+        home_r = estimate_ratings(
+            collect_team_stats(db, fx.home_team_id, source=fx.source), league
+        )
+        away_r = estimate_ratings(
+            collect_team_stats(db, fx.away_team_id, source=fx.source), league
+        )
         lam_h, lam_a = expected_goals(home_r, away_r, league)
         m = build_matrix(lam_h, lam_a, settings.dixon_coles_rho)
 
@@ -414,11 +418,27 @@ def source_counts(db: Session) -> dict:
         )
         or 0
     )
+    from .pricing import MODEL_BOOKMAKER
+
+    book_priced = (
+        db.scalar(
+            select(func.count())
+            .select_from(Fixture)
+            .where(
+                Fixture.source == "flashscore",
+                Fixture.odds_home.is_not(None),
+                Fixture.bookmaker.is_not(None),
+                Fixture.bookmaker != MODEL_BOOKMAKER,
+            )
+        )
+        or 0
+    )
     return {
         "fixtures_total": total,
         "flashscore_total": real,
         "flashscore_live": live,
         "flashscore_finished": finished,
+        "book_priced": book_priced,
         "last_sync": _last_sync_time(db),
     }
 

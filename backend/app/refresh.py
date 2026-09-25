@@ -137,6 +137,13 @@ class DailyRefresher:
             # are priced by that same call only if they were in its range, so the
             # pricing pass is run once more below.
             forward = sync_forward(db, days=self.forward_days)
+            from .oddsapi import apply_book_odds
+            from .apifootball import injuries_by_team, probe as probe_api_football
+
+            odds = apply_book_odds(db)
+            football = probe_api_football()
+            injuries = injuries_by_team() if football.get("ok") else {}
+            # Model-fair prices only where no real book line landed.
             price_flashscore_fixtures(db)
             outcomes = outcomes + forward
         finally:
@@ -148,6 +155,12 @@ class DailyRefresher:
             ],
             "created": sum(o.created for o in outcomes),
             "updated": sum(o.updated for o in outcomes),
+            "odds": odds,
+            "api_football": {
+                "ok": football.get("ok"),
+                "reason": football.get("reason"),
+                "injury_teams": len(injuries),
+            },
             "error": next((o.error for o in outcomes if o.error), None),
         }
 
