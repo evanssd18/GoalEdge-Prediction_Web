@@ -19,3 +19,9 @@ server.err.log
 
 # QA artifacts
 qa/*.png
+# Node dependencies -- never committed. Playwright and the Vercel CLI are
+# installed locally; 183 files were tracked here, which made every install or
+# upgrade show up as repo churn in `git status`.
+node_modules/
+.vercel
+.env*
