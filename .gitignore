@@ -26,3 +26,7 @@ qa/*.png
 # upgrade show up as repo churn in `git status`.
 node_modules/
 .vercel
+<<<<<<< HEAD
+=======
+.env*
+>>>>>>> b55db047eaea24ac1d25611bfb34871df5653847
